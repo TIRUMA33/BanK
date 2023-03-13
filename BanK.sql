@@ -11,14 +11,15 @@ CREATE TABLE CuentaBanco (
   IbanCuenta varchar(24) NOT NULL UNIQUE,
   Swift varchar(11) NOT NULL,
   Pais varchar(45) NOT NULL,
-  FechaApertura DateTime NOT NULL,
-  FechaCierre DateTime NOT NULL,
+  FechaApertura datetime NOT NULL,
+  FechaCierre datetime NOT NULL,
+  EstadoCuenta enum('Activa','Bloqueada','Cerrada') NOT NULL,
   PRIMARY KEY (IbanCuenta)
 );
 
 CREATE TABLE Direccion (
   ID int NOT NULL,
-  Tipo enum('casa','oficina','codigoPostal') NOT NULL,
+  Tipo enum('Casa','Oficina','CodigoPostal') NOT NULL,
   Calle varchar(45) NOT NULL,
   Numero int NOT NULL,
   PlantaPuertaOficina varchar(45) DEFAULT NULL,
@@ -48,25 +49,25 @@ CREATE TABLE Transaccion (
   PRIMARY KEY (ID)
 );
 
-CREATE TABLE divisa (
+CREATE TABLE Divisa (
   ID varchar(3) NOT NULL,
   NOMBRE varchar(40) NOT NULL,
   EQUIVALENCIA double NOT NULL,
   PRIMARY KEY (ID)
 );
 
-CREATE TABLE persona (
+CREATE TABLE Persona (
   NOMBRE varchar(45) NOT NULL,
   APELLIDO1 varchar(45) NOT NULL,
   APELLIDO2 varchar(45) NOT NULL,
   FECHA_NACIMIENTO datetime NOT NULL,
   DNI varchar(9) NOT NULL,
-  CONSTRAINT DNI FOREIGN KEY (DNI) REFERENCES cliente (NumeroIdentificacion)
+  CONSTRAINT DNI FOREIGN KEY (DNI) REFERENCES Cliente (NumeroIdentificacion)
 );
 
-CREATE TABLE empresa (
+CREATE TABLE Empresa (
   NOMBRE varchar(45) NOT NULL,
   FECHA_CREACION datetime NOT NULL,
   NIF varchar(9) NOT NULL,
-  CONSTRAINT NIF FOREIGN KEY (NIF) REFERENCES cliente (NumeroIdentificacion)
+  CONSTRAINT NIF FOREIGN KEY (NIF) REFERENCES Cliente (NumeroIdentificacion)
 );
