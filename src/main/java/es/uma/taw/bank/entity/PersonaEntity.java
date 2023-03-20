@@ -3,12 +3,15 @@ package es.uma.taw.bank.entity;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "persona", schema = "taw", catalog = "")
 public class PersonaEntity {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "ID", nullable = false)
+    private Integer id;
     @Basic
     @Column(name = "NOMBRE", nullable = false, length = 45)
     private String nombre;
@@ -16,13 +19,25 @@ public class PersonaEntity {
     @Column(name = "APELLIDO1", nullable = false, length = 45)
     private String apellido1;
     @Basic
-    @Column(name = "APELLIDO2", nullable = false, length = 45)
+    @Column(name = "APELLIDO2", nullable = true, length = 45)
     private String apellido2;
     @Basic
     @Column(name = "FECHA_NACIMIENTO", nullable = false)
     private Timestamp fechaNacimiento;
-    @OneToMany(mappedBy = "personaByNumeroIdentificacion")
-    private List<ClienteEntity> cliente;
+    @Basic
+    @Column(name = "DNI", nullable = false, length = 9)
+    private String dni;
+    @OneToOne
+    @JoinColumn(name = "ID", referencedColumnName = "ID", nullable = false)
+    private ClienteEntity clienteById;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getNombre() {
         return nombre;
@@ -56,24 +71,32 @@ public class PersonaEntity {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonaEntity that = (PersonaEntity) o;
-        return Objects.equals(nombre, that.nombre) && Objects.equals(apellido1, that.apellido1) && Objects.equals(apellido2, that.apellido2) && Objects.equals(fechaNacimiento, that.fechaNacimiento);
+        return Objects.equals(id, that.id) && Objects.equals(nombre, that.nombre) && Objects.equals(apellido1, that.apellido1) && Objects.equals(apellido2, that.apellido2) && Objects.equals(fechaNacimiento, that.fechaNacimiento) && Objects.equals(dni, that.dni);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nombre, apellido1, apellido2, fechaNacimiento);
+        return Objects.hash(id, nombre, apellido1, apellido2, fechaNacimiento, dni);
     }
 
-    public List<ClienteEntity> getCliente() {
-        return cliente;
+    public ClienteEntity getClienteById() {
+        return clienteById;
     }
 
-    public void setCliente(List<ClienteEntity> cliente) {
-        this.cliente = cliente;
+    public void setClienteById(ClienteEntity clienteById) {
+        this.clienteById = clienteById;
     }
 }

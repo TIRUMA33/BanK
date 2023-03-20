@@ -2,6 +2,7 @@ package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -12,8 +13,10 @@ public class EstadoclienteEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "Tipo", nullable = true, length = 20)
+    @Column(name = "Tipo", nullable = false, length = 20)
     private String tipo;
+    @OneToMany(mappedBy = "estadoclienteByEstadoCliente")
+    private List<ClienteEntity> clientesById;
 
     public Integer getId() {
         return id;
@@ -42,5 +45,13 @@ public class EstadoclienteEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, tipo);
+    }
+
+    public List<ClienteEntity> getClientesById() {
+        return clientesById;
+    }
+
+    public void setClientesById(List<ClienteEntity> clientesById) {
+        this.clientesById = clientesById;
     }
 }

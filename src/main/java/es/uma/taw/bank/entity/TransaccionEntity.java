@@ -3,7 +3,6 @@ package es.uma.taw.bank.entity;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -20,12 +19,14 @@ public class TransaccionEntity {
     @Column(name = "FechaEjecucion", nullable = false)
     private Timestamp fechaEjecucion;
     @Basic
-    @Column(name = "Cantidad", nullable = false)
-    private Integer cantidad;
-    @OneToMany(mappedBy = "transaccionByIbanCuenta")
-    private Collection<CuentabancoEntity> cuentaDestino;
-    @OneToMany(mappedBy = "transaccionByIbanCuenta_0")
-    private Collection<CuentabancoEntity> cuentaOrigen;
+    @Column(name = "Cantidad", nullable = false, precision = 0)
+    private Double cantidad;
+    @ManyToOne
+    @JoinColumn(name = "CuentaOrigen", referencedColumnName = "ID", nullable = false)
+    private CuentabancoEntity cuentabancoByCuentaOrigen;
+    @ManyToOne
+    @JoinColumn(name = "CuentaDestino", referencedColumnName = "ID", nullable = false)
+    private CuentabancoEntity cuentabancoByCuentaDestino;
 
     public Integer getId() {
         return id;
@@ -51,11 +52,11 @@ public class TransaccionEntity {
         this.fechaEjecucion = fechaEjecucion;
     }
 
-    public Integer getCantidad() {
+    public Double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(Double cantidad) {
         this.cantidad = cantidad;
     }
 
@@ -72,19 +73,19 @@ public class TransaccionEntity {
         return Objects.hash(id, fechaInstruccion, fechaEjecucion, cantidad);
     }
 
-    public Collection<CuentabancoEntity> getCuentaDestino() {
-        return cuentaDestino;
+    public CuentabancoEntity getCuentabancoByCuentaOrigen() {
+        return cuentabancoByCuentaOrigen;
     }
 
-    public void setCuentaDestino(Collection<CuentabancoEntity> cuentaDestino) {
-        this.cuentaDestino = cuentaDestino;
+    public void setCuentabancoByCuentaOrigen(CuentabancoEntity cuentabancoByCuentaOrigen) {
+        this.cuentabancoByCuentaOrigen = cuentabancoByCuentaOrigen;
     }
 
-    public Collection<CuentabancoEntity> getCuentaOrigen() {
-        return cuentaOrigen;
+    public CuentabancoEntity getCuentabancoByCuentaDestino() {
+        return cuentabancoByCuentaDestino;
     }
 
-    public void setCuentaOrigen(Collection<CuentabancoEntity> cuentaOrigen) {
-        this.cuentaOrigen = cuentaOrigen;
+    public void setCuentabancoByCuentaDestino(CuentabancoEntity cuentabancoByCuentaDestino) {
+        this.cuentabancoByCuentaDestino = cuentabancoByCuentaDestino;
     }
 }

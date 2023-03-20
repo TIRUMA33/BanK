@@ -13,11 +13,11 @@ public class ClienteEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "NumeroIdentificacion", nullable = false, length = 9)
-    private String numeroIdentificacion;
-    @Basic
     @Column(name = "FechaInicio", nullable = false)
     private Timestamp fechaInicio;
+    @ManyToOne
+    @JoinColumn(name = "EstadoCliente", referencedColumnName = "ID", nullable = false)
+    private EstadoclienteEntity estadoclienteByEstadoCliente;
 
     public Integer getId() {
         return id;
@@ -25,14 +25,6 @@ public class ClienteEntity {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getNumeroIdentificacion() {
-        return numeroIdentificacion;
-    }
-
-    public void setNumeroIdentificacion(String numeroIdentificacion) {
-        this.numeroIdentificacion = numeroIdentificacion;
     }
 
     public Timestamp getFechaInicio() {
@@ -48,11 +40,19 @@ public class ClienteEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClienteEntity that = (ClienteEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(numeroIdentificacion, that.numeroIdentificacion) && Objects.equals(fechaInicio, that.fechaInicio);
+        return Objects.equals(id, that.id) && Objects.equals(fechaInicio, that.fechaInicio);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, numeroIdentificacion, fechaInicio);
+        return Objects.hash(id, fechaInicio);
+    }
+
+    public EstadoclienteEntity getEstadoclienteByEstadoCliente() {
+        return estadoclienteByEstadoCliente;
+    }
+
+    public void setEstadoclienteByEstadoCliente(EstadoclienteEntity estadoclienteByEstadoCliente) {
+        this.estadoclienteByEstadoCliente = estadoclienteByEstadoCliente;
     }
 }

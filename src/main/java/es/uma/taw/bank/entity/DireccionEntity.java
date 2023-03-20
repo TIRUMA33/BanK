@@ -35,6 +35,12 @@ public class DireccionEntity {
     @Basic
     @Column(name = "Valida", nullable = true)
     private Byte valida;
+    @ManyToOne
+    @JoinColumn(name = "Cliente", referencedColumnName = "ID", nullable = false)
+    private ClienteEntity clienteByCliente;
+    @ManyToOne
+    @JoinColumn(name = "TipoDireccion", referencedColumnName = "ID", nullable = false)
+    private TipodireccionEntity tipodireccionByTipoDireccion;
 
     public Integer getId() {
         return id;
@@ -119,5 +125,21 @@ public class DireccionEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, calle, numero, plantaPuertaOficina, ciudad, region, codigoPostal, pais, valida);
+    }
+
+    public ClienteEntity getClienteByCliente() {
+        return clienteByCliente;
+    }
+
+    public void setClienteByCliente(ClienteEntity clienteByCliente) {
+        this.clienteByCliente = clienteByCliente;
+    }
+
+    public TipodireccionEntity getTipodireccionByTipoDireccion() {
+        return tipodireccionByTipoDireccion;
+    }
+
+    public void setTipodireccionByTipoDireccion(TipodireccionEntity tipodireccionByTipoDireccion) {
+        this.tipodireccionByTipoDireccion = tipodireccionByTipoDireccion;
     }
 }

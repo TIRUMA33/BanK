@@ -19,6 +19,9 @@ public class CuentabancoEntity {
     @Column(name = "IbanCuenta", nullable = false, length = 24)
     private String ibanCuenta;
     @Basic
+    @Column(name = "Saldo", nullable = false, precision = 0)
+    private Double saldo;
+    @Basic
     @Column(name = "Swift", nullable = false, length = 11)
     private String swift;
     @Basic
@@ -30,6 +33,15 @@ public class CuentabancoEntity {
     @Basic
     @Column(name = "FechaCierre", nullable = false)
     private Timestamp fechaCierre;
+    @ManyToOne
+    @JoinColumn(name = "Titular", referencedColumnName = "ID", nullable = false)
+    private ClienteEntity clienteByTitular;
+    @ManyToOne
+    @JoinColumn(name = "EntidadBancaria", referencedColumnName = "ID", nullable = false)
+    private EntidadbancariaEntity entidadbancariaByEntidadBancaria;
+    @ManyToOne
+    @JoinColumn(name = "EstadoCuenta", referencedColumnName = "ID", nullable = false)
+    private EstadocuentaEntity estadocuentaByEstadoCuenta;
 
     public Integer getId() {
         return id;
@@ -53,6 +65,14 @@ public class CuentabancoEntity {
 
     public void setIbanCuenta(String ibanCuenta) {
         this.ibanCuenta = ibanCuenta;
+    }
+
+    public Double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(Double saldo) {
+        this.saldo = saldo;
     }
 
     public String getSwift() {
@@ -92,11 +112,35 @@ public class CuentabancoEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CuentabancoEntity that = (CuentabancoEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(moneda, that.moneda) && Objects.equals(ibanCuenta, that.ibanCuenta) && Objects.equals(swift, that.swift) && Objects.equals(pais, that.pais) && Objects.equals(fechaApertura, that.fechaApertura) && Objects.equals(fechaCierre, that.fechaCierre);
+        return Objects.equals(id, that.id) && Objects.equals(moneda, that.moneda) && Objects.equals(ibanCuenta, that.ibanCuenta) && Objects.equals(saldo, that.saldo) && Objects.equals(swift, that.swift) && Objects.equals(pais, that.pais) && Objects.equals(fechaApertura, that.fechaApertura) && Objects.equals(fechaCierre, that.fechaCierre);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, moneda, ibanCuenta, swift, pais, fechaApertura, fechaCierre);
+        return Objects.hash(id, moneda, ibanCuenta, saldo, swift, pais, fechaApertura, fechaCierre);
+    }
+
+    public ClienteEntity getClienteByTitular() {
+        return clienteByTitular;
+    }
+
+    public void setClienteByTitular(ClienteEntity clienteByTitular) {
+        this.clienteByTitular = clienteByTitular;
+    }
+
+    public EntidadbancariaEntity getEntidadbancariaByEntidadBancaria() {
+        return entidadbancariaByEntidadBancaria;
+    }
+
+    public void setEntidadbancariaByEntidadBancaria(EntidadbancariaEntity entidadbancariaByEntidadBancaria) {
+        this.entidadbancariaByEntidadBancaria = entidadbancariaByEntidadBancaria;
+    }
+
+    public EstadocuentaEntity getEstadocuentaByEstadoCuenta() {
+        return estadocuentaByEstadoCuenta;
+    }
+
+    public void setEstadocuentaByEstadoCuenta(EstadocuentaEntity estadocuentaByEstadoCuenta) {
+        this.estadocuentaByEstadoCuenta = estadocuentaByEstadoCuenta;
     }
 }
