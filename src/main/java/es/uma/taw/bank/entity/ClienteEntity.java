@@ -13,10 +13,10 @@ public class ClienteEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "FechaInicio", nullable = false)
+    @Column(name = "Fechainicio", nullable = false)
     private Timestamp fechaInicio;
     @ManyToOne
-    @JoinColumn(name = "EstadoCliente", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "Estadocliente", referencedColumnName = "ID", nullable = false)
     private EstadoclienteEntity estadoclienteByEstadoCliente;
 
     public Integer getId() {
