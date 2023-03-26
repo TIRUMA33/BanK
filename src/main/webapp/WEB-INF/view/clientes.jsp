@@ -28,8 +28,6 @@
         <th>ID</th>
         <th>FechaInicio</th>
         <th>EstadoCliente</th>
-        <th></th>
-        <th></th>
     </tr>
     <%
         for (ClienteEntity cliente: lista) {
@@ -37,7 +35,7 @@
     <tr>
         <td><%= cliente.getId() %></td>
         <td><%= cliente.getFechaInicio() %></td>
-        <td><%= cliente.getEstadoclienteByEstadoCliente() %></td>
+        <td><%= cliente.getEstadoclienteByEstadoCliente().getTipo() %></td>
     </tr>
 
 
@@ -46,7 +44,6 @@
     %>
 </table border="1">
 
-<a href="/customer/nuevo" >Nuevo cliente ...</a>
 
 </body>
 </html>
