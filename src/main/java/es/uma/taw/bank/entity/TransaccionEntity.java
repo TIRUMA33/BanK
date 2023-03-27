@@ -13,20 +13,20 @@ public class TransaccionEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "FechaInstruccion", nullable = false)
+    @Column(name = "FECHA_INSTRUCCION", nullable = false)
     private Timestamp fechaInstruccion;
     @Basic
-    @Column(name = "FechaEjecucion", nullable = false)
+    @Column(name = "FECHA_EJECUCION", nullable = false)
     private Timestamp fechaEjecucion;
     @Basic
-    @Column(name = "Cantidad", nullable = false, precision = 0)
+    @Column(name = "CANTIDAD", nullable = false, precision = 0)
     private Double cantidad;
     @ManyToOne
-    @JoinColumn(name = "CuentaOrigen", referencedColumnName = "ID", nullable = false)
-    private CuentabancoEntity cuentabancoByCuentaOrigen;
+    @JoinColumn(name = "CUENTA_ORIGEN", referencedColumnName = "ID", nullable = false)
+    private CuentaBancoEntity cuentaBancoByCuentaOrigen;
     @ManyToOne
-    @JoinColumn(name = "CuentaDestino", referencedColumnName = "ID", nullable = false)
-    private CuentabancoEntity cuentabancoByCuentaDestino;
+    @JoinColumn(name = "CUENTA_DESTINO", referencedColumnName = "ID", nullable = false)
+    private CuentaBancoEntity cuentaBancoByCuentaDestino;
 
     public Integer getId() {
         return id;
@@ -73,19 +73,19 @@ public class TransaccionEntity {
         return Objects.hash(id, fechaInstruccion, fechaEjecucion, cantidad);
     }
 
-    public CuentabancoEntity getCuentabancoByCuentaOrigen() {
-        return cuentabancoByCuentaOrigen;
+    public CuentaBancoEntity getCuentaBancoByCuentaOrigen() {
+        return cuentaBancoByCuentaOrigen;
     }
 
-    public void setCuentabancoByCuentaOrigen(CuentabancoEntity cuentabancoByCuentaOrigen) {
-        this.cuentabancoByCuentaOrigen = cuentabancoByCuentaOrigen;
+    public void setCuentaBancoByCuentaOrigen(CuentaBancoEntity cuentaBancoByCuentaOrigen) {
+        this.cuentaBancoByCuentaOrigen = cuentaBancoByCuentaOrigen;
     }
 
-    public CuentabancoEntity getCuentabancoByCuentaDestino() {
-        return cuentabancoByCuentaDestino;
+    public CuentaBancoEntity getCuentaBancoByCuentaDestino() {
+        return cuentaBancoByCuentaDestino;
     }
 
-    public void setCuentabancoByCuentaDestino(CuentabancoEntity cuentabancoByCuentaDestino) {
-        this.cuentabancoByCuentaDestino = cuentabancoByCuentaDestino;
+    public void setCuentaBancoByCuentaDestino(CuentaBancoEntity cuentaBancoByCuentaDestino) {
+        this.cuentaBancoByCuentaDestino = cuentaBancoByCuentaDestino;
     }
 }

@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tipodireccion", schema = "taw", catalog = "")
-public class TipodireccionEntity {
+@Table(name = "tipo_direccion", schema = "taw", catalog = "")
+public class TipoDireccionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "Tipo", nullable = true, length = 20)
+    @Column(name = "TIPO", nullable = true, length = 20)
     private String tipo;
-    @OneToMany(mappedBy = "tipodireccionByTipoDireccion")
+    @OneToMany(mappedBy = "tipoDireccionByTipoDireccionId")
     private List<DireccionEntity> direccionsById;
 
     public Integer getId() {
@@ -38,7 +38,7 @@ public class TipodireccionEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TipodireccionEntity that = (TipodireccionEntity) o;
+        TipoDireccionEntity that = (TipoDireccionEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(tipo, that.tipo);
     }
 

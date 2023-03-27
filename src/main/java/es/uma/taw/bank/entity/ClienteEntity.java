@@ -13,11 +13,11 @@ public class ClienteEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "Fechainicio", nullable = false)
+    @Column(name = "FECHA_INICIO", nullable = false)
     private Timestamp fechaInicio;
     @ManyToOne
-    @JoinColumn(name = "Estadocliente", referencedColumnName = "ID", nullable = false)
-    private EstadoclienteEntity estadoclienteByEstadoCliente;
+    @JoinColumn(name = "ESTADO_CLIENTE_ID", referencedColumnName = "ID", nullable = false)
+    private EstadoClienteEntity estadoClienteByEstadoClienteId;
 
     public Integer getId() {
         return id;
@@ -48,11 +48,11 @@ public class ClienteEntity {
         return Objects.hash(id, fechaInicio);
     }
 
-    public EstadoclienteEntity getEstadoclienteByEstadoCliente() {
-        return estadoclienteByEstadoCliente;
+    public EstadoClienteEntity getEstadoClienteByEstadoClienteId() {
+        return estadoClienteByEstadoClienteId;
     }
 
-    public void setEstadoclienteByEstadoCliente(EstadoclienteEntity estadoclienteByEstadoCliente) {
-        this.estadoclienteByEstadoCliente = estadoclienteByEstadoCliente;
+    public void setEstadoClienteByEstadoClienteId(EstadoClienteEntity estadoClienteByEstadoClienteId) {
+        this.estadoClienteByEstadoClienteId = estadoClienteByEstadoClienteId;
     }
 }

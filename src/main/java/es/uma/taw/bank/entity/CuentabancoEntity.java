@@ -6,42 +6,42 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cuentabanco", schema = "taw", catalog = "")
-public class CuentabancoEntity {
+@Table(name = "cuenta_banco", schema = "taw", catalog = "")
+public class CuentaBancoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "Moneda", nullable = false, length = 10)
+    @Column(name = "MONEDA", nullable = false, length = 10)
     private String moneda;
     @Basic
-    @Column(name = "IbanCuenta", nullable = false, length = 24)
+    @Column(name = "IBAN_CUENTA", nullable = false, length = 24)
     private String ibanCuenta;
     @Basic
-    @Column(name = "Saldo", nullable = false, precision = 0)
+    @Column(name = "SALDO", nullable = false, precision = 0)
     private Double saldo;
     @Basic
-    @Column(name = "Swift", nullable = false, length = 11)
+    @Column(name = "SWIFT", nullable = false, length = 11)
     private String swift;
     @Basic
-    @Column(name = "Pais", nullable = false, length = 45)
+    @Column(name = "PAIS", nullable = false, length = 45)
     private String pais;
     @Basic
-    @Column(name = "FechaApertura", nullable = false)
+    @Column(name = "FECHA_APERTURA", nullable = false)
     private Timestamp fechaApertura;
     @Basic
-    @Column(name = "FechaCierre", nullable = false)
+    @Column(name = "FECHA_CIERRE", nullable = false)
     private Timestamp fechaCierre;
     @ManyToOne
-    @JoinColumn(name = "Titular", referencedColumnName = "ID", nullable = false)
-    private ClienteEntity clienteByTitular;
+    @JoinColumn(name = "TITULAR_ID", referencedColumnName = "ID", nullable = false)
+    private ClienteEntity clienteByTitularId;
     @ManyToOne
-    @JoinColumn(name = "EntidadBancaria", referencedColumnName = "ID", nullable = false)
-    private EntidadbancariaEntity entidadbancariaByEntidadBancaria;
+    @JoinColumn(name = "ENTIDAD_BANCARIA_ID", referencedColumnName = "ID", nullable = false)
+    private EntidadBancariaEntity entidadBancariaByEntidadBancariaId;
     @ManyToOne
-    @JoinColumn(name = "EstadoCuenta", referencedColumnName = "ID", nullable = false)
-    private EstadocuentaEntity estadocuentaByEstadoCuenta;
+    @JoinColumn(name = "ESTADO_CUENTA_ID", referencedColumnName = "ID", nullable = false)
+    private EstadoCuentaEntity estadoCuentaByEstadoCuentaId;
 
     public Integer getId() {
         return id;
@@ -111,7 +111,7 @@ public class CuentabancoEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CuentabancoEntity that = (CuentabancoEntity) o;
+        CuentaBancoEntity that = (CuentaBancoEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(moneda, that.moneda) && Objects.equals(ibanCuenta, that.ibanCuenta) && Objects.equals(saldo, that.saldo) && Objects.equals(swift, that.swift) && Objects.equals(pais, that.pais) && Objects.equals(fechaApertura, that.fechaApertura) && Objects.equals(fechaCierre, that.fechaCierre);
     }
 
@@ -120,27 +120,27 @@ public class CuentabancoEntity {
         return Objects.hash(id, moneda, ibanCuenta, saldo, swift, pais, fechaApertura, fechaCierre);
     }
 
-    public ClienteEntity getClienteByTitular() {
-        return clienteByTitular;
+    public ClienteEntity getClienteByTitularId() {
+        return clienteByTitularId;
     }
 
-    public void setClienteByTitular(ClienteEntity clienteByTitular) {
-        this.clienteByTitular = clienteByTitular;
+    public void setClienteByTitularId(ClienteEntity clienteByTitularId) {
+        this.clienteByTitularId = clienteByTitularId;
     }
 
-    public EntidadbancariaEntity getEntidadbancariaByEntidadBancaria() {
-        return entidadbancariaByEntidadBancaria;
+    public EntidadBancariaEntity getEntidadBancariaByEntidadBancariaId() {
+        return entidadBancariaByEntidadBancariaId;
     }
 
-    public void setEntidadbancariaByEntidadBancaria(EntidadbancariaEntity entidadbancariaByEntidadBancaria) {
-        this.entidadbancariaByEntidadBancaria = entidadbancariaByEntidadBancaria;
+    public void setEntidadBancariaByEntidadBancariaId(EntidadBancariaEntity entidadBancariaByEntidadBancariaId) {
+        this.entidadBancariaByEntidadBancariaId = entidadBancariaByEntidadBancariaId;
     }
 
-    public EstadocuentaEntity getEstadocuentaByEstadoCuenta() {
-        return estadocuentaByEstadoCuenta;
+    public EstadoCuentaEntity getEstadoCuentaByEstadoCuentaId() {
+        return estadoCuentaByEstadoCuentaId;
     }
 
-    public void setEstadocuentaByEstadoCuenta(EstadocuentaEntity estadocuentaByEstadoCuenta) {
-        this.estadocuentaByEstadoCuenta = estadocuentaByEstadoCuenta;
+    public void setEstadoCuentaByEstadoCuentaId(EstadoCuentaEntity estadoCuentaByEstadoCuentaId) {
+        this.estadoCuentaByEstadoCuentaId = estadoCuentaByEstadoCuentaId;
     }
 }

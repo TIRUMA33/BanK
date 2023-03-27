@@ -5,14 +5,14 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tipousuario", schema = "taw", catalog = "")
-public class TipousuarioEntity {
+@Table(name = "tipo_usuario", schema = "taw", catalog = "")
+public class TipoUsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "Tipo", nullable = true, length = 20)
+    @Column(name = "TIPO", nullable = true, length = 20)
     private String tipo;
 
     public Integer getId() {
@@ -35,7 +35,7 @@ public class TipousuarioEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TipousuarioEntity that = (TipousuarioEntity) o;
+        TipoUsuarioEntity that = (TipoUsuarioEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(tipo, that.tipo);
     }
 

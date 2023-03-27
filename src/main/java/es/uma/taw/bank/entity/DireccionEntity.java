@@ -12,35 +12,35 @@ public class DireccionEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "Calle", nullable = false, length = 45)
+    @Column(name = "CALLE", nullable = false, length = 45)
     private String calle;
     @Basic
-    @Column(name = "Numero", nullable = false)
+    @Column(name = "NUMERO", nullable = false)
     private Integer numero;
     @Basic
-    @Column(name = "PlantaPuertaOficina", nullable = true, length = 45)
+    @Column(name = "PLANTA_PUERTA_OFICINA", nullable = true, length = 45)
     private String plantaPuertaOficina;
     @Basic
-    @Column(name = "Ciudad", nullable = false, length = 45)
+    @Column(name = "CIUDAD", nullable = false, length = 45)
     private String ciudad;
     @Basic
-    @Column(name = "Region", nullable = false, length = 45)
+    @Column(name = "REGION", nullable = false, length = 45)
     private String region;
     @Basic
-    @Column(name = "CodigoPostal", nullable = false)
+    @Column(name = "CODIGO_POSTAL", nullable = false)
     private Integer codigoPostal;
     @Basic
-    @Column(name = "Pais", nullable = false, length = 45)
+    @Column(name = "PAIS", nullable = false, length = 45)
     private String pais;
     @Basic
-    @Column(name = "Valida", nullable = true)
+    @Column(name = "VALIDA", nullable = true)
     private Byte valida;
     @ManyToOne
-    @JoinColumn(name = "Cliente", referencedColumnName = "ID", nullable = false)
-    private ClienteEntity clienteByCliente;
+    @JoinColumn(name = "CLIENTE_ID", referencedColumnName = "ID", nullable = false)
+    private ClienteEntity clienteByClienteId;
     @ManyToOne
-    @JoinColumn(name = "TipoDireccion", referencedColumnName = "ID", nullable = false)
-    private TipodireccionEntity tipodireccionByTipoDireccion;
+    @JoinColumn(name = "TIPO_DIRECCION_ID", referencedColumnName = "ID", nullable = false)
+    private TipoDireccionEntity tipoDireccionByTipoDireccionId;
 
     public Integer getId() {
         return id;
@@ -127,19 +127,19 @@ public class DireccionEntity {
         return Objects.hash(id, calle, numero, plantaPuertaOficina, ciudad, region, codigoPostal, pais, valida);
     }
 
-    public ClienteEntity getClienteByCliente() {
-        return clienteByCliente;
+    public ClienteEntity getClienteByClienteId() {
+        return clienteByClienteId;
     }
 
-    public void setClienteByCliente(ClienteEntity clienteByCliente) {
-        this.clienteByCliente = clienteByCliente;
+    public void setClienteByClienteId(ClienteEntity clienteByClienteId) {
+        this.clienteByClienteId = clienteByClienteId;
     }
 
-    public TipodireccionEntity getTipodireccionByTipoDireccion() {
-        return tipodireccionByTipoDireccion;
+    public TipoDireccionEntity getTipoDireccionByTipoDireccionId() {
+        return tipoDireccionByTipoDireccionId;
     }
 
-    public void setTipodireccionByTipoDireccion(TipodireccionEntity tipodireccionByTipoDireccion) {
-        this.tipodireccionByTipoDireccion = tipodireccionByTipoDireccion;
+    public void setTipoDireccionByTipoDireccionId(TipoDireccionEntity tipoDireccionByTipoDireccionId) {
+        this.tipoDireccionByTipoDireccionId = tipoDireccionByTipoDireccionId;
     }
 }

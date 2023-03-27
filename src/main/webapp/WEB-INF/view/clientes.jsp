@@ -35,7 +35,7 @@
     <tr>
         <td><%= cliente.getId() %></td>
         <td><%= cliente.getFechaInicio() %></td>
-        <td><%= cliente.getEstadoclienteByEstadoCliente().getTipo() %></td>
+        <td><%= cliente.getEstadoClienteByEstadoClienteId().getTipo() %></td>
     </tr>
 
 

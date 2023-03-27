@@ -16,7 +16,7 @@ public class UsuarioEntity {
     @Column(name = "NIF", nullable = false, length = 9)
     private String nif;
     @Basic
-    @Column(name = "Contrasena", nullable = false, length = 45)
+    @Column(name = "CONTRASENA", nullable = false, length = 45)
     private String contrasena;
     @OneToMany(mappedBy = "usuarioByEmisor")
     private List<ConversacionEntity> conversacionsById;
@@ -28,8 +28,8 @@ public class UsuarioEntity {
     @JoinColumn(name = "ID", referencedColumnName = "ID", nullable = false)
     private ClienteEntity clienteById;
     @ManyToOne
-    @JoinColumn(name = "TipoUsuario", referencedColumnName = "ID", nullable = false)
-    private TipousuarioEntity tipousuarioByTipoUsuario;
+    @JoinColumn(name = "TIPO_USUARIO", referencedColumnName = "ID", nullable = false)
+    private TipoUsuarioEntity tipoUsuarioByTipoUsuario;
 
     public Integer getId() {
         return id;
@@ -100,11 +100,11 @@ public class UsuarioEntity {
         this.clienteById = clienteById;
     }
 
-    public TipousuarioEntity getTipousuarioByTipoUsuario() {
-        return tipousuarioByTipoUsuario;
+    public TipoUsuarioEntity getTipoUsuarioByTipoUsuario() {
+        return tipoUsuarioByTipoUsuario;
     }
 
-    public void setTipousuarioByTipoUsuario(TipousuarioEntity tipousuarioByTipoUsuario) {
-        this.tipousuarioByTipoUsuario = tipousuarioByTipoUsuario;
+    public void setTipoUsuarioByTipoUsuario(TipoUsuarioEntity tipoUsuarioByTipoUsuario) {
+        this.tipoUsuarioByTipoUsuario = tipoUsuarioByTipoUsuario;
     }
 }

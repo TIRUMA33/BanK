@@ -12,13 +12,13 @@ public class ConversacionEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "Terminada", nullable = false)
+    @Column(name = "TERMINADA", nullable = false)
     private Byte terminada;
     @ManyToOne
-    @JoinColumn(name = "Emisor", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "EMISOR", referencedColumnName = "ID", nullable = false)
     private UsuarioEntity usuarioByEmisor;
     @ManyToOne
-    @JoinColumn(name = "Receptor", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "RECEPTOR", referencedColumnName = "ID", nullable = false)
     private UsuarioEntity usuarioByReceptor;
 
     public Integer getId() {

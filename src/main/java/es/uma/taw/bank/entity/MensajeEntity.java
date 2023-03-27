@@ -13,16 +13,16 @@ public class MensajeEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "Contenido", nullable = false, length = 500)
+    @Column(name = "CONTENIDO", nullable = false, length = 500)
     private String contenido;
     @Basic
-    @Column(name = "Fecha", nullable = false)
+    @Column(name = "FECHA", nullable = false)
     private Timestamp fecha;
     @ManyToOne
-    @JoinColumn(name = "Conversacion", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "CONVERSACION", referencedColumnName = "ID", nullable = false)
     private ConversacionEntity conversacionByConversacion;
     @ManyToOne
-    @JoinColumn(name = "Emisor", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "EMISOR", referencedColumnName = "ID", nullable = false)
     private UsuarioEntity usuarioByEmisor;
 
     public Integer getId() {
