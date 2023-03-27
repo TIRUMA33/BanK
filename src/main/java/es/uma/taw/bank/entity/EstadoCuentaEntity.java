@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "estado_cliente", schema = "taw", catalog = "")
-public class EstadoClienteEntity {
+@Table(name = "ESTADO_CUENTA", schema = "taw", catalog = "")
+public class EstadoCuentaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
@@ -15,8 +15,8 @@ public class EstadoClienteEntity {
     @Basic
     @Column(name = "TIPO", nullable = false, length = 20)
     private String tipo;
-    @OneToMany(mappedBy = "estadoClienteByEstadoClienteId")
-    private List<ClienteEntity> clientesById;
+    @OneToMany(mappedBy = "estadoCuentaByEstadoCuentaId")
+    private List<CuentaBancoEntity> cuentaBancosById;
 
     public Integer getId() {
         return id;
@@ -38,7 +38,7 @@ public class EstadoClienteEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EstadoClienteEntity that = (EstadoClienteEntity) o;
+        EstadoCuentaEntity that = (EstadoCuentaEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(tipo, that.tipo);
     }
 
@@ -47,11 +47,11 @@ public class EstadoClienteEntity {
         return Objects.hash(id, tipo);
     }
 
-    public List<ClienteEntity> getClientesById() {
-        return clientesById;
+    public List<CuentaBancoEntity> getCuentaBancosById() {
+        return cuentaBancosById;
     }
 
-    public void setClientesById(List<ClienteEntity> clientesById) {
-        this.clientesById = clientesById;
+    public void setCuentaBancosById(List<CuentaBancoEntity> cuentaBancosById) {
+        this.cuentaBancosById = cuentaBancosById;
     }
 }
