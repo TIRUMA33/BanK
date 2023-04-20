@@ -2,6 +2,7 @@ package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -20,6 +21,8 @@ public class ConversacionEntity {
     @ManyToOne
     @JoinColumn(name = "RECEPTOR", referencedColumnName = "ID", nullable = false)
     private UsuarioEntity usuarioByReceptor;
+    @OneToMany(mappedBy = "conversacionByConversacion")
+    private List<MensajeEntity> mensajesById;
 
     public Integer getId() {
         return id;
@@ -64,5 +67,13 @@ public class ConversacionEntity {
 
     public void setUsuarioByReceptor(UsuarioEntity usuarioByReceptor) {
         this.usuarioByReceptor = usuarioByReceptor;
+    }
+
+    public List<MensajeEntity> getMensajesById() {
+        return mensajesById;
+    }
+
+    public void setMensajesById(List<MensajeEntity> mensajesById) {
+        this.mensajesById = mensajesById;
     }
 }

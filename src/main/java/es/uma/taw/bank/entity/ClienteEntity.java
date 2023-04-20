@@ -3,6 +3,7 @@ package es.uma.taw.bank.entity;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +19,16 @@ public class ClienteEntity {
     @ManyToOne
     @JoinColumn(name = "ESTADO_CLIENTE_ID", referencedColumnName = "ID", nullable = false)
     private EstadoClienteEntity estadoClienteByEstadoClienteId;
+    @OneToMany(mappedBy = "clienteByTitularId")
+    private List<CuentaBancoEntity> cuentaBancosById;
+    @OneToMany(mappedBy = "clienteByClienteId")
+    private List<DireccionEntity> direccionsById;
+    @OneToOne(mappedBy = "clienteById")
+    private EmpresaEntity empresaById;
+    @OneToOne(mappedBy = "clienteById")
+    private PersonaEntity personaById;
+    @OneToOne(mappedBy = "clienteById")
+    private UsuarioEntity usuarioById;
 
     public Integer getId() {
         return id;
@@ -54,5 +65,45 @@ public class ClienteEntity {
 
     public void setEstadoClienteByEstadoClienteId(EstadoClienteEntity estadoClienteByEstadoClienteId) {
         this.estadoClienteByEstadoClienteId = estadoClienteByEstadoClienteId;
+    }
+
+    public List<CuentaBancoEntity> getCuentaBancosById() {
+        return cuentaBancosById;
+    }
+
+    public void setCuentaBancosById(List<CuentaBancoEntity> cuentaBancosById) {
+        this.cuentaBancosById = cuentaBancosById;
+    }
+
+    public List<DireccionEntity> getDireccionsById() {
+        return direccionsById;
+    }
+
+    public void setDireccionsById(List<DireccionEntity> direccionsById) {
+        this.direccionsById = direccionsById;
+    }
+
+    public EmpresaEntity getEmpresaById() {
+        return empresaById;
+    }
+
+    public void setEmpresaById(EmpresaEntity empresaById) {
+        this.empresaById = empresaById;
+    }
+
+    public PersonaEntity getPersonaById() {
+        return personaById;
+    }
+
+    public void setPersonaById(PersonaEntity personaById) {
+        this.personaById = personaById;
+    }
+
+    public UsuarioEntity getUsuarioById() {
+        return usuarioById;
+    }
+
+    public void setUsuarioById(UsuarioEntity usuarioById) {
+        this.usuarioById = usuarioById;
     }
 }

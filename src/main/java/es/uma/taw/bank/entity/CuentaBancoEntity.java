@@ -3,6 +3,7 @@ package es.uma.taw.bank.entity;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -42,6 +43,10 @@ public class CuentaBancoEntity {
     @ManyToOne
     @JoinColumn(name = "ESTADO_CUENTA_ID", referencedColumnName = "ID", nullable = false)
     private EstadoCuentaEntity estadoCuentaByEstadoCuentaId;
+    @OneToMany(mappedBy = "cuentaBancoByCuentaOrigen")
+    private List<TransaccionEntity> transaccionsById;
+    @OneToMany(mappedBy = "cuentaBancoByCuentaDestino")
+    private List<TransaccionEntity> transaccionsById_0;
 
     public Integer getId() {
         return id;
@@ -142,5 +147,21 @@ public class CuentaBancoEntity {
 
     public void setEstadoCuentaByEstadoCuentaId(EstadoCuentaEntity estadoCuentaByEstadoCuentaId) {
         this.estadoCuentaByEstadoCuentaId = estadoCuentaByEstadoCuentaId;
+    }
+
+    public List<TransaccionEntity> getTransaccionsById() {
+        return transaccionsById;
+    }
+
+    public void setTransaccionsById(List<TransaccionEntity> transaccionsById) {
+        this.transaccionsById = transaccionsById;
+    }
+
+    public List<TransaccionEntity> getTransaccionsById_0() {
+        return transaccionsById_0;
+    }
+
+    public void setTransaccionsById_0(List<TransaccionEntity> transaccionsById_0) {
+        this.transaccionsById_0 = transaccionsById_0;
     }
 }

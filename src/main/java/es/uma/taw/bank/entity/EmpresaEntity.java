@@ -3,12 +3,12 @@ package es.uma.taw.bank.entity;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "EMPRESA", schema = "taw", catalog = "")
 public class EmpresaEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
     private Integer id;
@@ -24,6 +24,11 @@ public class EmpresaEntity {
     @OneToOne
     @JoinColumn(name = "ID", referencedColumnName = "ID", nullable = false)
     private ClienteEntity clienteById;
+    @ManyToOne
+    @JoinColumn(name = "PERSONA_RELACIONADA", referencedColumnName = "ID", nullable = false)
+    private PersonaEntity personaByPersonaRelacionada;
+    @OneToMany(mappedBy = "empresaByIdEmpresa")
+    private List<EmpresaPersonaEntity> empresaPersonasById;
 
     public Integer getId() {
         return id;
@@ -76,5 +81,21 @@ public class EmpresaEntity {
 
     public void setClienteById(ClienteEntity clienteById) {
         this.clienteById = clienteById;
+    }
+
+    public PersonaEntity getPersonaByPersonaRelacionada() {
+        return personaByPersonaRelacionada;
+    }
+
+    public void setPersonaByPersonaRelacionada(PersonaEntity personaByPersonaRelacionada) {
+        this.personaByPersonaRelacionada = personaByPersonaRelacionada;
+    }
+
+    public List<EmpresaPersonaEntity> getEmpresaPersonasById() {
+        return empresaPersonasById;
+    }
+
+    public void setEmpresaPersonasById(List<EmpresaPersonaEntity> empresaPersonasById) {
+        this.empresaPersonasById = empresaPersonasById;
     }
 }
