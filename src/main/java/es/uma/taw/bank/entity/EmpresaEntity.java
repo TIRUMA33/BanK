@@ -2,9 +2,7 @@ package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "EMPRESA", schema = "taw", catalog = "")
@@ -16,17 +14,11 @@ public class EmpresaEntity {
     @Column(name = "NOMBRE", nullable = false, length = 45)
     private String nombre;
     @Basic
-    @Column(name = "FECHA_CREACION", nullable = false)
-    private Timestamp fechaCreacion;
-    @Basic
     @Column(name = "CIF", nullable = false, length = 9)
     private String cif;
     @OneToOne
     @JoinColumn(name = "ID", referencedColumnName = "ID", nullable = false)
     private ClienteEntity clienteById;
-    @ManyToOne
-    @JoinColumn(name = "PERSONA_RELACIONADA", referencedColumnName = "ID", nullable = false)
-    private PersonaEntity personaByPersonaRelacionada;
     @OneToMany(mappedBy = "empresaByIdEmpresa")
     private List<EmpresaPersonaEntity> empresaPersonasById;
 
@@ -46,14 +38,6 @@ public class EmpresaEntity {
         this.nombre = nombre;
     }
 
-    public Timestamp getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(Timestamp fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
     public String getCif() {
         return cif;
     }
@@ -66,13 +50,22 @@ public class EmpresaEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         EmpresaEntity that = (EmpresaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(nombre, that.nombre) && Objects.equals(fechaCreacion, that.fechaCreacion) && Objects.equals(cif, that.cif);
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
+        if (cif != null ? !cif.equals(that.cif) : that.cif != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, fechaCreacion, cif);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
+        result = 31 * result + (cif != null ? cif.hashCode() : 0);
+        return result;
     }
 
     public ClienteEntity getClienteById() {
@@ -81,14 +74,6 @@ public class EmpresaEntity {
 
     public void setClienteById(ClienteEntity clienteById) {
         this.clienteById = clienteById;
-    }
-
-    public PersonaEntity getPersonaByPersonaRelacionada() {
-        return personaByPersonaRelacionada;
-    }
-
-    public void setPersonaByPersonaRelacionada(PersonaEntity personaByPersonaRelacionada) {
-        this.personaByPersonaRelacionada = personaByPersonaRelacionada;
     }
 
     public List<EmpresaPersonaEntity> getEmpresaPersonasById() {

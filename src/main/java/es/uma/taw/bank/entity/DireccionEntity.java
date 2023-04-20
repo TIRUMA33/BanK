@@ -2,8 +2,6 @@ package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity
 @Table(name = "DIRECCION", schema = "taw", catalog = "")
 public class DireccionEntity {
@@ -115,13 +113,36 @@ public class DireccionEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DireccionEntity that = (DireccionEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(calle, that.calle) && Objects.equals(numero, that.numero) && Objects.equals(plantaPuertaOficina, that.plantaPuertaOficina) && Objects.equals(ciudad, that.ciudad) && Objects.equals(region, that.region) && Objects.equals(codigoPostal, that.codigoPostal) && Objects.equals(pais, that.pais) && Objects.equals(valida, that.valida);
+
+        DireccionEntity direccion = (DireccionEntity) o;
+
+        if (id != null ? !id.equals(direccion.id) : direccion.id != null) return false;
+        if (calle != null ? !calle.equals(direccion.calle) : direccion.calle != null) return false;
+        if (numero != null ? !numero.equals(direccion.numero) : direccion.numero != null) return false;
+        if (plantaPuertaOficina != null ? !plantaPuertaOficina.equals(direccion.plantaPuertaOficina) : direccion.plantaPuertaOficina != null)
+            return false;
+        if (ciudad != null ? !ciudad.equals(direccion.ciudad) : direccion.ciudad != null) return false;
+        if (region != null ? !region.equals(direccion.region) : direccion.region != null) return false;
+        if (codigoPostal != null ? !codigoPostal.equals(direccion.codigoPostal) : direccion.codigoPostal != null)
+            return false;
+        if (pais != null ? !pais.equals(direccion.pais) : direccion.pais != null) return false;
+        if (valida != null ? !valida.equals(direccion.valida) : direccion.valida != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, calle, numero, plantaPuertaOficina, ciudad, region, codigoPostal, pais, valida);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (calle != null ? calle.hashCode() : 0);
+        result = 31 * result + (numero != null ? numero.hashCode() : 0);
+        result = 31 * result + (plantaPuertaOficina != null ? plantaPuertaOficina.hashCode() : 0);
+        result = 31 * result + (ciudad != null ? ciudad.hashCode() : 0);
+        result = 31 * result + (region != null ? region.hashCode() : 0);
+        result = 31 * result + (codigoPostal != null ? codigoPostal.hashCode() : 0);
+        result = 31 * result + (pais != null ? pais.hashCode() : 0);
+        result = 31 * result + (valida != null ? valida.hashCode() : 0);
+        return result;
     }
 
     public ClienteEntity getClienteByClienteId() {

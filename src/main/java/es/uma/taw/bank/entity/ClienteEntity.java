@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "CLIENTE", schema = "taw", catalog = "")
@@ -50,13 +49,20 @@ public class ClienteEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         ClienteEntity that = (ClienteEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(fechaInicio, that.fechaInicio);
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (fechaInicio != null ? !fechaInicio.equals(that.fechaInicio) : that.fechaInicio != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fechaInicio);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (fechaInicio != null ? fechaInicio.hashCode() : 0);
+        return result;
     }
 
     public EstadoClienteEntity getEstadoClienteByEstadoClienteId() {

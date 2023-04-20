@@ -3,7 +3,6 @@ package es.uma.taw.bank.entity;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.Objects;
 
 @Entity
 @Table(name = "TRANSACCION", schema = "taw", catalog = "")
@@ -64,13 +63,26 @@ public class TransaccionEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         TransaccionEntity that = (TransaccionEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(fechaInstruccion, that.fechaInstruccion) && Objects.equals(fechaEjecucion, that.fechaEjecucion) && Objects.equals(cantidad, that.cantidad);
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (fechaInstruccion != null ? !fechaInstruccion.equals(that.fechaInstruccion) : that.fechaInstruccion != null)
+            return false;
+        if (fechaEjecucion != null ? !fechaEjecucion.equals(that.fechaEjecucion) : that.fechaEjecucion != null)
+            return false;
+        if (cantidad != null ? !cantidad.equals(that.cantidad) : that.cantidad != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fechaInstruccion, fechaEjecucion, cantidad);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (fechaInstruccion != null ? fechaInstruccion.hashCode() : 0);
+        result = 31 * result + (fechaEjecucion != null ? fechaEjecucion.hashCode() : 0);
+        result = 31 * result + (cantidad != null ? cantidad.hashCode() : 0);
+        return result;
     }
 
     public CuentaBancoEntity getCuentaBancoByCuentaOrigen() {

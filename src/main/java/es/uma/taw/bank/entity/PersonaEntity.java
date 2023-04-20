@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "PERSONA", schema = "taw", catalog = "")
@@ -27,13 +26,11 @@ public class PersonaEntity {
     @Basic
     @Column(name = "DNI", nullable = false, length = 9)
     private String dni;
+    @OneToMany(mappedBy = "personaByIdPersona")
+    private List<EmpresaPersonaEntity> empresaPersonasById;
     @OneToOne
     @JoinColumn(name = "ID", referencedColumnName = "ID", nullable = false)
     private ClienteEntity clienteById;
-    @OneToMany(mappedBy = "personaByPersonaRelacionada")
-    private List<EmpresaEntity> empresasById;
-    @OneToMany(mappedBy = "personaByIdPersona")
-    private List<EmpresaPersonaEntity> empresaPersonasById;
 
     public Integer getId() {
         return id;
@@ -87,29 +84,29 @@ public class PersonaEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PersonaEntity that = (PersonaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(nombre, that.nombre) && Objects.equals(apellido1, that.apellido1) && Objects.equals(apellido2, that.apellido2) && Objects.equals(fechaNacimiento, that.fechaNacimiento) && Objects.equals(dni, that.dni);
+
+        PersonaEntity persona = (PersonaEntity) o;
+
+        if (id != null ? !id.equals(persona.id) : persona.id != null) return false;
+        if (nombre != null ? !nombre.equals(persona.nombre) : persona.nombre != null) return false;
+        if (apellido1 != null ? !apellido1.equals(persona.apellido1) : persona.apellido1 != null) return false;
+        if (apellido2 != null ? !apellido2.equals(persona.apellido2) : persona.apellido2 != null) return false;
+        if (fechaNacimiento != null ? !fechaNacimiento.equals(persona.fechaNacimiento) : persona.fechaNacimiento != null)
+            return false;
+        if (dni != null ? !dni.equals(persona.dni) : persona.dni != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, apellido1, apellido2, fechaNacimiento, dni);
-    }
-
-    public ClienteEntity getClienteById() {
-        return clienteById;
-    }
-
-    public void setClienteById(ClienteEntity clienteById) {
-        this.clienteById = clienteById;
-    }
-
-    public List<EmpresaEntity> getEmpresasById() {
-        return empresasById;
-    }
-
-    public void setEmpresasById(List<EmpresaEntity> empresasById) {
-        this.empresasById = empresasById;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
+        result = 31 * result + (apellido1 != null ? apellido1.hashCode() : 0);
+        result = 31 * result + (apellido2 != null ? apellido2.hashCode() : 0);
+        result = 31 * result + (fechaNacimiento != null ? fechaNacimiento.hashCode() : 0);
+        result = 31 * result + (dni != null ? dni.hashCode() : 0);
+        return result;
     }
 
     public List<EmpresaPersonaEntity> getEmpresaPersonasById() {
@@ -118,5 +115,13 @@ public class PersonaEntity {
 
     public void setEmpresaPersonasById(List<EmpresaPersonaEntity> empresaPersonasById) {
         this.empresaPersonasById = empresaPersonasById;
+    }
+
+    public ClienteEntity getClienteById() {
+        return clienteById;
+    }
+
+    public void setClienteById(ClienteEntity clienteById) {
+        this.clienteById = clienteById;
     }
 }

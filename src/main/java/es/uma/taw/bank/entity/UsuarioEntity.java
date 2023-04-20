@@ -3,12 +3,10 @@ package es.uma.taw.bank.entity;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "USUARIO", schema = "taw", catalog = "")
 public class UsuarioEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
     private Integer id;
@@ -59,13 +57,22 @@ public class UsuarioEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         UsuarioEntity that = (UsuarioEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(nif, that.nif) && Objects.equals(contrasena, that.contrasena);
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (nif != null ? !nif.equals(that.nif) : that.nif != null) return false;
+        if (contrasena != null ? !contrasena.equals(that.contrasena) : that.contrasena != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nif, contrasena);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (nif != null ? nif.hashCode() : 0);
+        result = 31 * result + (contrasena != null ? contrasena.hashCode() : 0);
+        return result;
     }
 
     public List<ConversacionEntity> getConversacionsById() {

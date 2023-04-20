@@ -2,8 +2,6 @@ package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity
 @Table(name = "DIVISA", schema = "taw", catalog = "")
 public class DivisaEntity {
@@ -46,12 +44,21 @@ public class DivisaEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         DivisaEntity that = (DivisaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(nombre, that.nombre) && Objects.equals(equivalencia, that.equivalencia);
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
+        if (equivalencia != null ? !equivalencia.equals(that.equivalencia) : that.equivalencia != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, equivalencia);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
+        result = 31 * result + (equivalencia != null ? equivalencia.hashCode() : 0);
+        return result;
     }
 }

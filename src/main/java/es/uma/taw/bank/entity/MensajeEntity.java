@@ -3,7 +3,6 @@ package es.uma.taw.bank.entity;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.Objects;
 
 @Entity
 @Table(name = "MENSAJE", schema = "taw", catalog = "")
@@ -53,13 +52,22 @@ public class MensajeEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         MensajeEntity that = (MensajeEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(contenido, that.contenido) && Objects.equals(fecha, that.fecha);
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (contenido != null ? !contenido.equals(that.contenido) : that.contenido != null) return false;
+        if (fecha != null ? !fecha.equals(that.fecha) : that.fecha != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, contenido, fecha);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (contenido != null ? contenido.hashCode() : 0);
+        result = 31 * result + (fecha != null ? fecha.hashCode() : 0);
+        return result;
     }
 
     public ConversacionEntity getConversacionByConversacion() {

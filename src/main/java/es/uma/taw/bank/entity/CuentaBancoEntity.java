@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "CUENTA_BANCO", schema = "taw", catalog = "")
@@ -116,13 +115,33 @@ public class CuentaBancoEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         CuentaBancoEntity that = (CuentaBancoEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(moneda, that.moneda) && Objects.equals(ibanCuenta, that.ibanCuenta) && Objects.equals(saldo, that.saldo) && Objects.equals(swift, that.swift) && Objects.equals(pais, that.pais) && Objects.equals(fechaApertura, that.fechaApertura) && Objects.equals(fechaCierre, that.fechaCierre);
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (moneda != null ? !moneda.equals(that.moneda) : that.moneda != null) return false;
+        if (ibanCuenta != null ? !ibanCuenta.equals(that.ibanCuenta) : that.ibanCuenta != null) return false;
+        if (saldo != null ? !saldo.equals(that.saldo) : that.saldo != null) return false;
+        if (swift != null ? !swift.equals(that.swift) : that.swift != null) return false;
+        if (pais != null ? !pais.equals(that.pais) : that.pais != null) return false;
+        if (fechaApertura != null ? !fechaApertura.equals(that.fechaApertura) : that.fechaApertura != null)
+            return false;
+        if (fechaCierre != null ? !fechaCierre.equals(that.fechaCierre) : that.fechaCierre != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, moneda, ibanCuenta, saldo, swift, pais, fechaApertura, fechaCierre);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (moneda != null ? moneda.hashCode() : 0);
+        result = 31 * result + (ibanCuenta != null ? ibanCuenta.hashCode() : 0);
+        result = 31 * result + (saldo != null ? saldo.hashCode() : 0);
+        result = 31 * result + (swift != null ? swift.hashCode() : 0);
+        result = 31 * result + (pais != null ? pais.hashCode() : 0);
+        result = 31 * result + (fechaApertura != null ? fechaApertura.hashCode() : 0);
+        result = 31 * result + (fechaCierre != null ? fechaCierre.hashCode() : 0);
+        return result;
     }
 
     public ClienteEntity getClienteByTitularId() {

@@ -3,7 +3,6 @@ package es.uma.taw.bank.entity;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "ENTIDAD_BANCARIA", schema = "taw", catalog = "")
@@ -38,13 +37,20 @@ public class EntidadBancariaEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         EntidadBancariaEntity that = (EntidadBancariaEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(nombre, that.nombre);
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
+        return result;
     }
 
     public List<CuentaBancoEntity> getCuentaBancosById() {
