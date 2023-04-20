@@ -38,9 +38,6 @@ public class DireccionEntity {
     @ManyToOne
     @JoinColumn(name = "CLIENTE_ID", referencedColumnName = "ID", nullable = false)
     private ClienteEntity clienteByClienteId;
-    @ManyToOne
-    @JoinColumn(name = "TIPO_DIRECCION_ID", referencedColumnName = "ID", nullable = false)
-    private TipoDireccionEntity tipoDireccionByTipoDireccionId;
 
     public Integer getId() {
         return id;
@@ -133,13 +130,5 @@ public class DireccionEntity {
 
     public void setClienteByClienteId(ClienteEntity clienteByClienteId) {
         this.clienteByClienteId = clienteByClienteId;
-    }
-
-    public TipoDireccionEntity getTipoDireccionByTipoDireccionId() {
-        return tipoDireccionByTipoDireccionId;
-    }
-
-    public void setTipoDireccionByTipoDireccionId(TipoDireccionEntity tipoDireccionByTipoDireccionId) {
-        this.tipoDireccionByTipoDireccionId = tipoDireccionByTipoDireccionId;
     }
 }
