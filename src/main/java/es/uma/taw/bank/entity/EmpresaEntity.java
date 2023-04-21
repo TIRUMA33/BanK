@@ -16,9 +16,6 @@ public class EmpresaEntity {
     @Basic
     @Column(name = "CIF", nullable = false, length = 9)
     private String cif;
-    @OneToOne
-    @JoinColumn(name = "ID", referencedColumnName = "ID", nullable = false)
-    private ClienteEntity clienteById;
     @OneToMany(mappedBy = "empresaByIdEmpresa")
     private List<EmpresaPersonaEntity> empresaPersonasById;
 
@@ -66,14 +63,6 @@ public class EmpresaEntity {
         result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
         result = 31 * result + (cif != null ? cif.hashCode() : 0);
         return result;
-    }
-
-    public ClienteEntity getClienteById() {
-        return clienteById;
-    }
-
-    public void setClienteById(ClienteEntity clienteById) {
-        this.clienteById = clienteById;
     }
 
     public List<EmpresaPersonaEntity> getEmpresaPersonasById() {

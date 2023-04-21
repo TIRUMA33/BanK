@@ -28,9 +28,6 @@ public class PersonaEntity {
     private String dni;
     @OneToMany(mappedBy = "personaByIdPersona")
     private List<EmpresaPersonaEntity> empresaPersonasById;
-    @OneToOne
-    @JoinColumn(name = "ID", referencedColumnName = "ID", nullable = false)
-    private ClienteEntity clienteById;
 
     public Integer getId() {
         return id;
@@ -115,13 +112,5 @@ public class PersonaEntity {
 
     public void setEmpresaPersonasById(List<EmpresaPersonaEntity> empresaPersonasById) {
         this.empresaPersonasById = empresaPersonasById;
-    }
-
-    public ClienteEntity getClienteById() {
-        return clienteById;
-    }
-
-    public void setClienteById(ClienteEntity clienteById) {
-        this.clienteById = clienteById;
     }
 }

@@ -22,9 +22,6 @@ public class UsuarioEntity {
     private List<ConversacionEntity> conversacionsById_0;
     @OneToMany(mappedBy = "usuarioByEmisor")
     private List<MensajeEntity> mensajesById;
-    @OneToOne
-    @JoinColumn(name = "ID", referencedColumnName = "ID", nullable = false)
-    private ClienteEntity clienteById;
     @ManyToOne
     @JoinColumn(name = "TIPO_USUARIO", referencedColumnName = "ID", nullable = false)
     private TipoUsuarioEntity tipoUsuarioByTipoUsuario;
@@ -97,14 +94,6 @@ public class UsuarioEntity {
 
     public void setMensajesById(List<MensajeEntity> mensajesById) {
         this.mensajesById = mensajesById;
-    }
-
-    public ClienteEntity getClienteById() {
-        return clienteById;
-    }
-
-    public void setClienteById(ClienteEntity clienteById) {
-        this.clienteById = clienteById;
     }
 
     public TipoUsuarioEntity getTipoUsuarioByTipoUsuario() {
