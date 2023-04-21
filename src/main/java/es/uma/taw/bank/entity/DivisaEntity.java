@@ -1,7 +1,11 @@
 package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "DIVISA", schema = "taw", catalog = "")
 public class DivisaEntity {
@@ -15,30 +19,6 @@ public class DivisaEntity {
     @Basic
     @Column(name = "EQUIVALENCIA", nullable = false, precision = 0)
     private Double equivalencia;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Double getEquivalencia() {
-        return equivalencia;
-    }
-
-    public void setEquivalencia(Double equivalencia) {
-        this.equivalencia = equivalencia;
-    }
 
     @Override
     public boolean equals(Object o) {

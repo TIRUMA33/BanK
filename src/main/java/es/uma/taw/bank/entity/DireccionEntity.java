@@ -1,7 +1,11 @@
 package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "DIRECCION", schema = "taw", catalog = "")
 public class DireccionEntity {
@@ -37,78 +41,6 @@ public class DireccionEntity {
     @JoinColumn(name = "CLIENTE_ID", referencedColumnName = "ID", nullable = false)
     private ClienteEntity clienteByClienteId;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCalle() {
-        return calle;
-    }
-
-    public void setCalle(String calle) {
-        this.calle = calle;
-    }
-
-    public Integer getNumero() {
-        return numero;
-    }
-
-    public void setNumero(Integer numero) {
-        this.numero = numero;
-    }
-
-    public String getPlantaPuertaOficina() {
-        return plantaPuertaOficina;
-    }
-
-    public void setPlantaPuertaOficina(String plantaPuertaOficina) {
-        this.plantaPuertaOficina = plantaPuertaOficina;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public Integer getCodigoPostal() {
-        return codigoPostal;
-    }
-
-    public void setCodigoPostal(Integer codigoPostal) {
-        this.codigoPostal = codigoPostal;
-    }
-
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
-    }
-
-    public Byte getValida() {
-        return valida;
-    }
-
-    public void setValida(Byte valida) {
-        this.valida = valida;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -143,13 +75,5 @@ public class DireccionEntity {
         result = 31 * result + (pais != null ? pais.hashCode() : 0);
         result = 31 * result + (valida != null ? valida.hashCode() : 0);
         return result;
-    }
-
-    public ClienteEntity getClienteByClienteId() {
-        return clienteByClienteId;
-    }
-
-    public void setClienteByClienteId(ClienteEntity clienteByClienteId) {
-        this.clienteByClienteId = clienteByClienteId;
     }
 }

@@ -1,9 +1,13 @@
 package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "EMPRESA", schema = "taw", catalog = "")
 public class EmpresaEntity {
@@ -18,30 +22,6 @@ public class EmpresaEntity {
     private String cif;
     @OneToMany(mappedBy = "empresaByIdEmpresa")
     private List<EmpresaPersonaEntity> empresaPersonasById;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getCif() {
-        return cif;
-    }
-
-    public void setCif(String cif) {
-        this.cif = cif;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -63,13 +43,5 @@ public class EmpresaEntity {
         result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
         result = 31 * result + (cif != null ? cif.hashCode() : 0);
         return result;
-    }
-
-    public List<EmpresaPersonaEntity> getEmpresaPersonasById() {
-        return empresaPersonasById;
-    }
-
-    public void setEmpresaPersonasById(List<EmpresaPersonaEntity> empresaPersonasById) {
-        this.empresaPersonasById = empresaPersonasById;
     }
 }

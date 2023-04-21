@@ -1,9 +1,13 @@
 package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "CONVERSACION", schema = "taw", catalog = "")
 public class ConversacionEntity {
@@ -23,22 +27,6 @@ public class ConversacionEntity {
     @OneToMany(mappedBy = "conversacionByConversacion")
     private List<MensajeEntity> mensajesById;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Byte getTerminada() {
-        return terminada;
-    }
-
-    public void setTerminada(Byte terminada) {
-        this.terminada = terminada;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,29 +45,5 @@ public class ConversacionEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (terminada != null ? terminada.hashCode() : 0);
         return result;
-    }
-
-    public UsuarioEntity getUsuarioByEmisor() {
-        return usuarioByEmisor;
-    }
-
-    public void setUsuarioByEmisor(UsuarioEntity usuarioByEmisor) {
-        this.usuarioByEmisor = usuarioByEmisor;
-    }
-
-    public UsuarioEntity getUsuarioByReceptor() {
-        return usuarioByReceptor;
-    }
-
-    public void setUsuarioByReceptor(UsuarioEntity usuarioByReceptor) {
-        this.usuarioByReceptor = usuarioByReceptor;
-    }
-
-    public List<MensajeEntity> getMensajesById() {
-        return mensajesById;
-    }
-
-    public void setMensajesById(List<MensajeEntity> mensajesById) {
-        this.mensajesById = mensajesById;
     }
 }

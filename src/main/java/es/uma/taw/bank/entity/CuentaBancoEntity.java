@@ -1,10 +1,14 @@
 package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "CUENTA_BANCO", schema = "taw", catalog = "")
 public class CuentaBancoEntity {
@@ -47,70 +51,6 @@ public class CuentaBancoEntity {
     @OneToMany(mappedBy = "cuentaBancoByCuentaDestino")
     private List<TransaccionEntity> transaccionsById_0;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getMoneda() {
-        return moneda;
-    }
-
-    public void setMoneda(String moneda) {
-        this.moneda = moneda;
-    }
-
-    public String getIbanCuenta() {
-        return ibanCuenta;
-    }
-
-    public void setIbanCuenta(String ibanCuenta) {
-        this.ibanCuenta = ibanCuenta;
-    }
-
-    public Double getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(Double saldo) {
-        this.saldo = saldo;
-    }
-
-    public String getSwift() {
-        return swift;
-    }
-
-    public void setSwift(String swift) {
-        this.swift = swift;
-    }
-
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
-    }
-
-    public Timestamp getFechaApertura() {
-        return fechaApertura;
-    }
-
-    public void setFechaApertura(Timestamp fechaApertura) {
-        this.fechaApertura = fechaApertura;
-    }
-
-    public Timestamp getFechaCierre() {
-        return fechaCierre;
-    }
-
-    public void setFechaCierre(Timestamp fechaCierre) {
-        this.fechaCierre = fechaCierre;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -142,45 +82,5 @@ public class CuentaBancoEntity {
         result = 31 * result + (fechaApertura != null ? fechaApertura.hashCode() : 0);
         result = 31 * result + (fechaCierre != null ? fechaCierre.hashCode() : 0);
         return result;
-    }
-
-    public ClienteEntity getClienteByTitularId() {
-        return clienteByTitularId;
-    }
-
-    public void setClienteByTitularId(ClienteEntity clienteByTitularId) {
-        this.clienteByTitularId = clienteByTitularId;
-    }
-
-    public EntidadBancariaEntity getEntidadBancariaByEntidadBancariaId() {
-        return entidadBancariaByEntidadBancariaId;
-    }
-
-    public void setEntidadBancariaByEntidadBancariaId(EntidadBancariaEntity entidadBancariaByEntidadBancariaId) {
-        this.entidadBancariaByEntidadBancariaId = entidadBancariaByEntidadBancariaId;
-    }
-
-    public EstadoCuentaEntity getEstadoCuentaByEstadoCuentaId() {
-        return estadoCuentaByEstadoCuentaId;
-    }
-
-    public void setEstadoCuentaByEstadoCuentaId(EstadoCuentaEntity estadoCuentaByEstadoCuentaId) {
-        this.estadoCuentaByEstadoCuentaId = estadoCuentaByEstadoCuentaId;
-    }
-
-    public List<TransaccionEntity> getTransaccionsById() {
-        return transaccionsById;
-    }
-
-    public void setTransaccionsById(List<TransaccionEntity> transaccionsById) {
-        this.transaccionsById = transaccionsById;
-    }
-
-    public List<TransaccionEntity> getTransaccionsById_0() {
-        return transaccionsById_0;
-    }
-
-    public void setTransaccionsById_0(List<TransaccionEntity> transaccionsById_0) {
-        this.transaccionsById_0 = transaccionsById_0;
     }
 }

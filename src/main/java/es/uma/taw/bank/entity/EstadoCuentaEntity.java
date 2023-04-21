@@ -1,9 +1,13 @@
 package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "ESTADO_CUENTA", schema = "taw", catalog = "")
 public class EstadoCuentaEntity {
@@ -16,22 +20,6 @@ public class EstadoCuentaEntity {
     private String tipo;
     @OneToMany(mappedBy = "estadoCuentaByEstadoCuentaId")
     private List<CuentaBancoEntity> cuentaBancosById;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -51,13 +39,5 @@ public class EstadoCuentaEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (tipo != null ? tipo.hashCode() : 0);
         return result;
-    }
-
-    public List<CuentaBancoEntity> getCuentaBancosById() {
-        return cuentaBancosById;
-    }
-
-    public void setCuentaBancosById(List<CuentaBancoEntity> cuentaBancosById) {
-        this.cuentaBancosById = cuentaBancosById;
     }
 }

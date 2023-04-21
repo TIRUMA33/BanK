@@ -1,9 +1,13 @@
 package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "MENSAJE", schema = "taw", catalog = "")
 public class MensajeEntity {
@@ -23,30 +27,6 @@ public class MensajeEntity {
     @ManyToOne
     @JoinColumn(name = "EMISOR", referencedColumnName = "ID", nullable = false)
     private UsuarioEntity usuarioByEmisor;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getContenido() {
-        return contenido;
-    }
-
-    public void setContenido(String contenido) {
-        this.contenido = contenido;
-    }
-
-    public Timestamp getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Timestamp fecha) {
-        this.fecha = fecha;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -68,21 +48,5 @@ public class MensajeEntity {
         result = 31 * result + (contenido != null ? contenido.hashCode() : 0);
         result = 31 * result + (fecha != null ? fecha.hashCode() : 0);
         return result;
-    }
-
-    public ConversacionEntity getConversacionByConversacion() {
-        return conversacionByConversacion;
-    }
-
-    public void setConversacionByConversacion(ConversacionEntity conversacionByConversacion) {
-        this.conversacionByConversacion = conversacionByConversacion;
-    }
-
-    public UsuarioEntity getUsuarioByEmisor() {
-        return usuarioByEmisor;
-    }
-
-    public void setUsuarioByEmisor(UsuarioEntity usuarioByEmisor) {
-        this.usuarioByEmisor = usuarioByEmisor;
     }
 }

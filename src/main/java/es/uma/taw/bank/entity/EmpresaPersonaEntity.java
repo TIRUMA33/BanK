@@ -19,14 +19,6 @@ public class EmpresaPersonaEntity {
     @JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID", nullable = false)
     private PersonaEntity personaByIdPersona;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -42,29 +34,5 @@ public class EmpresaPersonaEntity {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
-    }
-
-    public TipoPersonaRelacionadaEntity getTipoPersonaRelacionadaByIdTipo() {
-        return tipoPersonaRelacionadaByIdTipo;
-    }
-
-    public void setTipoPersonaRelacionadaByIdTipo(TipoPersonaRelacionadaEntity tipoPersonaRelacionadaByIdTipo) {
-        this.tipoPersonaRelacionadaByIdTipo = tipoPersonaRelacionadaByIdTipo;
-    }
-
-    public EmpresaEntity getEmpresaByIdEmpresa() {
-        return empresaByIdEmpresa;
-    }
-
-    public void setEmpresaByIdEmpresa(EmpresaEntity empresaByIdEmpresa) {
-        this.empresaByIdEmpresa = empresaByIdEmpresa;
-    }
-
-    public PersonaEntity getPersonaByIdPersona() {
-        return personaByIdPersona;
-    }
-
-    public void setPersonaByIdPersona(PersonaEntity personaByIdPersona) {
-        this.personaByIdPersona = personaByIdPersona;
     }
 }

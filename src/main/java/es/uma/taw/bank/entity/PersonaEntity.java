@@ -1,10 +1,14 @@
 package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "PERSONA", schema = "taw", catalog = "")
 public class PersonaEntity {
@@ -28,54 +32,6 @@ public class PersonaEntity {
     private String dni;
     @OneToMany(mappedBy = "personaByIdPersona")
     private List<EmpresaPersonaEntity> empresaPersonasById;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido1() {
-        return apellido1;
-    }
-
-    public void setApellido1(String apellido1) {
-        this.apellido1 = apellido1;
-    }
-
-    public String getApellido2() {
-        return apellido2;
-    }
-
-    public void setApellido2(String apellido2) {
-        this.apellido2 = apellido2;
-    }
-
-    public Timestamp getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Timestamp fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public String getDni() {
-        return dni;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -104,13 +60,5 @@ public class PersonaEntity {
         result = 31 * result + (fechaNacimiento != null ? fechaNacimiento.hashCode() : 0);
         result = 31 * result + (dni != null ? dni.hashCode() : 0);
         return result;
-    }
-
-    public List<EmpresaPersonaEntity> getEmpresaPersonasById() {
-        return empresaPersonasById;
-    }
-
-    public void setEmpresaPersonasById(List<EmpresaPersonaEntity> empresaPersonasById) {
-        this.empresaPersonasById = empresaPersonasById;
     }
 }

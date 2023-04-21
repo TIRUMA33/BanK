@@ -1,10 +1,14 @@
 package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "CLIENTE", schema = "taw", catalog = "")
 public class ClienteEntity {
@@ -22,22 +26,6 @@ public class ClienteEntity {
     private List<CuentaBancoEntity> cuentaBancosById;
     @OneToMany(mappedBy = "clienteByClienteId")
     private List<DireccionEntity> direccionsById;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Timestamp getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(Timestamp fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -57,29 +45,5 @@ public class ClienteEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (fechaInicio != null ? fechaInicio.hashCode() : 0);
         return result;
-    }
-
-    public EstadoClienteEntity getEstadoClienteByEstadoClienteId() {
-        return estadoClienteByEstadoClienteId;
-    }
-
-    public void setEstadoClienteByEstadoClienteId(EstadoClienteEntity estadoClienteByEstadoClienteId) {
-        this.estadoClienteByEstadoClienteId = estadoClienteByEstadoClienteId;
-    }
-
-    public List<CuentaBancoEntity> getCuentaBancosById() {
-        return cuentaBancosById;
-    }
-
-    public void setCuentaBancosById(List<CuentaBancoEntity> cuentaBancosById) {
-        this.cuentaBancosById = cuentaBancosById;
-    }
-
-    public List<DireccionEntity> getDireccionsById() {
-        return direccionsById;
-    }
-
-    public void setDireccionsById(List<DireccionEntity> direccionsById) {
-        this.direccionsById = direccionsById;
     }
 }
