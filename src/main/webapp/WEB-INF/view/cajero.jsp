@@ -1,6 +1,7 @@
 <%@ page import="es.uma.taw.bank.entity.CuentaBancoEntity" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.bank.entity.ClienteEntity" %><%--
+<%@ page import="es.uma.taw.bank.entity.ClienteEntity" %>
+<%@ page import="es.uma.taw.bank.entity.PersonaEntity" %><%--
   Created by IntelliJ IDEA.
   User: aleja
   Date: 20/04/2023
@@ -12,15 +13,17 @@
 <%
 List<CuentaBancoEntity> cuentas = (List<CuentaBancoEntity>) request.getAttribute("cuentas");
 ClienteEntity cliente = (ClienteEntity) request.getAttribute("cliente");
+PersonaEntity persona = (PersonaEntity) request.getAttribute("persona");
 %>
 <head>
     <title>Cajero</title>
 </head>
 <body>
-<h1>Bienvenido, <%= cliente.getPersonaById().getNombre() %></h1>
+<h1>Bienvenido, <%= persona.getNombre()+" "+persona.getApellido1()+" "+persona.getApellido2() %></h1>
 <br>
+<p><a href="/cajero/datos?cliente=<%= persona.getId() %>">Modificar mis datos</a></p>
 <h2>Tus cuentas:</h2><br>
-<table>
+<table border="1">
     <tr>
         <th>
             IBAN
@@ -35,19 +38,16 @@ ClienteEntity cliente = (ClienteEntity) request.getAttribute("cliente");
 %>
     <tr>
         <td>
-            <%= c.getIbanCuenta() %>
+            <a href="/cajero/cuenta?cuenta=<%= c.getId() %>"> <%= c.getIbanCuenta() %> </a>
         </td>
         <td>
             <%= c.getSaldo() %>
         </td>
     </tr>
-</table>
-<p>
-    <a href="/cajero/datos"> Modificar mis datos </a>
-</p>
 <%
     }
 %>
+</table>
 
 </body>
 </html>
