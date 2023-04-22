@@ -40,8 +40,7 @@ public class CajeroController {
     }
     @GetMapping("/datos")
     public String doDatos(Model model, @RequestParam("cliente") Integer idCliente){
-        PersonaEntity persona = clienteRepository.findById(idCliente).get().getPersonaById();
-        model.addAttribute("persona",persona);
+        ClienteEntity cliente = clienteRepository.findById(idCliente).get();
 
         return "datos";
     }

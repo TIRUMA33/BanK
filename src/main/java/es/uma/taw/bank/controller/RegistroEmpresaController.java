@@ -3,7 +3,7 @@ package es.uma.taw.bank.controller;
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
 import es.uma.taw.bank.ui.RegistroEmpresa;
-import es.uma.taw.bank.ui.RegistroEmpresaPersona;
+//import es.uma.taw.bank.ui.RegistroEmpresaPersona;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
