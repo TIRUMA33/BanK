@@ -3,14 +3,11 @@ package es.uma.taw.bank.controller;
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
 import es.uma.taw.bank.ui.RegistroEmpresa;
-//import es.uma.taw.bank.ui.RegistroEmpresaPersona;
+import es.uma.taw.bank.ui.RegistroEmpresaPersona;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -22,9 +19,13 @@ public class RegistroEmpresaController {
 
     private DireccionRepository direccionRepository;
 
+    private EmpresaPersonaRepository empresaPersonaRepository;
+
     private EmpresaRepository empresaRepository;
 
     private EstadoClienteRepository estadoClienteRepository;
+
+    private PersonaRepository personaRepository;
 
     private TipoPersonaRelacionadaRepository tipoPersonaRelacionadaRepository;
 
@@ -43,6 +44,11 @@ public class RegistroEmpresaController {
     }
 
     @Autowired
+    public void setEmpresaPersonaRepository(EmpresaPersonaRepository empresaPersonaRepository) {
+        this.empresaPersonaRepository = empresaPersonaRepository;
+    }
+
+    @Autowired
     public void setEmpresaRepository(EmpresaRepository empresaRepository) {
         this.empresaRepository = empresaRepository;
     }
@@ -50,6 +56,11 @@ public class RegistroEmpresaController {
     @Autowired
     public void setEstadoClienteRepository(EstadoClienteRepository estadoClienteRepository) {
         this.estadoClienteRepository = estadoClienteRepository;
+    }
+
+    @Autowired
+    public void setPersonaRepository(PersonaRepository personaRepository) {
+        this.personaRepository = personaRepository;
     }
 
     @Autowired
@@ -76,7 +87,7 @@ public class RegistroEmpresaController {
 
     @PostMapping("/")
     public String doRegistrarEmpresa(@ModelAttribute("empresa") RegistroEmpresa registroEmpresa) {
-        String urlTo = "redirect:/empresa/persona";
+        String urlTo;
         ClienteEntity cliente = registroEmpresa.getCliente();
         DireccionEntity direccion = registroEmpresa.getDireccion();
         EmpresaEntity empresa = registroEmpresa.getEmpresa();
@@ -84,7 +95,7 @@ public class RegistroEmpresaController {
 
         if (registroEmpresa.getRcontrasena().equals(usuario.getContrasena())) {
             cliente.setFechaInicio(new Timestamp(System.currentTimeMillis()));
-            cliente.setEstadoClienteByEstadoClienteId(this.estadoClienteRepository.findById(3).orElse(null));
+            cliente.setEstadoClienteByEstadoClienteId(this.estadoClienteRepository.findById(5).orElse(null));
             this.clienteRepository.save(cliente);
 
             direccion.setValida((byte) (registroEmpresa.getValida() ? 1 : 0));
@@ -98,25 +109,64 @@ public class RegistroEmpresaController {
             usuario.setNif(empresa.getCif());
             usuario.setTipoUsuarioByTipoUsuario(this.tipoUsuarioRepository.findById(2).orElse(null));
             this.usuarioRepository.save(usuario);
+
+            urlTo = "redirect:/empresa/" + registroEmpresa.getEmpresa().getId() + "/persona";
         } else {
             urlTo = "contrasenaNoCoincide";
         }
 
         return urlTo;
     }
-/*
-    @GetMapping("/persona")
-    public String doRegistroEmpresaPersona(Model model) {
+
+    @GetMapping("/{id}/persona")
+    public String doRegistroEmpresaPersona(@PathVariable("id") String id, Model model) {
         RegistroEmpresaPersona registroEmpresaPersona = new RegistroEmpresaPersona();
         List<TipoPersonaRelacionadaEntity> tipoPersonaRelacionada = this.tipoPersonaRelacionadaRepository.findAll();
+        List<Object[]> personas = this.personaRepository.personasPorEmpresa(Integer.parseInt(id));
         model.addAttribute("empresaPersona", registroEmpresaPersona);
         model.addAttribute("tipoPersonasRelacionadas", tipoPersonaRelacionada);
+        model.addAttribute("empresaId", Integer.parseInt(id));
+        model.addAttribute("personas", personas);
         return "registroEmpresaPersona";
-    }*/
-
-    // TODO
-    @PostMapping("/persona")
-    public String doRegistrarEmpresaPersona(@ModelAttribute("usuario") ClienteEntity cliente) {
-        return "redirect:/";
     }
+
+    @PostMapping("/{id}/persona/anadir")
+    public String doRegistrarEmpresaPersona(@PathVariable("id") String id, @ModelAttribute("empresaPersona") RegistroEmpresaPersona registroEmpresaPersona, @ModelAttribute("fechaNacimiento") String fechaNacimiento) {
+        String urlTo = "redirect:/empresa/" + id + "/persona";
+        ClienteEntity cliente = registroEmpresaPersona.getCliente();
+        DireccionEntity direccion = registroEmpresaPersona.getDireccion();
+        PersonaEntity persona = registroEmpresaPersona.getPersona();
+        UsuarioEntity usuario = registroEmpresaPersona.getUsuario();
+        EmpresaPersonaEntity empresaPersona = registroEmpresaPersona.getEmpresaPersona();
+        EmpresaEntity empresa = this.empresaRepository.findById(Integer.parseInt(id)).orElse(null);
+
+        if (registroEmpresaPersona.getRcontrasena().equals(usuario.getContrasena())) {
+            cliente.setFechaInicio(new Timestamp(System.currentTimeMillis()));
+            cliente.setEstadoClienteByEstadoClienteId(this.estadoClienteRepository.findById(5).orElse(null));
+            this.clienteRepository.save(cliente);
+
+            direccion.setValida((byte) (registroEmpresaPersona.getValida() ? 1 : 0));
+            direccion.setClienteByClienteId(cliente);
+            this.direccionRepository.save(direccion);
+
+            persona.setId(cliente.getId());
+            persona.setFechaNacimiento(Timestamp.valueOf(fechaNacimiento + " 00:00:00"));
+            this.personaRepository.save(persona);
+
+            usuario.setId(cliente.getId());
+            usuario.setNif(empresa != null ? empresa.getCif() : null);
+            usuario.setTipoUsuarioByTipoUsuario(this.tipoUsuarioRepository.findById(2).orElse(null));
+            this.usuarioRepository.save(usuario);
+
+            empresaPersona.setEmpresaByIdEmpresa(empresa);
+            empresaPersona.setPersonaByIdPersona(persona);
+            this.empresaPersonaRepository.save(empresaPersona);
+        } else {
+            urlTo = "contrasenaNoCoincide";
+        }
+
+        return urlTo;
+    }
+
+    // TODO Botón Borrar en listaEmpresaPersonas
 }
