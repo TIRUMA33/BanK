@@ -104,7 +104,7 @@ public class RegistroEmpresaController {
 
         return urlTo;
     }
-
+/*
     @GetMapping("/persona")
     public String doRegistroEmpresaPersona(Model model) {
         RegistroEmpresaPersona registroEmpresaPersona = new RegistroEmpresaPersona();
@@ -112,7 +112,7 @@ public class RegistroEmpresaController {
         model.addAttribute("empresaPersona", registroEmpresaPersona);
         model.addAttribute("tipoPersonasRelacionadas", tipoPersonaRelacionada);
         return "registroEmpresaPersona";
-    }
+    }*/
 
     // TODO
     @PostMapping("/persona")
