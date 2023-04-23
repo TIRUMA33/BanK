@@ -4,8 +4,10 @@ import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
 import es.uma.taw.bank.ui.RegistroEmpresa;
 import es.uma.taw.bank.ui.RegistroEmpresaPersona;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -168,5 +170,18 @@ public class RegistroEmpresaController {
         return urlTo;
     }
 
-    // TODO Botón Borrar en listaEmpresaPersonas
+    @Transactional
+    @PostMapping("/{id}/persona/borrar")
+    public String doBorrarEmpresaPersona(@PathVariable("id") String id, HttpServletRequest request) {
+        for (String idPersona : request.getParameterValues("personaId")) {
+            int personaId = Integer.parseInt(idPersona);
+            this.empresaPersonaRepository.deleteByPersonaByIdPersona_Id(personaId);
+            this.usuarioRepository.deleteById(personaId);
+            this.personaRepository.deleteById(personaId);
+            this.direccionRepository.deleteByClienteByClienteId_Id(personaId);
+            this.clienteRepository.deleteById(personaId);
+        }
+        
+        return "redirect:/empresa/" + id + "/persona";
+    }
 }

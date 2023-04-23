@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.uma.taw.bank.entity.PersonaEntity" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
@@ -12,32 +13,35 @@
 %>
 <html>
 <head>
-    <title>Title</title>
+    <title>BanK</title>
 </head>
 <body>
-<table border="1">
-    <tr>
-        <th>Nombre</th>
-        <th>NIF</th>
-        <th>Tipo</th>
-    </tr>
-    <%
-        for (Object[] persona : personas) {
-    %>
-    <tr>
-        <td><%= ((PersonaEntity) persona[0]).getNombre() + " " + ((PersonaEntity) persona[0]).getApellido1() + " " + ((PersonaEntity) persona[0]).getApellido2() %>
-        </td>
-        <td><%= ((PersonaEntity) persona[0]).getDni() %>
-        </td>
-        <td><%= persona[1] %>
-        </td>
-        <td><input type="checkbox"></td>
-    </tr>
-    <%
-        }
-    %>
-</table>
-<input type="reset" value="Borrar"/> <br/>
-<input type="submit" value="Finalizar"/>
+<form:form action="/empresa/${empresaId}/persona/borrar" modelAttribute="empresaPersona" method="post">
+    <table border="1">
+        <tr>
+            <th>Nombre</th>
+            <th>NIF</th>
+            <th>Tipo</th>
+        </tr>
+        <%
+            for (Object[] p : personas) {
+                PersonaEntity persona = (PersonaEntity) p[0];
+                String tipo = (String) p[1];
+        %>
+        <tr>
+            <td><%= persona.getNombre() + " " + persona.getApellido1() + " " + persona.getApellido2() %>
+            </td>
+            <td><%= persona.getDni() %>
+            </td>
+            <td><%= tipo %>
+            </td>
+            <td><input type="checkbox" name="personaId" value="<%= persona.getId() %>"></td>
+        </tr>
+        <%
+            }
+        %>
+    </table>
+    <input type="submit" value="Borrar" onclick="return confirm('¿Está seguro de borrar las personas seleccionadas?')"/> <br/>
+</form:form>
 </body>
 </html>
