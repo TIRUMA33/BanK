@@ -15,10 +15,11 @@
 %>
 <html>
 <head>
-    <title>Title</title>
+    <title>BanK</title>
 </head>
 <body>
 
+<jsp:include page="cabecera.jsp"/>
 
 <h1>Listado de clientes</h1>
 

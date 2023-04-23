@@ -11,6 +11,7 @@
     <title>BanK</title>
 </head>
 <body>
+<h2>Registrarse</h2>
 <p>Seleccione si quiere crear una cuenta para una persona física o para una empresa</p>
 <form action="/persona/">
   <input type="submit" value="Persona física">

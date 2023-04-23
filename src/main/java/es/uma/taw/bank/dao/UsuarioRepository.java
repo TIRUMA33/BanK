@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer> {
-    @Query(value = "insert into usuario (nif, contrasena) values (:nif, :contrasena)", nativeQuery = true)
-    UsuarioEntity registrar(@Param ("nif") String nif, @Param("contrasena") String contrasena);
+    @Query("select u from UsuarioEntity u where u.nif = :nif and u.contrasena = :contrasena")
+    UsuarioEntity autenticar(@Param("nif") String nif, @Param("contrasena") String contrasena);
 }

@@ -11,9 +11,12 @@
     <title>BanK</title>
 </head>
 <body>
-<p>Otras opciones e información</p>
+<h1>Le damos la bienvenida a BanK</h1>
 <form action="/registro/">
-    <input type="submit" value="Registro">
+    <input type="submit" value="Registrarse">
+</form>
+<form action="/iniciarSesion/">
+    <input type="submit" value="Iniciar sesión">
 </form>
 </body>
 </html>
