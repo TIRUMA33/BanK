@@ -12,8 +12,8 @@
     <title>BanK</title>
 </head>
 <body>
-<h1>GESTIÓN DE PERSONAS RELACIONADAS CON LA EMPRESA</h1>
-<form:form action="/empresa/${empresaId}/persona/anadir" modelAttribute="empresaPersona" method="post">
+<h1>GESTIÓN DE PERSONAS RELACIONADAS CON ${empresa.nombre.toUpperCase()}</h1>
+<form:form action="/empresa/${empresa.id}/persona/anadir" modelAttribute="registroEmpresaPersona" method="post">
     <form:hidden path="empresaPersona.empresaByIdEmpresa"/>
     <h2>Datos personales</h2>
     <table>
@@ -91,7 +91,7 @@
     <br/>
 </form:form>
 <jsp:include page="listaEmpresaPersonas.jsp">
-    <jsp:param name="empresaId" value="${empresaId}"/>
+    <jsp:param name="empresaId" value="${empresa.id}"/>
     <jsp:param name="personas" value="${personas}"/>
 </jsp:include>
 <input type="submit" value="Finalizar" onclick="location.href='/'"/>

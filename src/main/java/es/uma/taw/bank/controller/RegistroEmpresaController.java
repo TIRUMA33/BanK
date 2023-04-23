@@ -112,7 +112,7 @@ public class RegistroEmpresaController {
             usuario.setTipoUsuarioByTipoUsuario(this.tipoUsuarioRepository.findById(2).orElse(null));
             this.usuarioRepository.save(usuario);
 
-            urlTo = "redirect:/empresa/" + registroEmpresa.getEmpresa().getId() + "/persona";
+            urlTo = "redirect:/empresa/" + empresa.getId() + "/persona";
         } else {
             urlTo = "contrasenaNoCoincide";
         }
@@ -125,9 +125,9 @@ public class RegistroEmpresaController {
         RegistroEmpresaPersona registroEmpresaPersona = new RegistroEmpresaPersona();
         List<TipoPersonaRelacionadaEntity> tipoPersonaRelacionada = this.tipoPersonaRelacionadaRepository.findAll();
         List<Object[]> personas = this.personaRepository.personasPorEmpresa(Integer.parseInt(id));
-        model.addAttribute("empresaPersona", registroEmpresaPersona);
+        model.addAttribute("registroEmpresaPersona", registroEmpresaPersona);
         model.addAttribute("tipoPersonasRelacionadas", tipoPersonaRelacionada);
-        model.addAttribute("empresaId", Integer.parseInt(id));
+        model.addAttribute("empresa", this.empresaRepository.findById(Integer.parseInt(id)).orElse(null));
         model.addAttribute("personas", personas);
         return "registroEmpresaPersona";
     }
