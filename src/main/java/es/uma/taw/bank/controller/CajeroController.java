@@ -1,13 +1,8 @@
 package es.uma.taw.bank.controller;
 
-import es.uma.taw.bank.dao.ClienteRepository;
-import es.uma.taw.bank.dao.CuentaRepository;
-import es.uma.taw.bank.dao.PersonaRepository;
-import es.uma.taw.bank.dao.TransaccionRepository;
-import es.uma.taw.bank.entity.ClienteEntity;
-import es.uma.taw.bank.entity.CuentaBancoEntity;
-import es.uma.taw.bank.entity.PersonaEntity;
-import es.uma.taw.bank.entity.TransaccionEntity;
+import es.uma.taw.bank.dao.*;
+import es.uma.taw.bank.entity.*;
+import es.uma.taw.bank.ui.Cambio;
 import es.uma.taw.bank.ui.FiltroOperaciones;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +25,10 @@ public class CajeroController {
     protected PersonaRepository personaRepository;
     @Autowired
     protected TransaccionRepository transaccionRepository;
+    @Autowired
+    protected DivisaRepository divisaRepository;
+    @Autowired
+    protected EstadoCuentaRepository estadoCuentaRepository;
     @GetMapping("/listar")
     public String doListar(Model model, @RequestParam("cliente") Integer idCliente ){
         ClienteEntity cliente = clienteRepository.findById(idCliente).get();
@@ -112,7 +111,7 @@ public class CajeroController {
     }
     public String procesarFiltrado(Model model, Integer idCuenta, FiltroOperaciones filtro){
         List<TransaccionEntity> operaciones = transaccionRepository.operacionesPorCuenta(idCuenta);
-        List<CuentaBancoEntity> cuentas = new ArrayList<CuentaBancoEntity>();
+        List<CuentaBancoEntity> cuentas = new ArrayList<>();
         for(TransaccionEntity t: operaciones){
             if(!cuentas.contains(t.getCuentaBancoByCuentaDestino()))if(t.getCuentaBancoByCuentaDestino().getId()!=idCuenta)cuentas.add(t.getCuentaBancoByCuentaDestino());
             if(!cuentas.contains(t.getCuentaBancoByCuentaOrigen()))if(t.getCuentaBancoByCuentaOrigen().getId()!=idCuenta)cuentas.add(t.getCuentaBancoByCuentaOrigen());
@@ -129,5 +128,50 @@ public class CajeroController {
         model.addAttribute("idCuenta",idCuenta);
         model.addAttribute("operaciones",operaciones);
         return "operaciones";
+    }
+    @GetMapping("/cambioDivisa")
+    public String cambioDivisa(Model model, @RequestParam("cuenta") Integer idCuenta){
+        CuentaBancoEntity c = cuentaRepository.findById(idCuenta).get();
+        DivisaEntity divisaInicial = divisaRepository.buscarPorNombre(c.getMoneda());
+        List<DivisaEntity> divisas = divisaRepository.findAll();
+        divisas.removeIf(d -> (d.getNombre().equals(divisaInicial.getNombre())));
+        List<Cambio> lista = new ArrayList<>();
+        Double enDolares = divisaInicial.getEquivalencia();
+        for(DivisaEntity d:divisas){
+            Cambio cambio = new Cambio(d.getNombre(),enDolares/d.getEquivalencia());
+            lista.add(cambio);
+        }
+        model.addAttribute("cuenta",c);
+        model.addAttribute("divisas",divisas);
+        model.addAttribute("cambios",lista);
+        return "cambioDivisa";
+    }
+    @PostMapping("/cambiarA")
+    public String cambiarA(Model model, @RequestParam("cuenta") Integer idCuenta, @RequestParam("moneda") String monedaDestino){
+        CuentaBancoEntity c = cuentaRepository.findById(idCuenta).get();
+        DivisaEntity origen = divisaRepository.buscarPorNombre(c.getMoneda());
+        DivisaEntity destino = divisaRepository.buscarPorNombre(monedaDestino);
+        Double equivalencia = origen.getEquivalencia()/destino.getEquivalencia();
+        model.addAttribute("cuenta",c);
+        model.addAttribute("origen",c.getMoneda());
+        model.addAttribute("destino",monedaDestino);
+        model.addAttribute("equivalencia",equivalencia);
+        return "cambiarA";
+    }
+    @PostMapping("/retirarCambio")
+    public String retirarCambio(Model model, @RequestParam("cuenta") Integer idCuenta, @RequestParam("cantidad") Double cantidad){
+        CuentaBancoEntity c = cuentaRepository.findById(idCuenta).get();
+        c.setSaldo(c.getSaldo()-cantidad);
+        cuentaRepository.save(c);
+        return "redirect:/cajero/cuenta?cuenta="+idCuenta;
+    }
+    @GetMapping("desbloquear")
+    public String solicitarDesbloqueo(Model model, @RequestParam("cuenta") Integer idCuenta){
+        //Solicitar desbloqueo al gestor
+        CuentaBancoEntity c = cuentaRepository.findById(idCuenta).get();
+        EstadoCuentaEntity activado = estadoCuentaRepository.findById(1).get();
+        c.setEstadoCuentaByEstadoCuentaId(activado);
+        cuentaRepository.save(c);
+        return "redirect:/cajero/cuenta?cuenta="+idCuenta;
     }
 }

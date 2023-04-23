@@ -1,3 +1,4 @@
+<%@ page import="es.uma.taw.bank.entity.CuentaBancoEntity" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="from" uri="http://www.springframework.org/tags/form" %>
 <%--
@@ -15,6 +16,16 @@
 <body>
 <h2>Tu cuenta:</h2>
 <h3>IBAN: ${cuenta.ibanCuenta}</h3>
+<%
+    CuentaBancoEntity cuenta = (CuentaBancoEntity) request.getAttribute("cuenta");
+    if (cuenta.getEstadoCuentaByEstadoCuentaId().getTipo().equals("Bloqueada")) {
+
+%>
+<h1>Tu cuenta está bloqueada, solicite un desbloqueo <a href="/cajero/desbloquear?cuenta=<%= cuenta.getId() %>"> aquí </a>.</h1>
+<%
+    }
+%>
+
 <table border="1">
     <tr>
         <th>MONEDA</th>
@@ -36,6 +47,7 @@
 <p><a href="/cajero/transferencia?cuenta=${cuenta.id}">Realizar transferencia</a></p>
 <p><a href="/cajero/retirada?cuenta=${cuenta.id}">Sacar dinero</a></p>
 <p><a href="/cajero/operaciones?cuenta=${cuenta.id}">Operaciones de mi cuenta</a></p>
+<p><a href="/cajero/cambioDivisa?cuenta=${cuenta.id}">Cambio de divisa</a></p>
 
 </body>
 </html>
