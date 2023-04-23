@@ -19,7 +19,7 @@
 <%
     if (!personas.isEmpty()) {
 %>
-<form:form action="/empresa/${empresa.id}/persona/borrar" modelAttribute="registroEmpresaPersona" method="post">
+<form:form action="/registro/empresa/${empresa.id}/persona/borrar" modelAttribute="registroEmpresaPersona" method="post">
     <table border="1">
         <tr>
             <th>Nombre</th>

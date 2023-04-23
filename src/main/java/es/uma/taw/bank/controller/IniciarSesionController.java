@@ -1,5 +1,6 @@
 package es.uma.taw.bank.controller;
 
+import es.uma.taw.bank.dao.EmpresaRepository;
 import es.uma.taw.bank.dao.UsuarioRepository;
 import es.uma.taw.bank.entity.UsuarioEntity;
 import jakarta.servlet.http.HttpSession;
@@ -15,7 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/iniciarSesion")
 public class IniciarSesionController {
 
+    private EmpresaRepository empresaRepository;
+
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    public void setEmpresaRepository(EmpresaRepository empresaRepository) {
+        this.empresaRepository = empresaRepository;
+    }
 
     @Autowired
     public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
@@ -29,7 +37,7 @@ public class IniciarSesionController {
 
     @PostMapping("/")
     public String doAutenticar(@RequestParam("nif") String nif, @RequestParam("contrasena") String contrasena, Model model, HttpSession session) {
-        String urlTo = "redirect:/cliente/";
+        String urlTo;
         UsuarioEntity usuario = this.usuarioRepository.autenticar(nif, contrasena);
 
         if (usuario == null) {
@@ -37,6 +45,12 @@ public class IniciarSesionController {
             urlTo = "iniciarSesion";
         } else {
             session.setAttribute("usuario", usuario);
+            if (this.empresaRepository.findById(usuario.getId()).isPresent()) {
+                urlTo = "redirect:/empresa/";
+            } else {
+                urlTo = "redirect:/persona/";
+            }
+            urlTo += usuario.getId();
         }
 
         return urlTo;
