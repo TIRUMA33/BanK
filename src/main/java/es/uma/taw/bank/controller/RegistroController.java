@@ -3,6 +3,7 @@ package es.uma.taw.bank.controller;
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
 import es.uma.taw.bank.ui.RegistroEmpresa;
+import es.uma.taw.bank.ui.RegistroEmpresaPersona;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -97,7 +98,7 @@ public class RegistroController {
 
     @GetMapping("/empresa/")
     public String doRegistroEmpresa(Model model) {
-        RegistroEmpresa registroEmpresa = new RegistroEmpresa("empresa");
+        RegistroEmpresa registroEmpresa = new RegistroEmpresa();
         model.addAttribute("empresa", registroEmpresa);
         return "registroEmpresa";
     }
@@ -131,7 +132,7 @@ public class RegistroController {
 
     @GetMapping("/empresa/{id}/persona")
     public String doRegistroEmpresaPersona(@PathVariable("id") String id, Model model) {
-        RegistroEmpresa registroEmpresaPersona = new RegistroEmpresa("empresaPersona");
+        RegistroEmpresaPersona registroEmpresaPersona = new RegistroEmpresaPersona();
         List<TipoPersonaRelacionadaEntity> tipoPersonaRelacionada = this.tipoPersonaRelacionadaRepository.findAll();
         List<Object[]> personas = this.personaRepository.personasPorEmpresa(Integer.parseInt(id));
         model.addAttribute("registroEmpresaPersona", registroEmpresaPersona);
