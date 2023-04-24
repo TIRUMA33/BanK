@@ -1,5 +1,6 @@
 package es.uma.taw.bank.controller;
 
+import es.uma.taw.bank.DataGenerator;
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
 import es.uma.taw.bank.ui.RegistroEmpresa;
@@ -21,7 +22,13 @@ public class RegistroController {
 
     private ClienteRepository clienteRepository;
 
+    private CuentaRepository cuentaRepository;
+
     private DireccionRepository direccionRepository;
+
+    private EntidadBancariaRepository entidadBancariaRepository;
+
+    private EstadoCuentaRepository estadoCuentaRepository;
 
     private EmpresaPersonaRepository empresaPersonaRepository;
 
@@ -43,8 +50,23 @@ public class RegistroController {
     }
 
     @Autowired
+    public void setCuentaBancoRepository(CuentaRepository cuentaRepository) {
+        this.cuentaRepository = cuentaRepository;
+    }
+
+    @Autowired
     public void setDireccionRepository(DireccionRepository direccionRepository) {
         this.direccionRepository = direccionRepository;
+    }
+
+    @Autowired
+    public void setEntidadBancariaEntity(EntidadBancariaRepository entidadBancariaRepository) {
+        this.entidadBancariaRepository = entidadBancariaRepository;
+    }
+
+    @Autowired
+    public void setEstadoCuentaRepository(EstadoCuentaRepository estadoCuentaRepository) {
+        this.estadoCuentaRepository = estadoCuentaRepository;
     }
 
     @Autowired
@@ -119,6 +141,7 @@ public class RegistroController {
         DireccionEntity direccion = registroEmpresa.getDireccion();
         EmpresaEntity empresa = registroEmpresa.getEmpresa();
         UsuarioEntity usuario = registroEmpresa.getUsuario();
+        CuentaBancoEntity cuentaBanco = new CuentaBancoEntity();
 
         if (registroEmpresa.getRcontrasena().equals(usuario.getContrasena())) {
             guardadoComun(cliente, direccion, registroEmpresa.getValida());
@@ -130,6 +153,17 @@ public class RegistroController {
             usuario.setNif(empresa.getCif());
             usuario.setTipoUsuarioByTipoUsuario(this.tipoUsuarioRepository.findById(2).orElse(null));
             this.usuarioRepository.save(usuario);
+
+            cuentaBanco.setMoneda("EUR");
+            cuentaBanco.setIbanCuenta(DataGenerator.randomIbanGenerator());
+            cuentaBanco.setSaldo(0.0);
+            cuentaBanco.setSwift(DataGenerator.randomSwiftGenerator());
+            cuentaBanco.setPais("España");
+            cuentaBanco.setFechaApertura(new Timestamp(System.currentTimeMillis()));
+            cuentaBanco.setClienteByTitularId(cliente);
+            cuentaBanco.setEntidadBancariaByEntidadBancariaId(this.entidadBancariaRepository.findById(1).orElse(null));
+            cuentaBanco.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(1).orElse(null));
+            this.cuentaRepository.save(cuentaBanco);
 
             urlTo = "redirect:/registro/empresa/" + empresa.getId() + "/persona";
         } else {
