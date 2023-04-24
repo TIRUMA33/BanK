@@ -23,7 +23,7 @@ CREATE TABLE ESTADO_CUENTA
 
 CREATE TABLE ENTIDAD_BANCARIA
 (
-    ID     int         NOT NULL,
+    ID     int         NOT NULL AUTO_INCREMENT,
     NOMBRE varchar(45) NOT NULL,
     PRIMARY KEY (ID)
 );
@@ -37,7 +37,7 @@ CREATE TABLE CUENTA_BANCO
     SWIFT               varchar(11) NOT NULL,
     PAIS                varchar(45) NOT NULL,
     FECHA_APERTURA      datetime    NOT NULL,
-    FECHA_CIERRE        datetime    NOT NULL,
+    FECHA_CIERRE        datetime,
     TITULAR_ID          int         NOT NULL,
     ENTIDAD_BANCARIA_ID int         NOT NULL,
     ESTADO_CUENTA_ID    int         NOT NULL,
@@ -151,9 +151,9 @@ CREATE TABLE USUARIO
 
 CREATE TABLE CONVERSACION
 (
-    ID        int     NOT NULL,
-    EMISOR    int     NOT NULL,
-    RECEPTOR  int     NOT NULL,
+    ID        int NOT NULL,
+    EMISOR    int NOT NULL,
+    RECEPTOR  int NOT NULL,
     TERMINADA tinyint,
     PRIMARY KEY (ID),
     CONSTRAINT EMISOR FOREIGN KEY (EMISOR) REFERENCES USUARIO (ID),
