@@ -4,6 +4,7 @@ import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
 import es.uma.taw.bank.ui.RegistroEmpresa;
 import es.uma.taw.bank.ui.RegistroEmpresaPersona;
+import es.uma.taw.bank.ui.RegistroPersona;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -103,6 +104,14 @@ public class RegistroController {
         return "registroEmpresa";
     }
 
+    @GetMapping("/persona/")
+    public String doRegistrarpersona(Model model) {
+        RegistroPersona registroPersona = new RegistroPersona();
+        model.addAttribute("persona", registroPersona);
+        return "registroPersona";
+    }
+
+
     @PostMapping("/empresa/")
     public String doRegistrarEmpresa(@ModelAttribute("empresa") RegistroEmpresa registroEmpresa) {
         String urlTo;
@@ -143,7 +152,7 @@ public class RegistroController {
     }
 
     @PostMapping("/empresa/{id}/persona/anadir")
-    public String doRegistrarEmpresaPersona(@PathVariable("id") String id, @ModelAttribute("empresaPersona") RegistroEmpresa registroEmpresaPersona, @ModelAttribute("fechaNacimiento") String fechaNacimiento) {
+    public String doRegistrarEmpresaPersona(@PathVariable("id") String id, @ModelAttribute("empresaPersona") RegistroEmpresaPersona registroEmpresaPersona, @ModelAttribute("fechaNacimiento") String fechaNacimiento) {
         String urlTo = "redirect:/registro/empresa/" + id + "/persona";
         ClienteEntity cliente = registroEmpresaPersona.getCliente();
         DireccionEntity direccion = registroEmpresaPersona.getDireccion();
