@@ -22,7 +22,6 @@
 <p>Ordenar por:</p>
 <form:form method="post" modelAttribute="filtro" action="/cajero/operaciones/filtrar">
     <input hidden="true" value="<%= request.getAttribute("idCuenta") %>" name="cuenta">
-    Fecha de Instrucción: <form:checkbox path="fechaInstruccion"></form:checkbox>
     Fecha de Ejecución: <form:checkbox path="fechaEjecucion"></form:checkbox>
     Cantidad: <form:checkbox path="cantidad"></form:checkbox>
     Filtrar por cuenta: <form:select path="cuentaFiltro">

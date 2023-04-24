@@ -119,8 +119,11 @@ public class CajeroController {
         if(filtro==null){
             filtro=new FiltroOperaciones();
         }
-        else if(filtro.getCantidad() && filtro.getFechaEjecucion() && filtro.getFechaInstruccion() && filtro.getCuentaFiltro()!=null && filtro.getCuentaFiltro()!=""){
+        else if(filtro.getCantidad() && filtro.getFechaEjecucion() && filtro.getCuentaFiltro()!=null && filtro.getCuentaFiltro().equals("")){
             operaciones=transaccionRepository.todoFiltrado(idCuenta,filtro.getCuentaFiltro());
+        }
+        else if(filtro.getCantidad() && filtro.getFechaEjecucion() && (filtro.getCuentaFiltro()==null || filtro.getCuentaFiltro().equals(""))){
+            operaciones=transaccionRepository.soloSinCuenta(idCuenta);
         }
 
         model.addAttribute("filtro", filtro);
