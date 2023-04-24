@@ -35,7 +35,7 @@ public class CuentaBancoEntity {
     @Column(name = "FECHA_APERTURA", nullable = false)
     private Timestamp fechaApertura;
     @Basic
-    @Column(name = "FECHA_CIERRE", nullable = false)
+    @Column(name = "FECHA_CIERRE", nullable = true)
     private Timestamp fechaCierre;
     @ManyToOne
     @JoinColumn(name = "TITULAR_ID", referencedColumnName = "ID", nullable = false)

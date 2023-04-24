@@ -16,7 +16,7 @@ public class ConversacionEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "TERMINADA", nullable = false)
+    @Column(name = "TERMINADA", nullable = true)
     private Byte terminada;
     @ManyToOne
     @JoinColumn(name = "EMISOR", referencedColumnName = "ID", nullable = false)
