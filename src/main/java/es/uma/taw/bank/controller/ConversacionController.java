@@ -23,9 +23,12 @@ public class ConversacionController {
     protected MensajeRepository mensajeRepository;
 
     @GetMapping("/chat")
-    public String doChat(Model model){
-        List<MensajeEntity> mensajes = mensajeRepository.findAll();
-        model.addAttribute("mensajes", mensajes);
+    public String doChat(@RequestParam("idusuario")Integer id, Model model){
+        List<MensajeEntity> mensajescliente = this.mensajeRepository.findClienteMensajes();
+        List<MensajeEntity> mensajesasistente = this.mensajeRepository.findAsistenteMensajes();
+
+        model.addAttribute("mensajescliente", mensajescliente);
+        model.addAttribute("mensajesasistente", mensajesasistente);
         return "chatcliente";
     }
 

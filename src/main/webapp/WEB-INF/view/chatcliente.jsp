@@ -13,26 +13,8 @@
 </head>
 <body>
 <%
-    List<MensajeEntity> mensajes = (List<MensajeEntity>) request.getAttribute("mensajes");
-%>
-<h1>Mensajes</h1>
-<%if (mensajes != null) {%>
 
-    <table>
-        <tr>
-            <th>Id</th>
-            <th>Contenido</th>
-            <th>Fecha</th>
-        </tr>
-        <%for (MensajeEntity mensaje : mensajes) {%>
-            <tr>
-                <td><%=mensaje.getId()%></td>
-                <td><%=mensaje.getContenido()%></td>
-                <td><%=mensaje.getFecha()%></td>
-            </tr>
-        <%}%>
-    </table>
-<%}%>
+%>
 
 
 
