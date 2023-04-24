@@ -17,6 +17,7 @@
 </h1>
 <br>
 <form:form action="/cajero/editar" modelAttribute="persona" method="post">
+    <form:hidden path="id"></form:hidden>
     <form:input path="nombre" maxlength="45" size="45"></form:input><br>
     <form:input path="apellido1" maxlength="45" size="45"></form:input><br>
     <form:input path="apellido2" maxlength="45" size="45"></form:input><br>

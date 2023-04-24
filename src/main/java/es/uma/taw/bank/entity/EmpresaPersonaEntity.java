@@ -1,7 +1,11 @@
 package es.uma.taw.bank.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "EMPRESA_PERSONA", schema = "taw", catalog = "")
 public class EmpresaPersonaEntity {

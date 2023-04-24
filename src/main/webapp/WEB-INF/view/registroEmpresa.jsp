@@ -13,7 +13,7 @@
 </head>
 <body>
 <h1>REGISTRO DE EMPRESA</h1>
-<form:form action="/empresa/" modelAttribute="empresa" method="post">
+<form:form action="/registro/empresa/" modelAttribute="empresa" method="post">
     <h2>Datos de la empresa</h2>
     <form:label path="empresa.cif">CIF(*)</form:label>
     <form:input path="empresa.cif" size="9" maxlength="9"/> <br/>
@@ -54,8 +54,8 @@
             <td><form:password path="rcontrasena" size="45" maxlength="45"/></td>
         </tr>
     </table>
-    <form:button>Registrar</form:button>
-    <form:button>Cancelar</form:button>
+    <input type="submit" value="Registrar">
+    <input type="reset" value="Cancelar" onclick="location.href='/'">
 </form:form>
 </body>
 </html>

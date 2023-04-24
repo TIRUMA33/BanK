@@ -6,10 +6,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RegistroEmpresa {
+public class RegistroEmpresaPersona {
     private ClienteEntity cliente;
     private DireccionEntity direccion;
-    private EmpresaEntity empresa;
     private EmpresaPersonaEntity empresaPersona;
     private PersonaEntity persona;
     private UsuarioEntity usuario;
@@ -17,11 +16,13 @@ public class RegistroEmpresa {
     private String fechaNacimiento;
     private String rcontrasena;
 
-    public RegistroEmpresa() {
+    public RegistroEmpresaPersona() {
         cliente = new ClienteEntity();
         direccion = new DireccionEntity();
-        empresa = new EmpresaEntity();
+        empresaPersona = new EmpresaPersonaEntity();
+        persona = new PersonaEntity();
         usuario = new UsuarioEntity();
+        fechaNacimiento = "";
         valida = false;
         rcontrasena = "";
     }
