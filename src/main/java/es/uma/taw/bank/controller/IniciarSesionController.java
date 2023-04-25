@@ -2,6 +2,7 @@ package es.uma.taw.bank.controller;
 
 import es.uma.taw.bank.dao.EmpresaRepository;
 import es.uma.taw.bank.dao.UsuarioRepository;
+import es.uma.taw.bank.entity.EmpresaEntity;
 import es.uma.taw.bank.entity.UsuarioEntity;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +47,12 @@ public class IniciarSesionController {
         } else {
             session.setAttribute("usuario", usuario);
             if (this.empresaRepository.findById(usuario.getId()).isPresent()) {
-                urlTo = "redirect:/empresa/";
+                urlTo = "redirect:/empresa/" + usuario.getId();
+            } else if (usuario.getTipoUsuarioByTipoUsuario().getId().equals(2)) {
+                urlTo = "redirect:/empresa/" + this.empresaRepository.findByCif(usuario.getNif()).orElse(null).getId() + "/persona";
             } else {
-                urlTo = "redirect:/persona/";
+                urlTo = "redirect:/persona/" + usuario.getId();
             }
-            urlTo += usuario.getId();
         }
 
         return urlTo;

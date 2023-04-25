@@ -12,9 +12,8 @@
     <title>BanK</title>
 </head>
 <body>
-<h1>GESTIÓN DE PERSONAS RELACIONADAS CON ${empresa.nombre.toUpperCase()}</h1>
+<h1>Gestión de personas autorizadas</h1>
 <form:form action="/registro/empresa/${empresa.id}/persona/anadir" modelAttribute="registroEmpresaPersona" method="post">
-    <form:hidden path="empresaPersona.empresaByIdEmpresa"/>
     <h2>Datos personales</h2>
     <table>
         <tr>
