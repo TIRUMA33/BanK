@@ -13,7 +13,7 @@
 </head>
 <body>
 <h1>Editar datos de ${registroEmpresa.empresa.nombre}</h1>
-<form:form action="/empresa/${registroEmpresa.empresa.id}/editar/guardar" modelAttribute="registroEmpresa" method="post">
+<form:form action="/empresa/${registroEmpresa.empresa.id}/guardar" modelAttribute="registroEmpresa" method="post">
   <h2>Datos de la empresa</h2>
   <form:label path="empresa.cif">CIF(*)</form:label>
   <form:input path="empresa.cif" size="9" maxlength="9"/> <br/>

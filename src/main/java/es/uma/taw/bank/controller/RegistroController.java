@@ -219,13 +219,12 @@ public class RegistroController {
         List<Object[]> personas = this.personaRepository.personasPorEmpresa(Integer.parseInt(id));
         model.addAttribute("registroEmpresaPersona", registroEmpresaPersona);
         model.addAttribute("tipoPersonasRelacionadas", tipoPersonaRelacionada);
-        model.addAttribute("empresa", this.empresaRepository.findById(Integer.parseInt(id)).orElse(null));
         model.addAttribute("personas", personas);
         return "registroEmpresaPersona";
     }
 
     @PostMapping("/empresa/{id}/persona/anadir")
-    public String doRegistrarEmpresaPersona(@PathVariable("id") String id, @ModelAttribute("empresaPersona") RegistroEmpresaPersona registroEmpresaPersona, @ModelAttribute("fechaNacimiento") String fechaNacimiento) {
+    public String doRegistrarEmpresaPersona(@PathVariable("id") String id, @ModelAttribute("empresaPersona") RegistroEmpresaPersona registroEmpresaPersona) {
         String urlTo = "redirect:/registro/empresa/" + id + "/persona";
         ClienteEntity cliente = registroEmpresaPersona.getCliente();
         DireccionEntity direccion = registroEmpresaPersona.getDireccion();
@@ -238,7 +237,6 @@ public class RegistroController {
             guardadoComun(cliente, direccion, registroEmpresaPersona.getValida());
 
             persona.setId(cliente.getId());
-            persona.setFechaNacimiento(Timestamp.valueOf(fechaNacimiento + " 00:00:00"));
             this.personaRepository.save(persona);
 
             usuario.setId(cliente.getId());

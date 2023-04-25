@@ -2,8 +2,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: oscfd
-  Date: 27/03/2023
-  Time: 14:02
+  Date: 25/04/2023
+  Time: 20:14
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -12,8 +12,8 @@
     <title>BanK</title>
 </head>
 <body>
-<h1>Gestión de personas autorizadas</h1>
-<form:form action="/registro/empresa/${registroEmpresaPersona.empresaPersona.empresaByIdEmpresa.id}/persona/anadir"
+<h1>Editar información</h1>
+<form:form action="/empresa/${registroEmpresaPersona.empresaPersona.empresaByIdEmpresa.id}/persona/${registroEmpresaPersona.empresaPersona.personaByIdPersona.id}/guardar"
            modelAttribute="registroEmpresaPersona" method="post">
     <h2>Datos personales</h2>
     <table>
@@ -88,12 +88,8 @@
             <td></td>
         </tr>
     </table>
-    <br/>
+    <input type="submit" value="Guardar cambios">
+    <input type="reset" value="Cancelar" onclick="location.href='/'">
 </form:form>
-<jsp:include page="listaEmpresaPersonas.jsp">
-    <jsp:param name="empresaId" value="${empresa.id}"/>
-    <jsp:param name="personas" value="${personas}"/>
-</jsp:include>
-<input type="submit" value="Finalizar" onclick="location.href='/'"/>
 </body>
 </html>

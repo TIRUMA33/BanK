@@ -13,7 +13,6 @@ public class RegistroEmpresaPersona {
     private PersonaEntity persona;
     private UsuarioEntity usuario;
     private Boolean valida;
-    private String fechaNacimiento;
     private String rcontrasena;
 
     public RegistroEmpresaPersona() {
@@ -22,7 +21,6 @@ public class RegistroEmpresaPersona {
         empresaPersona = new EmpresaPersonaEntity();
         persona = new PersonaEntity();
         usuario = new UsuarioEntity();
-        fechaNacimiento = "";
         valida = false;
         rcontrasena = "";
     }

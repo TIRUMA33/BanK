@@ -104,7 +104,7 @@ CREATE TABLE PERSONA
     NOMBRE           varchar(45) NOT NULL,
     APELLIDO1        varchar(45) NOT NULL,
     APELLIDO2        varchar(45),
-    FECHA_NACIMIENTO datetime    NOT NULL,
+    FECHA_NACIMIENTO date        NOT NULL,
     DNI              varchar(9)  NOT NULL UNIQUE,
     PRIMARY KEY (ID),
     FOREIGN KEY (ID) REFERENCES CLIENTE (ID)

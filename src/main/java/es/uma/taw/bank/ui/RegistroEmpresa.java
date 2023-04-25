@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class  RegistroEmpresa {
+public class RegistroEmpresa {
     private ClienteEntity cliente;
     private DireccionEntity direccion;
     private EmpresaEntity empresa;

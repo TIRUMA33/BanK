@@ -1,4 +1,4 @@
-<%--
+<%@ page import="es.uma.taw.bank.entity.UsuarioEntity" %><%--
   Created by IntelliJ IDEA.
   User: oscfd
   Date: 24/04/2023
@@ -6,6 +6,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+
+<%
+    UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+%>
+
 <html>
 <head>
     <title>BanK</title>
@@ -22,7 +27,7 @@
     <a href="/registro/empresa/${empresa.id}/persona">Personas autorizadas</a>
     <h2>Perfil</h2>
     <a href="/empresa/${empresa.id}/editar">Empresa</a> <br/>
-    <a href="">Personales</a>
+    <a href="/empresa/${empresa.id}/persona/<%= usuario.getId() %>/editar">Personales</a>
 </form>
 </body>
 </html>
