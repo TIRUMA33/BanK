@@ -173,6 +173,45 @@ public class RegistroController {
         return urlTo;
     }
 
+    @PostMapping("/persona/")
+    public String doRegistrarPersona(@ModelAttribute("persona") RegistroPersona registroPersona) {
+        String urlTo;
+        ClienteEntity cliente = registroPersona.getCliente();
+        DireccionEntity direccion = registroPersona.getDireccion();
+        PersonaEntity persona = registroPersona.getPersona();
+        UsuarioEntity usuario = registroPersona.getUsuario();
+        CuentaBancoEntity cuentaBanco = new CuentaBancoEntity();
+
+        if (registroPersona.getRcontrasena().equals(usuario.getContrasena())) {
+            guardadoComun(cliente, direccion, registroPersona.getValida());
+
+            persona.setId(cliente.getId());
+            this.personaRepository.save(persona);
+
+            usuario.setId(cliente.getId());
+            usuario.setNif(persona.getDni());
+            usuario.setTipoUsuarioByTipoUsuario(this.tipoUsuarioRepository.findById(2).orElse(null));
+            this.usuarioRepository.save(usuario);
+
+            cuentaBanco.setMoneda("EUR");
+            cuentaBanco.setIbanCuenta(DataGenerator.randomIbanGenerator());
+            cuentaBanco.setSaldo(0.0);
+            cuentaBanco.setSwift(DataGenerator.randomSwiftGenerator());
+            cuentaBanco.setPais("España");
+            cuentaBanco.setFechaApertura(new Timestamp(System.currentTimeMillis()));
+            cuentaBanco.setClienteByTitularId(cliente);
+            cuentaBanco.setEntidadBancariaByEntidadBancariaId(this.entidadBancariaRepository.findById(1).orElse(null));
+            cuentaBanco.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(1).orElse(null));
+            this.cuentaRepository.save(cuentaBanco);
+
+            urlTo = "redirect:/registro/persona/" + persona.getId() + "/persona";
+        } else {
+            urlTo = "contrasenaNoCoincide";
+        }
+
+        return urlTo;
+    }
+
     @GetMapping("/empresa/{id}/persona")
     public String doRegistroEmpresaPersona(@PathVariable("id") String id, Model model) {
         RegistroEmpresaPersona registroEmpresaPersona = new RegistroEmpresaPersona();
@@ -216,7 +255,6 @@ public class RegistroController {
 
         return urlTo;
     }
-
     @Transactional
     @PostMapping("/empresa/{id}/persona/borrar")
     public String doBorrarEmpresaPersona(@PathVariable("id") String id, HttpServletRequest request) {

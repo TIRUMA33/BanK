@@ -13,7 +13,7 @@
 </head>
 <body>
 <h1>REGISTRO DE PERSONAS FISICAS</h1>
-<form:form action="/registro/empresa/${persona.id}/persona/anadir" modelAttribute="persona" method="post">
+<form:form action="/registro/persona/" modelAttribute="persona" method="post">
 <h2>Datos personales</h2>
 <table>
     <tr>
@@ -37,9 +37,6 @@
     <tr>
         <td><form:label path="fechaNacimiento">Fecha nacimiento (*)</form:label></td>
         <td><form:input path="fechaNacimiento" type="date"/></td>
-        <td><form:label path="empresaPersona.tipoPersonaRelacionadaByIdTipo">Tipo (*)</form:label></td>
-        <td><form:select path="empresaPersona.tipoPersonaRelacionadaByIdTipo" items="${tipoPersonasRelacionadas}"
-                         itemLabel="tipo" itemValue="id"/></td>
     </tr>
 </table>
 <h2>Dirección</h2>
@@ -83,7 +80,10 @@
     <tr>
         <td></td>
         <td><input type="submit" value="Registrar"/></td>
-        <td><input type="reset" value="Cancelar"/></td>
+        <td><input type="reset" value="Cancelar" onclick="location.href='/'"></td>
         <td></td>
     </tr>
 </table>
+</form:form>
+</body>
+</html>
