@@ -220,6 +220,7 @@ public class RegistroController {
         model.addAttribute("registroEmpresaPersona", registroEmpresaPersona);
         model.addAttribute("tipoPersonasRelacionadas", tipoPersonaRelacionada);
         model.addAttribute("personas", personas);
+        model.addAttribute("empresaId", id);
         return "registroEmpresaPersona";
     }
 

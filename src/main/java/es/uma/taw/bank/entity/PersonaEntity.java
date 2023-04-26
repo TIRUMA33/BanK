@@ -32,6 +32,8 @@ public class PersonaEntity {
     private String dni;
     @OneToMany(mappedBy = "personaByIdPersona")
     private List<EmpresaPersonaEntity> empresaPersonasById;
+    @OneToMany(mappedBy = "personaByIdPersona")
+    private List<EmpresaClienteEntity> empresaClientesById;
 
     @Override
     public boolean equals(Object o) {

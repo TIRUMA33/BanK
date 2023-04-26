@@ -2,8 +2,10 @@ package es.uma.taw.bank.controller;
 
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
+import es.uma.taw.bank.ui.FiltroEmpresaPersona;
 import es.uma.taw.bank.ui.RegistroEmpresa;
 import es.uma.taw.bank.ui.RegistroEmpresaPersona;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,15 +60,30 @@ public class EmpresaController {
     }
 
     @GetMapping("/{id}")
-    public String doEmpresa(@PathVariable("id") String id, Model model) {
-        model.addAttribute("empresa", this.empresaRepository.findById(Integer.parseInt(id)).orElse(null));
-        return "inicioEmpresa";
+    public String doEmpresa(@PathVariable("id") String id, Model model, HttpSession session) {
+        String urlTo = "inicioEmpresa";
+
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario == null) {
+            urlTo = "iniciarSesion";
+        } else {
+            model.addAttribute("empresa", this.empresaRepository.findById(Integer.parseInt(id)).orElse(null));
+        }
+        return urlTo;
     }
 
     @GetMapping("/{id}/persona")
-    public String doEmpresaPersona(@PathVariable("id") String id, Model model) {
-        model.addAttribute("empresa", this.empresaRepository.findById(Integer.parseInt(id)).orElse(null));
-        return "inicioEmpresaPersona";
+    public String doEmpresaPersona(@PathVariable("id") String id, Model model, HttpSession session) {
+        String urlTo = "inicioEmpresaPersona";
+
+        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        if (usuario == null) {
+            urlTo = "iniciarSesion";
+        } else {
+            model.addAttribute("empresa", this.empresaRepository.findById(Integer.parseInt(id)).orElse(null));
+        }
+
+        return urlTo;
     }
 
     private RegistroEmpresa recuperarInfoEmpresa(int id) {
@@ -184,5 +201,50 @@ public class EmpresaController {
         this.usuarioRepository.save(usuario);
 
         return "redirect:/empresa/".concat(id).concat("/persona");
+    }
+
+    private String procesarFiltrado(int empresaId, FiltroEmpresaPersona filtro, Model model) {
+        List<Object[]> personas;
+        String urlTo = "listadoEmpresaPersonas";
+
+        if (filtro == null) {
+            personas = this.personaRepository.personasPorEmpresa(empresaId);
+            filtro = new FiltroEmpresaPersona();
+        } else if (!filtro.getFechaNacimiento() && filtro.getTipo().isEmpty()) {
+            personas = this.personaRepository.filtrarPersonasPorEmpresaPorDniNombre(empresaId, filtro.getTexto());
+        } else if (filtro.getTexto().isBlank() && filtro.getTipo().isEmpty()) {
+            personas = this.personaRepository.filtrarPersonasPorEmpresaPorFechaNacimiento(empresaId);
+        } else if (filtro.getTexto().isBlank() && !filtro.getFechaNacimiento()) {
+            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTipo(empresaId, filtro.getTipo());
+        } else if (filtro.getTipo().isEmpty()) {
+            personas = this.personaRepository.filtrarPersonasPorEmpresaPorDniNombreFechaNacimiento(empresaId, filtro.getTexto());
+        } else if (!filtro.getFechaNacimiento()) {
+            personas = this.personaRepository.filtrarPersonasPorEmpresaPorDniNombreTipo(empresaId, filtro.getTexto(), filtro.getTipo());
+        } else if (filtro.getTexto().isBlank()) {
+            personas = this.personaRepository.filtrarPersonasPorEmpresaPorFechaNacimientoTipo(empresaId, filtro.getTipo());
+        } else {
+            personas = this.personaRepository.filtrarPersonasPorEmpresaPorDniNombreFechaNacimientoTipo(empresaId, filtro.getTexto(), filtro.getTipo());
+        }
+
+        List<TipoPersonaRelacionadaEntity> tipoPersonaRelacionada = this.tipoPersonaRelacionadaRepository.findAll();
+
+        model.addAttribute("personas", personas);
+        model.addAttribute("filtro", filtro);
+        model.addAttribute("tipoPersonaRelacionada", tipoPersonaRelacionada);
+
+        return urlTo;
+    }
+
+    @GetMapping("{id}/persona/{personaId}/listar")
+    public String doListarEmpresaPersonas(@PathVariable("id") String id, @PathVariable("personaId") String personaId, Model model) {
+        return this.procesarFiltrado(Integer.parseInt(id), null, model);
+    }
+
+    @PostMapping("{id}/persona/{personaId}/filtrar")
+    public String doFiltrarEmpresaPersona(@PathVariable("id") String id, @PathVariable("personaId") String personaId, @ModelAttribute("filtro") FiltroEmpresaPersona filtro, Model model) {
+        model.addAttribute("empresaId", id);
+        model.addAttribute("personaId", personaId);
+
+        return this.procesarFiltrado(Integer.parseInt(id), filtro, model);
     }
 }
