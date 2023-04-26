@@ -20,13 +20,13 @@ public class DireccionEntity {
     @Column(name = "NUMERO", nullable = false)
     private Integer numero;
     @Basic
-    @Column(name = "PLANTA_PUERTA_OFICINA", nullable = true, length = 45)
+    @Column(name = "PLANTA_PUERTA_OFICINA", nullable = false, length = 45)
     private String plantaPuertaOficina;
     @Basic
     @Column(name = "CIUDAD", nullable = false, length = 45)
     private String ciudad;
     @Basic
-    @Column(name = "REGION", nullable = false, length = 45)
+    @Column(name = "REGION", nullable = true, length = 45)
     private String region;
     @Basic
     @Column(name = "CODIGO_POSTAL", nullable = false)
