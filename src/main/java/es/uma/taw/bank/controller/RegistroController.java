@@ -26,17 +26,21 @@ public class RegistroController {
 
     private DireccionRepository direccionRepository;
 
-    private EntidadBancariaRepository entidadBancariaRepository;
-
-    private EstadoCuentaRepository estadoCuentaRepository;
+    private EmpresaClienteRepository empresaClienteRepository;
 
     private EmpresaPersonaRepository empresaPersonaRepository;
 
     private EmpresaRepository empresaRepository;
 
+    private EntidadBancariaRepository entidadBancariaRepository;
+
     private EstadoClienteRepository estadoClienteRepository;
 
+    private EstadoCuentaRepository estadoCuentaRepository;
+
     private PersonaRepository personaRepository;
+
+    private TipoClienteRelacionadoRepository tipoClienteRelacionadoRepository;
 
     private TipoPersonaRelacionadaRepository tipoPersonaRelacionadaRepository;
 
@@ -60,13 +64,8 @@ public class RegistroController {
     }
 
     @Autowired
-    public void setEntidadBancariaEntity(EntidadBancariaRepository entidadBancariaRepository) {
-        this.entidadBancariaRepository = entidadBancariaRepository;
-    }
-
-    @Autowired
-    public void setEstadoCuentaRepository(EstadoCuentaRepository estadoCuentaRepository) {
-        this.estadoCuentaRepository = estadoCuentaRepository;
+    public void setEmpresaClienteRepository(EmpresaClienteRepository empresaClienteRepository) {
+        this.empresaClienteRepository = empresaClienteRepository;
     }
 
     @Autowired
@@ -80,8 +79,18 @@ public class RegistroController {
     }
 
     @Autowired
+    public void setEntidadBancariaEntity(EntidadBancariaRepository entidadBancariaRepository) {
+        this.entidadBancariaRepository = entidadBancariaRepository;
+    }
+
+    @Autowired
     public void setEstadoClienteRepository(EstadoClienteRepository estadoClienteRepository) {
         this.estadoClienteRepository = estadoClienteRepository;
+    }
+
+    @Autowired
+    public void setEstadoCuentaRepository(EstadoCuentaRepository estadoCuentaRepository) {
+        this.estadoCuentaRepository = estadoCuentaRepository;
     }
 
     @Autowired
@@ -92,6 +101,11 @@ public class RegistroController {
     @Autowired
     public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
+    }
+
+    @Autowired
+    public void setTipoClienteRelacionadoRepository(TipoClienteRelacionadoRepository tipoClienteRelacionadoRepository) {
+        this.tipoClienteRelacionadoRepository = tipoClienteRelacionadoRepository;
     }
 
     @Autowired
@@ -216,7 +230,7 @@ public class RegistroController {
     public String doRegistroEmpresaPersona(@PathVariable("id") String id, Model model) {
         RegistroEmpresaPersona registroEmpresaPersona = new RegistroEmpresaPersona();
         List<TipoPersonaRelacionadaEntity> tipoPersonaRelacionada = this.tipoPersonaRelacionadaRepository.findAll();
-        List<Object[]> personas = this.personaRepository.personasPorEmpresa(Integer.parseInt(id));
+        List<Object[]> personas = this.personaRepository.personasPorEmpresa(id);
         model.addAttribute("registroEmpresaPersona", registroEmpresaPersona);
         model.addAttribute("tipoPersonasRelacionadas", tipoPersonaRelacionada);
         model.addAttribute("personas", personas);
@@ -225,13 +239,15 @@ public class RegistroController {
     }
 
     @PostMapping("/empresa/{id}/persona/anadir")
-    public String doRegistrarEmpresaPersona(@PathVariable("id") String id, @ModelAttribute("empresaPersona") RegistroEmpresaPersona registroEmpresaPersona) {
+    public String doRegistrarEmpresaPersona(@PathVariable("id") String id,
+                                            @ModelAttribute("empresaPersona") RegistroEmpresaPersona registroEmpresaPersona) {
         String urlTo = "redirect:/registro/empresa/" + id + "/persona";
         ClienteEntity cliente = registroEmpresaPersona.getCliente();
         DireccionEntity direccion = registroEmpresaPersona.getDireccion();
         PersonaEntity persona = registroEmpresaPersona.getPersona();
         UsuarioEntity usuario = registroEmpresaPersona.getUsuario();
         EmpresaPersonaEntity empresaPersona = registroEmpresaPersona.getEmpresaPersona();
+        EmpresaClienteEntity empresaCliente = registroEmpresaPersona.getEmpresaCliente();
         EmpresaEntity empresa = this.empresaRepository.findById(Integer.parseInt(id)).orElse(null);
 
         if (registroEmpresaPersona.getRcontrasena().equals(usuario.getContrasena())) {
@@ -245,6 +261,11 @@ public class RegistroController {
             usuario.setTipoUsuarioByTipoUsuario(this.tipoUsuarioRepository.findById(2).orElse(null));
             this.usuarioRepository.save(usuario);
 
+            empresaCliente.setTipoClienteRelacionadoByIdTipo(this.tipoClienteRelacionadoRepository.findById(1).orElse(null));
+            empresaCliente.setEmpresaByIdEmpresa(empresa);
+            empresaCliente.setPersonaByIdPersona(persona);
+            this.empresaClienteRepository.save(empresaCliente);
+
             empresaPersona.setEmpresaByIdEmpresa(empresa);
             empresaPersona.setPersonaByIdPersona(persona);
             this.empresaPersonaRepository.save(empresaPersona);
@@ -254,6 +275,7 @@ public class RegistroController {
 
         return urlTo;
     }
+
     @Transactional
     @PostMapping("/empresa/{id}/persona/borrar")
     public String doBorrarEmpresaPersona(@PathVariable("id") String id, HttpServletRequest request) {

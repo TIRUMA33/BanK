@@ -46,7 +46,8 @@
         for (Object[] p : personas) {
             PersonaEntity persona = (PersonaEntity) p[0];
             DireccionEntity direccion = (DireccionEntity) p[1];
-            String tipo = (String) p[2];
+            String tipoClienteRelacionado = (String) p[2];
+            String tipoPersonaRelacionada = (String) p[3];
     %>
     <tr>
         <td><%= persona.getDni() %>
@@ -55,11 +56,15 @@
         </td>
         <td><%= persona.getFechaNacimiento() %>
         </td>
-        <td><%= tipo %>
+        <td><%= tipoPersonaRelacionada %>
         </td>
         <td><%= direccion.getCodigoPostal() %>
         </td>
         <td><%= direccion.getPais() %>
+        </td>
+        <td>
+            <a href="/empresa/${id}/persona/${personaId}/permiso/<%= persona.getId() %>"><%= tipoClienteRelacionado %>
+            </a>
         </td>
     </tr>
     <%

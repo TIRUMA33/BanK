@@ -9,6 +9,7 @@ import lombok.Setter;
 public class RegistroEmpresaPersona {
     private ClienteEntity cliente;
     private DireccionEntity direccion;
+    private EmpresaClienteEntity empresaCliente;
     private EmpresaPersonaEntity empresaPersona;
     private PersonaEntity persona;
     private UsuarioEntity usuario;
@@ -18,6 +19,7 @@ public class RegistroEmpresaPersona {
     public RegistroEmpresaPersona() {
         cliente = new ClienteEntity();
         direccion = new DireccionEntity();
+        empresaCliente = new EmpresaClienteEntity();
         empresaPersona = new EmpresaPersonaEntity();
         persona = new PersonaEntity();
         usuario = new UsuarioEntity();

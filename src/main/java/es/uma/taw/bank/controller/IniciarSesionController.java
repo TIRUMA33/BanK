@@ -37,7 +37,8 @@ public class IniciarSesionController {
     }
 
     @PostMapping("/")
-    public String doAutenticar(@RequestParam("nif") String nif, @RequestParam("contrasena") String contrasena, Model model, HttpSession session) {
+    public String doAutenticar(@RequestParam("nif") String nif, @RequestParam("contrasena") String contrasena,
+                               Model model, HttpSession session) {
         String urlTo;
         UsuarioEntity usuario = this.usuarioRepository.autenticar(nif, contrasena);
 
