@@ -77,15 +77,9 @@
         </tr>
         <tr>
             <td><form:label path="usuario.contrasena">Contraseña (*)</form:label></td>
-            <td><form:password path="usuario.contrasena" size="45" maxlength="45" required="required"/></td>
+            <td><form:password path="usuario.contrasena" size="45" maxlength="45"/></td>
             <td><form:label path="rcontrasena">Contraseña. Repetir (*)</form:label></td>
-            <td><form:password path="rcontrasena" size="45" maxlength="45" required="required"/></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Añadir"/></td>
-            <td><input type="reset" value="Cancelar"/></td>
-            <td></td>
+            <td><form:password path="rcontrasena" size="45" maxlength="45"/></td>
         </tr>
     </table>
     <input type="submit" value="Guardar cambios">

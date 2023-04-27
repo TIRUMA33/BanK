@@ -23,6 +23,9 @@
     <h1>Bienvenido de nuevo</h1>
     <p>Está gestionando ${empresa.nombre}.</p>
     <h2>Operaciones</h2>
+    <a href="/empresa/${empresa.id}/persona/<%= usuario.getId() %>/transferencia">Transferencias</a>
+    <a href="#">Cambio de divisas</a>
+    <a href="#">Historial empresa</a>
     <a href="/empresa/${empresa.id}/persona/<%= usuario.getId() %>/listar">Socios/Autorizados</a>
     <h2>Gestión de acceso</h2>
     <a href="/registro/empresa/${empresa.id}/persona">Personas autorizadas</a>

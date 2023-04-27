@@ -11,11 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Controller
 @RequestMapping("/empresa")
 public class EmpresaController {
+
+    private CuentaRepository cuentaRepository;
 
     private DireccionRepository direccionRepository;
 
@@ -31,7 +34,14 @@ public class EmpresaController {
 
     private TipoPersonaRelacionadaRepository tipoPersonaRelacionadaRepository;
 
+    private TransaccionRepository transaccionRepository;
+
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    public void setCuentaRepository(CuentaRepository cuentaRepository) {
+        this.cuentaRepository = cuentaRepository;
+    }
 
     @Autowired
     public void setDireccionRepository(DireccionRepository direccionRepository) {
@@ -66,6 +76,11 @@ public class EmpresaController {
     @Autowired
     public void setTipoPersonaRelacionadaRepository(TipoPersonaRelacionadaRepository tipoPersonaRelacionadaRepository) {
         this.tipoPersonaRelacionadaRepository = tipoPersonaRelacionadaRepository;
+    }
+
+    @Autowired
+    public void setTransaccionRepository(TransaccionRepository transaccionRepository) {
+        this.transaccionRepository = transaccionRepository;
     }
 
     @Autowired
@@ -266,9 +281,6 @@ public class EmpresaController {
     @PostMapping("{id}/persona/{personaId}/filtrar")
     public String doFiltrarEmpresaPersona(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
                                           @ModelAttribute("filtro") FiltroEmpresaPersona filtro, Model model) {
-        model.addAttribute("empresaId", id);
-        model.addAttribute("personaId", personaId);
-
         return this.procesarFiltrado(id, personaId, filtro, model);
     }
 
@@ -290,5 +302,46 @@ public class EmpresaController {
         model.addAttribute("personaId", personaId);
 
         return this.procesarFiltrado(id, personaId, filtro, model);
+    }
+
+    @GetMapping("{id}/persona/{personaId}/transferencia")
+    public String doTransferenciaEmpresa(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
+                                         Model model) {
+        TransaccionEntity transaccion = new TransaccionEntity();
+        transaccion.setCuentaBancoByCuentaOrigen(this.cuentaRepository.findById(Integer.parseInt(id)).orElse(null));
+        List<CuentaBancoEntity> cuentas =
+                this.cuentaRepository.buscarSinMi(transaccion.getCuentaBancoByCuentaOrigen().getId());
+
+        model.addAttribute("cuentas", cuentas);
+        model.addAttribute("transaccion", transaccion);
+        model.addAttribute("empresaId", id);
+        model.addAttribute("personaId", personaId);
+
+        return "transferenciaEmpresa";
+    }
+
+    @PostMapping("{id}/persona/{personaId}/transferencia/realizar")
+    public String doRealizarTransferenciaEmpresa(@PathVariable("id") String id,
+                                                 @PathVariable("personaId") String personaId, @ModelAttribute(
+                                                         "transaccion") TransaccionEntity transaccion) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        transaccion.setFechaEjecucion(timestamp);
+        transaccion.setFechaInstruccion(timestamp);
+
+        CuentaBancoEntity origen =
+                this.cuentaRepository.findById(transaccion.getCuentaBancoByCuentaOrigen().getId()).orElse(null);
+        CuentaBancoEntity destino =
+                this.cuentaRepository.findById(transaccion.getCuentaBancoByCuentaDestino().getId()).orElse(null);
+
+        if (origen != null && destino != null) {
+            origen.setSaldo(origen.getSaldo() - transaccion.getCantidad());
+            destino.setSaldo(destino.getSaldo() + transaccion.getCantidad());
+
+            this.transaccionRepository.save(transaccion);
+            this.cuentaRepository.save(origen);
+            this.cuentaRepository.save(destino);
+        }
+
+        return "redirect:/empresa/".concat(id).concat("/persona");
     }
 }

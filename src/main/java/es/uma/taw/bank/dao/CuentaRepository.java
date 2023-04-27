@@ -10,6 +10,7 @@ import java.util.List;
 public interface CuentaRepository extends JpaRepository<CuentaBancoEntity, Integer> {
     @Query("select c from CuentaBancoEntity c where c.clienteByTitularId.id = :cliente")
     public List<CuentaBancoEntity> buscarPorCliente(@Param("cliente") Integer clienteId);
+
     @Query("select c from CuentaBancoEntity c where c.id!=:cuentaId")
     public List<CuentaBancoEntity> buscarSinMi(@Param("cuentaId") Integer cuentaId);
 }
