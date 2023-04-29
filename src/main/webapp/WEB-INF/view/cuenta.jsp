@@ -23,7 +23,7 @@
 %>
 <h1>Tu cuenta está bloqueada, solicite un desbloqueo <a href="/cajero/desbloquear?cuenta=<%= cuenta.getId() %>"> aquí </a>.</h1>
 <%
-    }
+    }else{
 %>
 
 <table border="1">
@@ -36,7 +36,7 @@
         <th>FECHA DE CIERRE</th>
     </tr>
     <tr>
-        <td>${cuenta.moneda}</td>
+        <td>${cuenta.divisaByDivisaId.nombre}</td>
         <td>${cuenta.saldo}</td>
         <td>${cuenta.swift}</td>
         <td>${cuenta.pais}</td>
@@ -48,6 +48,8 @@
 <p><a href="/cajero/retirada?cuenta=${cuenta.id}">Sacar dinero</a></p>
 <p><a href="/cajero/operaciones?cuenta=${cuenta.id}">Operaciones de mi cuenta</a></p>
 <p><a href="/cajero/cambioDivisa?cuenta=${cuenta.id}">Cambio de divisa</a></p>
-
+<%
+    }
+%>
 </body>
 </html>
