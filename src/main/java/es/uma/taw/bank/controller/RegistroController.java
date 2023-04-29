@@ -26,6 +26,8 @@ public class RegistroController {
 
     private DireccionRepository direccionRepository;
 
+    private DivisaRepository divisaRepository;
+
     private EmpresaClienteRepository empresaClienteRepository;
 
     private EmpresaPersonaRepository empresaPersonaRepository;
@@ -61,6 +63,11 @@ public class RegistroController {
     @Autowired
     public void setDireccionRepository(DireccionRepository direccionRepository) {
         this.direccionRepository = direccionRepository;
+    }
+
+    @Autowired
+    public void setDivisaRepository(DivisaRepository divisaRepository) {
+        this.divisaRepository = divisaRepository;
     }
 
     @Autowired
@@ -168,7 +175,6 @@ public class RegistroController {
             usuario.setTipoUsuarioByTipoUsuario(this.tipoUsuarioRepository.findById(2).orElse(null));
             this.usuarioRepository.save(usuario);
 
-            cuentaBanco.setMoneda("EUR");
             cuentaBanco.setIbanCuenta(DataGenerator.randomIbanGenerator());
             cuentaBanco.setSaldo(0.0);
             cuentaBanco.setSwift(DataGenerator.randomSwiftGenerator());
@@ -177,6 +183,7 @@ public class RegistroController {
             cuentaBanco.setClienteByTitularId(cliente);
             cuentaBanco.setEntidadBancariaByEntidadBancariaId(this.entidadBancariaRepository.findById(1).orElse(null));
             cuentaBanco.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(1).orElse(null));
+            cuentaBanco.setDivisaByDivisaId(this.divisaRepository.buscarPorNombre("EUR"));
             this.cuentaRepository.save(cuentaBanco);
 
             urlTo = "redirect:/registro/empresa/" + empresa.getId() + "/persona";
@@ -207,7 +214,6 @@ public class RegistroController {
             usuario.setTipoUsuarioByTipoUsuario(this.tipoUsuarioRepository.findById(2).orElse(null));
             this.usuarioRepository.save(usuario);
 
-            cuentaBanco.setMoneda("EUR");
             cuentaBanco.setIbanCuenta(DataGenerator.randomIbanGenerator());
             cuentaBanco.setSaldo(0.0);
             cuentaBanco.setSwift(DataGenerator.randomSwiftGenerator());
@@ -216,6 +222,7 @@ public class RegistroController {
             cuentaBanco.setClienteByTitularId(cliente);
             cuentaBanco.setEntidadBancariaByEntidadBancariaId(this.entidadBancariaRepository.findById(1).orElse(null));
             cuentaBanco.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(1).orElse(null));
+            cuentaBanco.setDivisaByDivisaId(this.divisaRepository.buscarPorNombre("EUR"));
             this.cuentaRepository.save(cuentaBanco);
 
             urlTo = "redirect:/registro/persona/" + persona.getId() + "/persona";

@@ -11,8 +11,8 @@ import lombok.Setter;
 public class DivisaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID", nullable = false, length = 3)
-    private String id;
+    @Column(name = "ID", nullable = false)
+    private Integer id;
     @Basic
     @Column(name = "NOMBRE", nullable = false, length = 40)
     private String nombre;
