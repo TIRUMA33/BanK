@@ -34,7 +34,6 @@
     <td><%=persona.getNombre()%> <%=persona.getApellido1()%> <%=persona.getApellido2()%></td>
     <td><%=persona.getDni()%></td>
     <td><a  href="/gestor/concesion?id=<%=persona.getId()%>">Gestionar</a></td>
-
 </tr>
 <%
     }
@@ -51,6 +50,7 @@
 <%
     }
 %>
-</table>
+</table><br>
+<a href="/gestor/"><button>Volver Atrás</button></a>
 </body>
 </html>
