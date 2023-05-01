@@ -24,4 +24,7 @@ public interface TransaccionRepository extends JpaRepository<TransaccionEntity, 
     @Query("select t from TransaccionEntity t where (t.cuentaBancoByCuentaDestino.id=:cuenta and t.cuentaBancoByCuentaOrigen.id=:cuentaFiltro) or (t.cuentaBancoByCuentaOrigen.id=:cuenta and t.cuentaBancoByCuentaDestino.id=:cuentaFiltro)")
     public List<TransaccionEntity> soloCuenta(@Param("cuenta") Integer idCuenta, @Param("cuentaFiltro") String idCuentaFiltro);
 
+    @Query("select t from TransaccionEntity t order by t.fechaEjecucion desc")
+    public List<TransaccionEntity> ordenarlistatransacciones();
+
 }

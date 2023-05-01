@@ -43,5 +43,7 @@
         </ul>
         <%}
     }%>
+    <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a><a href="/gestor/peticioncuenta?id=<%=cliente.getId()%>">Aceptar</a>
+    <a>&nbsp;&nbsp;&nbsp;&nbsp;</a><a href="/gestor/rechazocuenta">Rechazar</a>
 </body>
 </html>

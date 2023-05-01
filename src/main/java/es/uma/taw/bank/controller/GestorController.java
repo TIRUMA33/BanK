@@ -1,14 +1,14 @@
 package es.uma.taw.bank.controller;
 
+import es.uma.taw.bank.DataGenerator;
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +27,14 @@ protected PersonaRepository personaRepository;
 protected TransaccionRepository transaccionRepository;
 @Autowired
 protected CuentaRepository cuentaRepository;
+@Autowired
+protected EntidadBancariaRepository entidadBancariaRepository;
+@Autowired
+protected EstadoCuentaRepository estadoCuentaRepository;
+@Autowired
+protected DivisaRepository divisaRepository;
+@Autowired
+protected EstadoClienteRepository estadoClienteRepository;
 
 @GetMapping("/")
 public String doInicioGestor(){
@@ -125,8 +133,31 @@ public String doPendientes(Model model) {
 
     model.addAttribute("cliente",cliente);
 
-
-
     return "concesion";
+    }
+
+    @GetMapping("/peticioncuenta")
+    public String dopeticion(@ModelAttribute("id")Integer id){
+        ClienteEntity cliente = this.clienteRepository.findById(id).orElse(null);
+        CuentaBancoEntity cuentaBanco = new CuentaBancoEntity();
+
+        cuentaBanco.setIbanCuenta(DataGenerator.randomIbanGenerator());
+        cuentaBanco.setSaldo(0.0);
+        cuentaBanco.setSwift(DataGenerator.randomSwiftGenerator());
+        cuentaBanco.setPais("España");
+        cuentaBanco.setFechaApertura(new Timestamp(System.currentTimeMillis()));
+        cuentaBanco.setClienteByTitularId(cliente);
+        cuentaBanco.setEntidadBancariaByEntidadBancariaId(this.entidadBancariaRepository.findById(1).orElse(null));
+        cuentaBanco.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(1).orElse(null));
+        cuentaBanco.setDivisaByDivisaId(this.divisaRepository.buscarPorNombre("EUR"));
+        this.cuentaRepository.save(cuentaBanco);
+        cliente.setEstadoClienteByEstadoClienteId(this.estadoClienteRepository.findById(1).orElse(null));
+        this.clienteRepository.save(cliente);
+        return "redirect:/gestor/clientespendientes";
+    }
+
+    @GetMapping("/rechazocuenta")
+    public String dorechazo(){
+        return "redirect:/gestor/clientespendientes";
     }
 }

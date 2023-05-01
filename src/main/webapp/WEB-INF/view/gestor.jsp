@@ -13,7 +13,7 @@
 <body>
 <h1>Página de Administracion del Gestor</h1>
 <p>
-  <a href="/gestor/clientespendientes"> Lista de peticiones de concesión</a>
+  <a href="/gestor/clientespendientes"> Lista de peticiones de clientes</a>
 </p>
 <p>
     <a href="/gestor/lista"> Lista de clientes</a>
