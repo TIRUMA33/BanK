@@ -14,15 +14,16 @@
 <h1>Realizar una retirada en:</h1>
 <form method="post" action="/cajero/retirarCambio">
     <input hidden="true" value="${cuenta.id}" name="cuenta">
-    Cantidad en ${origen}:<input id="origen" type="number" name="cantidad" onkeyup="cambiar()">
-    Cantidad en ${destino}:<input id="destino" type="numbre" value="${equivalencia}" disabled>
+    Cantidad en ${origen}:<input id="origen" type="number" name="cantidad" onkeyup="cambiar()" required="required">
+    Cantidad en ${destino}:<input id="destino" type="numbre" disabled>
     <button>Retirar</button>
 </form>
 <script>
     function cambiar(){
         let origen = document.getElementById("origen").value;
         let destino = document.getElementById("destino");
-        destino.value=origen*${equivalencia};
+        if(origen!==null && origen!=="")destino.value=origen*${equivalencia};
+        else destino.value="";
     }
 </script>
 </body>
