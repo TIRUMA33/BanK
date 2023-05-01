@@ -19,11 +19,11 @@
     <table>
         <tr>
             <td>NIF/CIF:</td>
-            <td><input type="text" name="nif" size="9" maxlength="9"></td>
+            <td><input type="text" name="nif" size="9" maxlength="9" required="required"></td>
         </tr>
         <tr>
             <td>Contraseña:</td>
-            <td><input type="password" name="contrasena" size="45" maxlength="45"></td>
+            <td><input type="password" name="contrasena" size="45" maxlength="45" required="required"></td>
         </tr>
         <tr>
             <td>

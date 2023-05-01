@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.List;
 
 @Getter
@@ -26,12 +26,14 @@ public class PersonaEntity {
     private String apellido2;
     @Basic
     @Column(name = "FECHA_NACIMIENTO", nullable = false)
-    private Timestamp fechaNacimiento;
+    private Date fechaNacimiento;
     @Basic
     @Column(name = "DNI", nullable = false, length = 9)
     private String dni;
     @OneToMany(mappedBy = "personaByIdPersona")
     private List<EmpresaPersonaEntity> empresaPersonasById;
+    @OneToMany(mappedBy = "personaByIdPersona")
+    private List<EmpresaClienteEntity> empresaClientesById;
 
     @Override
     public boolean equals(Object o) {

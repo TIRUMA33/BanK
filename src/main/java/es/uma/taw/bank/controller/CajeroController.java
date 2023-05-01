@@ -119,11 +119,30 @@ public class CajeroController {
         if(filtro==null){
             filtro=new FiltroOperaciones();
         }
-        else if(filtro.getCantidad() && filtro.getFechaEjecucion() && filtro.getCuentaFiltro()!=null && filtro.getCuentaFiltro().equals("")){
+        //Con el filtro de cuentas puesto
+        else if(filtro.getCantidad() && filtro.getFechaEjecucion() && filtro.getCuentaFiltro()!=null && !filtro.getCuentaFiltro().equals("")){
             operaciones=transaccionRepository.todoFiltrado(idCuenta,filtro.getCuentaFiltro());
+        }
+        else if(filtro.getCantidad() && !filtro.getFechaEjecucion() && filtro.getCuentaFiltro()!=null && !filtro.getCuentaFiltro().equals("")){
+            operaciones = transaccionRepository.cuentaYCantidad(idCuenta,filtro.getCuentaFiltro());
+        }
+        else if(!filtro.getCantidad() && filtro.getFechaEjecucion() && filtro.getCuentaFiltro()!=null && !filtro.getCuentaFiltro().equals("")){
+            operaciones = transaccionRepository.cuentaYFecha(idCuenta,filtro.getCuentaFiltro());
+        }
+        else if(!filtro.getCantidad() && !filtro.getFechaEjecucion() && filtro.getCuentaFiltro()!=null && !filtro.getCuentaFiltro().equals("")){
+            operaciones = transaccionRepository.soloCuenta(idCuenta,filtro.getCuentaFiltro());
         }
         else if(filtro.getCantidad() && filtro.getFechaEjecucion() && (filtro.getCuentaFiltro()==null || filtro.getCuentaFiltro().equals(""))){
             operaciones=transaccionRepository.soloSinCuenta(idCuenta);
+        }
+        else if(filtro.getCantidad() && !filtro.getFechaEjecucion() && (filtro.getCuentaFiltro()==null || filtro.getCuentaFiltro().equals(""))){
+            operaciones = transaccionRepository.soloCantidad(idCuenta);
+        }
+        else if(!filtro.getCantidad() && filtro.getFechaEjecucion() && (filtro.getCuentaFiltro()==null || filtro.getCuentaFiltro().equals(""))){
+            operaciones = transaccionRepository.soloFecha(idCuenta);
+        }
+        else if(!filtro.getCantidad() && !filtro.getFechaEjecucion() && (filtro.getCuentaFiltro()==null || filtro.getCuentaFiltro().equals(""))){
+            operaciones=transaccionRepository.operacionesPorCuenta(idCuenta);
         }
 
         model.addAttribute("filtro", filtro);
@@ -135,7 +154,7 @@ public class CajeroController {
     @GetMapping("/cambioDivisa")
     public String cambioDivisa(Model model, @RequestParam("cuenta") Integer idCuenta){
         CuentaBancoEntity c = cuentaRepository.findById(idCuenta).get();
-        DivisaEntity divisaInicial = divisaRepository.buscarPorNombre(c.getMoneda());
+        DivisaEntity divisaInicial = divisaRepository.buscarPorNombre(c.getDivisaByDivisaId().getNombre());
         List<DivisaEntity> divisas = divisaRepository.findAll();
         divisas.removeIf(d -> (d.getNombre().equals(divisaInicial.getNombre())));
         List<Cambio> lista = new ArrayList<>();
@@ -152,11 +171,11 @@ public class CajeroController {
     @PostMapping("/cambiarA")
     public String cambiarA(Model model, @RequestParam("cuenta") Integer idCuenta, @RequestParam("moneda") String monedaDestino){
         CuentaBancoEntity c = cuentaRepository.findById(idCuenta).get();
-        DivisaEntity origen = divisaRepository.buscarPorNombre(c.getMoneda());
+        DivisaEntity origen = divisaRepository.buscarPorNombre(c.getDivisaByDivisaId().getNombre());
         DivisaEntity destino = divisaRepository.buscarPorNombre(monedaDestino);
         Double equivalencia = origen.getEquivalencia()/destino.getEquivalencia();
         model.addAttribute("cuenta",c);
-        model.addAttribute("origen",c.getMoneda());
+        model.addAttribute("origen",c.getDivisaByDivisaId().getNombre());
         model.addAttribute("destino",monedaDestino);
         model.addAttribute("equivalencia",equivalencia);
         return "cambiarA";

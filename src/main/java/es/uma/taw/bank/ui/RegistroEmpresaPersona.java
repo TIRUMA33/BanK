@@ -9,20 +9,20 @@ import lombok.Setter;
 public class RegistroEmpresaPersona {
     private ClienteEntity cliente;
     private DireccionEntity direccion;
+    private EmpresaClienteEntity empresaCliente;
     private EmpresaPersonaEntity empresaPersona;
     private PersonaEntity persona;
     private UsuarioEntity usuario;
     private Boolean valida;
-    private String fechaNacimiento;
     private String rcontrasena;
 
     public RegistroEmpresaPersona() {
         cliente = new ClienteEntity();
         direccion = new DireccionEntity();
+        empresaCliente = new EmpresaClienteEntity();
         empresaPersona = new EmpresaPersonaEntity();
         persona = new PersonaEntity();
         usuario = new UsuarioEntity();
-        fechaNacimiento = "";
         valida = false;
         rcontrasena = "";
     }

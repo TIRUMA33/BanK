@@ -18,11 +18,11 @@
 <br>
 <form:form action="/cajero/editar" modelAttribute="persona" method="post">
     <form:hidden path="id"></form:hidden>
-    <form:input path="nombre" maxlength="45" size="45"></form:input><br>
-    <form:input path="apellido1" maxlength="45" size="45"></form:input><br>
-    <form:input path="apellido2" maxlength="45" size="45"></form:input><br>
-    <form:input path="fechaNacimiento"></form:input><br>
-    <form:input path="dni" maxlength="9" size="9"></form:input><br>
+    Nombre: <form:input path="nombre" maxlength="45" size="45"></form:input><br>
+    Apellido 1: <form:input path="apellido1" maxlength="45" size="45"></form:input><br>
+    Apellido 2: <form:input path="apellido2" maxlength="45" size="45"></form:input><br>
+    Fecha de nacimiento: <form:input path="fechaNacimiento"></form:input><br>
+    DNI: <form:input path="dni" maxlength="9" size="9"></form:input><br>
     <form:button>Guardar</form:button>
 </form:form>
 </body>

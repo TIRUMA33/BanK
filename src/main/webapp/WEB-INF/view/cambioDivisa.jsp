@@ -16,7 +16,7 @@
 </head>
 <body>
 <h1>Cambia de divisa</h1>
-<h3>Tu cuenta contiene ${cuenta.moneda}</h3>
+<h3>Tu cuenta contiene ${cuenta.divisaByDivisaId.nombre}</h3>
 <form method="post" action="/cajero/cambiarA">
     <select name="moneda">
         <%

@@ -17,9 +17,6 @@ public class CuentaBancoEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "MONEDA", nullable = false, length = 10)
-    private String moneda;
-    @Basic
     @Column(name = "IBAN_CUENTA", nullable = false, length = 24)
     private String ibanCuenta;
     @Basic
@@ -41,6 +38,9 @@ public class CuentaBancoEntity {
     @JoinColumn(name = "TITULAR_ID", referencedColumnName = "ID", nullable = false)
     private ClienteEntity clienteByTitularId;
     @ManyToOne
+    @JoinColumn(name = "DIVISA_ID", referencedColumnName = "ID", nullable = false)
+    private DivisaEntity divisaByDivisaId;
+    @ManyToOne
     @JoinColumn(name = "ENTIDAD_BANCARIA_ID", referencedColumnName = "ID", nullable = false)
     private EntidadBancariaEntity entidadBancariaByEntidadBancariaId;
     @ManyToOne
@@ -59,7 +59,6 @@ public class CuentaBancoEntity {
         CuentaBancoEntity that = (CuentaBancoEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (moneda != null ? !moneda.equals(that.moneda) : that.moneda != null) return false;
         if (ibanCuenta != null ? !ibanCuenta.equals(that.ibanCuenta) : that.ibanCuenta != null) return false;
         if (saldo != null ? !saldo.equals(that.saldo) : that.saldo != null) return false;
         if (swift != null ? !swift.equals(that.swift) : that.swift != null) return false;
@@ -74,7 +73,6 @@ public class CuentaBancoEntity {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (moneda != null ? moneda.hashCode() : 0);
         result = 31 * result + (ibanCuenta != null ? ibanCuenta.hashCode() : 0);
         result = 31 * result + (saldo != null ? saldo.hashCode() : 0);
         result = 31 * result + (swift != null ? swift.hashCode() : 0);

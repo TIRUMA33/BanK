@@ -22,6 +22,8 @@ public class EmpresaEntity {
     private String cif;
     @OneToMany(mappedBy = "empresaByIdEmpresa")
     private List<EmpresaPersonaEntity> empresaPersonasById;
+    @OneToMany(mappedBy = "empresaByIdEmpresa")
+    private List<EmpresaClienteEntity> empresaClientesById;
 
     @Override
     public boolean equals(Object o) {
