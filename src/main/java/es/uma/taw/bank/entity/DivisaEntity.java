@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -19,6 +21,8 @@ public class DivisaEntity {
     @Basic
     @Column(name = "EQUIVALENCIA", nullable = false, precision = 0)
     private Double equivalencia;
+    @OneToMany(mappedBy = "divisaByDivisaId")
+    private List<CuentaBancoEntity> cuentaBancosById;
 
     @Override
     public boolean equals(Object o) {

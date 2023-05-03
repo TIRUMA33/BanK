@@ -164,7 +164,7 @@ CREATE TABLE USUARIO
 
 CREATE TABLE CONVERSACION
 (
-    ID        int NOT NULL,
+    ID        int NOT NULL AUTO_INCREMENT,
     EMISOR    int NOT NULL,
     RECEPTOR  int NOT NULL,
     TERMINADA tinyint,
@@ -175,7 +175,7 @@ CREATE TABLE CONVERSACION
 
 CREATE TABLE MENSAJE
 (
-    ID           int          NOT NULL,
+    ID           int          NOT NULL AUTO_INCREMENT,
     CONVERSACION int          NOT NULL,
     CONTENIDO    varchar(500) NOT NULL,
     FECHA        datetime     NOT NULL,
