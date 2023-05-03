@@ -1,4 +1,4 @@
-<%@ page import="es.uma.taw.bank.entity.UsuarioEntity" %><%--
+  <%@ page import="es.uma.taw.bank.entity.UsuarioEntity" %><%--
   Created by IntelliJ IDEA.
   User: oscfd
   Date: 24/04/2023
