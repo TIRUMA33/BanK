@@ -308,7 +308,7 @@ public class EmpresaController {
     public String doTransferenciaEmpresa(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
                                          Model model) {
         TransaccionEntity transaccion = new TransaccionEntity();
-        transaccion.setCuentaBancoByCuentaOrigen(this.cuentaRepository.findById(Integer.parseInt(id)).orElse(null));
+        transaccion.setCuentaBancoByCuentaOrigen(this.cuentaRepository.buscarPorCliente(Integer.parseInt(id)).get(0));
         List<CuentaBancoEntity> cuentas =
                 this.cuentaRepository.buscarSinMi(transaccion.getCuentaBancoByCuentaOrigen().getId());
 
