@@ -14,7 +14,6 @@ public class RegistroPersona {
     private PersonaEntity persona;
     private UsuarioEntity usuario;
     private Boolean valida;
-    private String fechaNacimiento;
     private String rcontrasena;
 
     public RegistroPersona(){

@@ -13,10 +13,26 @@
 </head>
 <body>
 <h1>Realizar una retirada:</h1>
-<form method="post" action="/cajero/retirar">
+<form method="post" action="/cajero/retirar" onsubmit="comprobarSaldo()">
+    <h3>Saldo disponible: <span style="color: ${cuenta.saldo<0?"crimson" : "black"}">${cuenta.saldo}</span></h3>
     <input hidden="true" value="${cuenta.id}" name="cuenta">
-    Cantidad:<input type="number" name="cantidad">
-    <button>Retirar</button>
+    Cantidad:<input id="cantidad" type="number" name="cantidad" required="required">
+    <button id="boton">Retirar</button>
 </form>
+<script>
+    function comprobarSaldo(){
+        let saldo = ${cuenta.saldo};
+        let a = document.getElementById("cantidad").value;
+        let boton = document.getElementById("boton");
+        const para = document.createElement("p");
+        para.innerText = "No tienes saldo suficiente";
+        para.id="no";
+
+        if(a>=saldo){
+            event.preventDefault();
+            if(document.getElementById("no")===null)document.body.appendChild(para);
+        }
+    }
+</script>
 </body>
 </html>

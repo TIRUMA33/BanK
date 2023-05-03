@@ -17,7 +17,7 @@
     <form:hidden path="id"></form:hidden>
     <form:hidden path="cuentaBancoByCuentaOrigen"></form:hidden>
   Destino:<form:select path="cuentaBancoByCuentaDestino" items="${cuentas}" itemValue="id" itemLabel="ibanCuenta"></form:select><br>
-  Cantidad:<form:input path="cantidad" size="20" maxlength="20"></form:input><br>
+  Cantidad:<form:input path="cantidad" size="20" maxlength="20" required="required"></form:input><br>
   <form:button>Realizar</form:button>
 
 </form:form>
