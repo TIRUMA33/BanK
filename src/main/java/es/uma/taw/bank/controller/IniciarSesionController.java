@@ -52,7 +52,7 @@ public class IniciarSesionController {
             } else if (usuario.getTipoUsuarioByTipoUsuario().getId().equals(2)) {
                 urlTo = "redirect:/empresa/" + this.empresaRepository.findByCif(usuario.getNif()).orElse(null).getId() + "/persona";
             } else {
-                urlTo = "redirect:/persona/" + usuario.getId();
+                urlTo = "redirect:/persona/";
             }
         }
 

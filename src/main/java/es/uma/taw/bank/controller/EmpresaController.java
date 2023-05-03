@@ -126,7 +126,7 @@ public class EmpresaController {
         return registroEmpresa;
     }
 
-    @GetMapping("/{id}/editar")
+    @GetMapping("/{id}/")
     public String doEditarEmpresa(@PathVariable("id") String id, Model model) {
         model.addAttribute("registroEmpresa", recuperarInfoEmpresa(Integer.parseInt(id)));
         return "editarEmpresa";

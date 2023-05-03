@@ -189,7 +189,6 @@ public class RegistroController {
         DireccionEntity direccion = registroPersona.getDireccion();
         PersonaEntity persona = registroPersona.getPersona();
         UsuarioEntity usuario = registroPersona.getUsuario();
-        CuentaBancoEntity cuentaBanco = new CuentaBancoEntity();
 
         if (registroPersona.getRcontrasena().equals(usuario.getContrasena())) {
             guardadoComun(cliente, direccion, registroPersona.getValida());
@@ -199,21 +198,10 @@ public class RegistroController {
 
             usuario.setId(cliente.getId());
             usuario.setNif(persona.getDni());
-            usuario.setTipoUsuarioByTipoUsuario(this.tipoUsuarioRepository.findById(2).orElse(null));
+            usuario.setTipoUsuarioByTipoUsuario(this.tipoUsuarioRepository.findById(1).orElse(null));
             this.usuarioRepository.save(usuario);
 
-            cuentaBanco.setIbanCuenta(DataGenerator.randomIbanGenerator());
-            cuentaBanco.setSaldo(0.0);
-            cuentaBanco.setSwift(DataGenerator.randomSwiftGenerator());
-            cuentaBanco.setPais("España");
-            cuentaBanco.setFechaApertura(new Timestamp(System.currentTimeMillis()));
-            cuentaBanco.setClienteByTitularId(cliente);
-            cuentaBanco.setEntidadBancariaByEntidadBancariaId(this.entidadBancariaRepository.findById(1).orElse(null));
-            cuentaBanco.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(1).orElse(null));
-            cuentaBanco.setDivisaByDivisaId(this.divisaRepository.buscarPorNombre("EUR"));
-            this.cuentaRepository.save(cuentaBanco);
-
-            urlTo = "redirect:/registro/persona/" + persona.getId() + "/persona";
+            urlTo = "redirect:/persona/";
         } else {
             urlTo = "contrasenaNoCoincide";
         }
