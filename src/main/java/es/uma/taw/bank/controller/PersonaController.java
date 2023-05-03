@@ -1,11 +1,7 @@
 package es.uma.taw.bank.controller;
 
-import es.uma.taw.bank.dao.DireccionRepository;
-import es.uma.taw.bank.dao.PersonaRepository;
-import es.uma.taw.bank.dao.UsuarioRepository;
-import es.uma.taw.bank.entity.DireccionEntity;
-import es.uma.taw.bank.entity.PersonaEntity;
-import es.uma.taw.bank.entity.UsuarioEntity;
+import es.uma.taw.bank.dao.*;
+import es.uma.taw.bank.entity.*;
 import es.uma.taw.bank.ui.RegistroEmpresa;
 import es.uma.taw.bank.ui.RegistroPersona;
 import jakarta.servlet.http.HttpSession;
@@ -13,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 @Controller
 @RequestMapping("/persona")
@@ -26,6 +25,12 @@ public class PersonaController {
 
     @Autowired
     DireccionRepository direccionRepository;
+
+    @Autowired
+    CuentaRepository cuentaRepository;
+
+    @Autowired
+    TransaccionRepository transaccionRepository;
 
     @GetMapping("/")
     public String doPersona(HttpSession session){
@@ -94,6 +99,39 @@ public class PersonaController {
         return "redirect:/persona/";
     }
 
+    @GetMapping("/transferencia")
+    public String doTransferencia(@RequestParam("id") Integer idpersona, Model model){
 
+        TransaccionEntity transaccion = new TransaccionEntity();
+        transaccion.setCuentaBancoByCuentaOrigen(this.cuentaRepository.buscarPorCliente(idpersona).get(0));
+        List<CuentaBancoEntity> cuentas = this.cuentaRepository.buscarSinMi(transaccion.getCuentaBancoByCuentaOrigen().getId());
+
+        model.addAttribute("cuentas", cuentas);
+        model.addAttribute("transaccion", transaccion);
+        return "transferenciaPersona";
+    }
+
+    @PostMapping("/transferencia/realizar")
+    public String doRealizar(@ModelAttribute("transaccion") TransaccionEntity transaccion) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        transaccion.setFechaEjecucion(timestamp);
+        transaccion.setFechaInstruccion(timestamp);
+
+        CuentaBancoEntity origen =
+                this.cuentaRepository.findById(transaccion.getCuentaBancoByCuentaOrigen().getId()).orElse(null);
+        CuentaBancoEntity destino =
+                this.cuentaRepository.findById(transaccion.getCuentaBancoByCuentaDestino().getId()).orElse(null);
+
+        if(origen != null && destino != null) {
+            origen.setSaldo(origen.getSaldo() - transaccion.getCantidad());
+            destino.setSaldo(destino.getSaldo() + transaccion.getCantidad());
+
+            this.transaccionRepository.save(transaccion);
+            this.cuentaRepository.save(origen);
+            this.cuentaRepository.save(destino);
+        }
+
+        return "redirect:/persona/";
+    }
 
 }

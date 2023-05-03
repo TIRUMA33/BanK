@@ -21,6 +21,7 @@
 
 <form action="/persona/editar" method="post">
   <a href="/persona/editar?id=<%= usuario.getId() %>">Modificar datos Personales</a>
+  <a href="/persona/transferencia?id=<%= usuario.getId() %>">Realizar transferencia</a>
 </form>
 </body>
 </html>
