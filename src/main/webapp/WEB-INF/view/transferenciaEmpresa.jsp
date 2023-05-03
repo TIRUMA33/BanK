@@ -24,7 +24,8 @@
         </tr>
         <tr>
             <th>Saldo disponible</th>
-            <td>${transaccion.cuentaBancoByCuentaOrigen.saldo} ${transaccion.cuentaBancoByCuentaOrigen.moneda}</td>
+            <td>${transaccion.cuentaBancoByCuentaOrigen.saldo}
+                    ${transaccion.cuentaBancoByCuentaOrigen.divisaByDivisaId.nombre}</td>
         </tr>
         <tr>
             <th>Cuenta destino</th>
@@ -33,7 +34,7 @@
         </tr>
         <tr>
             <th>Importe</th>
-            <td><form:input path="cantidad"/> ${transaccion.cuentaBancoByCuentaOrigen.moneda}</td>
+            <td><form:input path="cantidad"/> ${transaccion.cuentaBancoByCuentaOrigen.divisaByDivisaId.nombre}</td>
         </tr>
     </table>
     <form:button>Realizar</form:button>
