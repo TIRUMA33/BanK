@@ -13,9 +13,15 @@
 </head>
 <body>
 <%
-
+List <MensajeEntity> mensajescliente = (List<MensajeEntity>) request.getAttribute("mensajescliente");
 %>
 
+<h1>Asistencia virtual</h1>
+
+<form action="/asistencia/chat" method="post">
+    Introduzca su consulta:<br/> <textarea name="mensaje" size="500" maxlength="500" rows="10" cols="50"> </textarea>
+    <input type="submit" value="Enviar">
+</form>
 
 
 </body>
