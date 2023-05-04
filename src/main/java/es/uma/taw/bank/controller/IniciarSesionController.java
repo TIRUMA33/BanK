@@ -1,6 +1,7 @@
 package es.uma.taw.bank.controller;
 
 import es.uma.taw.bank.dao.EmpresaRepository;
+import es.uma.taw.bank.dao.PersonaRepository;
 import es.uma.taw.bank.dao.UsuarioRepository;
 import es.uma.taw.bank.entity.EmpresaEntity;
 import es.uma.taw.bank.entity.UsuarioEntity;
@@ -20,6 +21,9 @@ public class IniciarSesionController {
     private EmpresaRepository empresaRepository;
 
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PersonaRepository personaRepository;
 
     @Autowired
     public void setEmpresaRepository(EmpresaRepository empresaRepository) {

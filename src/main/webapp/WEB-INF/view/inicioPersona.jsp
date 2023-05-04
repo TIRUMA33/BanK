@@ -18,10 +18,12 @@
 <body>
 
 <jsp:include page="cabecera.jsp"/>
-
+<h1>Bienvenido ${persona.nombre} ${persona,apellido1}.</h1>
 <form action="/persona/editar" method="post">
+
   <a href="/persona/editar?id=<%= usuario.getId() %>">Modificar datos Personales</a>
   <a href="/persona/transferencia?id=<%= usuario.getId() %>">Realizar transferencia</a>
+  <a href="/asistencia/chat?id=<%= usuario.getId() %>">Asistencia</a>
 </form>
 </body>
 </html>
