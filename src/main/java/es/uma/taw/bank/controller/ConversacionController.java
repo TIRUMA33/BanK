@@ -30,24 +30,46 @@ public class ConversacionController {
     @Autowired
     protected UsuarioRepository usuarioRepository;
 
-    @GetMapping("/chat")
-    public String doChat(@RequestParam("id")Integer id, Model model){
+    @GetMapping("/")
+    public String doAsistencia(@RequestParam("id")Integer id, Model model){
 
+        String urlTo = "redirect:/asistencia";
         UsuarioEntity user = this.usuarioRepository.findById(id).orElse(null);
-
         List<MensajeEntity> mensajescliente = this.mensajeRepository.findClienteMensajes();
         List<MensajeEntity> mensajesasistente = this.mensajeRepository.findAsistenteMensajes();
 
         model.addAttribute("mensajescliente", mensajescliente);
         model.addAttribute("mensajesasistente", mensajesasistente);
-        return "chatcliente";
+
+        if(user.getTipoUsuarioByTipoUsuario().getId()==1){
+           urlTo = "chatcliente";
+        }
+        if(user.getTipoUsuarioByTipoUsuario().getId()==3){
+            urlTo = "/asistencia/conversaciones";
+        }
+
+        return urlTo;
     }
 
     @PostMapping("/consultar")
     public String doConsultar(Model model){
         ConversacionEntity conver = new ConversacionEntity();
         model.addAttribute("conversacion", conver);
-        return "redirect:/asistencia/chat";
+        return "redirect:/asistencia";
+    }
+
+    @GetMapping("/chat")
+    public String doChat(@RequestParam("id")Integer id, Model model){
+        List<ConversacionEntity> lista = this.conversacionRepository.findAll();
+        model.addAttribute("conversaciones", lista);
+        return "chat";
+    }
+
+    @GetMapping("/conversaciones")
+    public String doListarConversaciones(Model model){
+        List<ConversacionEntity> lista = this.conversacionRepository.findAll();
+        model.addAttribute("conversaciones", lista);
+        return "conversaciones";
     }
 
 
