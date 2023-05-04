@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public interface PersonaRepository extends JpaRepository<PersonaEntity, Integer> {
 
-    @Query
-    Optional<PersonaEntity> findByNif(@Param("nif") String nif);
+    @Query("select p from PersonaEntity p where p.dni = :dni")
+    Optional<PersonaEntity> findByDni(@Param("dni") String dni);
 
     @Query("select p, ep.tipoPersonaRelacionadaByIdTipo.tipo from PersonaEntity p, EmpresaPersonaEntity ep where p = "
             + "ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id")

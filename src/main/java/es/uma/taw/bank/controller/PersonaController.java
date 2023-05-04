@@ -35,12 +35,14 @@ public class PersonaController {
     @GetMapping("/")
     public String doPersona(Model model, HttpSession session){
         String urlTo;
-
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+
         if (usuario == null) {
             urlTo = "iniciarSesion";
         } else {
-            model.addAttribute("persona", personaRepository.findByNif(usuario.getNif()).orElse(null));
+            PersonaEntity persona = personaRepository.findByDni(usuario.getNif()).orElse(null);
+            model.addAttribute("cuenta", cuentaRepository.buscarPorCliente(persona.getId()).get(0));
+            model.addAttribute("persona", persona);
             urlTo = "inicioPersona";
         }
         return urlTo;
@@ -135,4 +137,21 @@ public class PersonaController {
         return "redirect:/persona/";
     }
 
+
+    @GetMapping("/solicitar")
+    public String doSolicitar(Model model) {
+
+    }
+    @PostMapping("/solicitado")
+    public String doSolicitado(@ModelAttribute("cuenta") CuentaBancoEntity cuenta) {
+        EstadoCuentaEntity estado = new EstadoCuentaEntity();
+        if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 1) {
+            estado.setId(4);
+        } else if(cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 2) {
+            estado.setId(5);
+        }
+        cuenta.setEstadoCuentaByEstadoCuentaId(estado);
+        this.cuentaRepository.save(cuenta);
+        return "redirect:/persona/";
+    }
 }
