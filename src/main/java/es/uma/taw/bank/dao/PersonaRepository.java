@@ -1,12 +1,18 @@
 package es.uma.taw.bank.dao;
 
+import es.uma.taw.bank.entity.EmpresaEntity;
 import es.uma.taw.bank.entity.PersonaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonaRepository extends JpaRepository<PersonaEntity, Integer> {
+
+    @Query
+    Optional<PersonaEntity> findByNif(@Param("nif") String nif);
+
     @Query("select p, ep.tipoPersonaRelacionadaByIdTipo.tipo from PersonaEntity p, EmpresaPersonaEntity ep where p = "
             + "ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id")
     List<Object[]> personasPorEmpresa(@Param("id") String id);

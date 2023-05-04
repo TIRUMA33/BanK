@@ -33,13 +33,14 @@ public class PersonaController {
     TransaccionRepository transaccionRepository;
 
     @GetMapping("/")
-    public String doPersona(HttpSession session){
+    public String doPersona(Model model, HttpSession session){
         String urlTo;
 
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
         if (usuario == null) {
             urlTo = "iniciarSesion";
         } else {
+            model.addAttribute("persona", personaRepository.findByNif(usuario.getNif()).orElse(null));
             urlTo = "inicioPersona";
         }
         return urlTo;
