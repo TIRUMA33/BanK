@@ -27,11 +27,11 @@
 
   <a href="/persona/editar?id=<%= usuario.getId() %>">Modificar datos Personales</a>
   <a href="/persona/transferencia?id=<%= usuario.getId() %>">Realizar transferencia</a>
-  <a href="/asistencia/chat?id=<%= usuario.getId() %>">Asistencia</a>
+  <a href="/asistencia/chat?id=<%= usuario.getTipoUsuarioByTipoUsuario().getId() %>">Asistencia</a>
   <% if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 1) { %>
       <a href="/persona/solicitar">Solcitar bloqueo de cuenta</a>
   <% } else if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 2){  %>
-    <a href="/persona/solicitar">Solcitar activacion de cuenta</a>
+    <a href="/cajero/desbloquear?cuenta=<%= cuenta.getId() %>">Solcitar activacion de cuenta</a>
   <% } %>
 
 </form>

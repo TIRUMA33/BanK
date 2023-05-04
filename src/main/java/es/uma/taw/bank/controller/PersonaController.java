@@ -137,12 +137,7 @@ public class PersonaController {
         return "redirect:/persona/";
     }
 
-
     @GetMapping("/solicitar")
-    public String doSolicitar(Model model) {
-
-    }
-    @PostMapping("/solicitado")
     public String doSolicitado(@ModelAttribute("cuenta") CuentaBancoEntity cuenta) {
         EstadoCuentaEntity estado = new EstadoCuentaEntity();
         if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 1) {
