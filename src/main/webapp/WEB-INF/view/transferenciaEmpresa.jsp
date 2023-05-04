@@ -38,6 +38,7 @@
         </tr>
     </table>
     <form:button>Realizar</form:button>
+    <input type="reset" value="Cancelar" onclick="location.href='/empresa/${id}/persona'">
 </form:form>
 </body>
 </html>
