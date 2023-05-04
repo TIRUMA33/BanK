@@ -3,6 +3,7 @@ package es.uma.taw.bank.controller;
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
 import es.uma.taw.bank.ui.FiltroEmpresaPersona;
+import es.uma.taw.bank.ui.FiltroOperacionesEmpresa;
 import es.uma.taw.bank.ui.RegistroEmpresa;
 import es.uma.taw.bank.ui.RegistroEmpresaPersona;
 import jakarta.servlet.http.HttpSession;
@@ -11,8 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpRequest;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/empresa")
@@ -22,11 +26,17 @@ public class EmpresaController {
 
     private DireccionRepository direccionRepository;
 
+    private DivisaRepository divisaRepository;
+
     private EmpresaClienteRepository empresaClienteRepository;
 
     private EmpresaPersonaRepository empresaPersonaRepository;
 
     private EmpresaRepository empresaRepository;
+
+    private EstadoCuentaRepository estadoCuentaRepository;
+
+    private OperacionRepository operacionRepository;
 
     private PersonaRepository personaRepository;
 
@@ -49,6 +59,11 @@ public class EmpresaController {
     }
 
     @Autowired
+    public void setDivisaRepository(DivisaRepository divisaRepository) {
+        this.divisaRepository = divisaRepository;
+    }
+
+    @Autowired
     public void setEmpresaClienteRepository(EmpresaClienteRepository empresaClienteRepository) {
         this.empresaClienteRepository = empresaClienteRepository;
     }
@@ -61,6 +76,16 @@ public class EmpresaController {
     @Autowired
     public void setEmpresaRepository(EmpresaRepository empresaRepository) {
         this.empresaRepository = empresaRepository;
+    }
+
+    @Autowired
+    public void setEstadoCuentaRepository(EstadoCuentaRepository estadoCuentaRepository) {
+        this.estadoCuentaRepository = estadoCuentaRepository;
+    }
+
+    @Autowired
+    public void setOperacionRepository(OperacionRepository operacionRepository) {
+        this.operacionRepository = operacionRepository;
     }
 
     @Autowired
@@ -91,21 +116,22 @@ public class EmpresaController {
     @GetMapping("/{id}")
     public String doEmpresa(@PathVariable("id") String id, Model model, HttpSession session) {
         String urlTo = "inicioEmpresa";
-
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+
         if (usuario == null) {
             urlTo = "iniciarSesion";
         } else {
             model.addAttribute("empresa", this.empresaRepository.findById(Integer.parseInt(id)).orElse(null));
         }
+
         return urlTo;
     }
 
     @GetMapping("/{id}/persona")
     public String doEmpresaPersona(@PathVariable("id") String id, Model model, HttpSession session) {
         String urlTo = "inicioEmpresaPersona";
-
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+
         if (usuario == null) {
             urlTo = "iniciarSesion";
         } else {
@@ -287,7 +313,7 @@ public class EmpresaController {
     @GetMapping("{id}/persona/{personaId}/permiso/{seleccionadoId}")
     public String doPermisoEmpresaPersona(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
                                           @PathVariable("seleccionadoId") String seleccionadoId, @ModelAttribute(
-                                                  "filtro") FiltroEmpresaPersona filtro, Model model) {
+            "filtro") FiltroEmpresaPersona filtro, Model model) {
         EmpresaClienteEntity empresaCliente = this.empresaClienteRepository.buscarTipoPorPersona(seleccionadoId);
 
         if (empresaCliente.getTipoClienteRelacionadoByIdTipo().getId() == 1) {
@@ -323,7 +349,7 @@ public class EmpresaController {
     @PostMapping("{id}/persona/{personaId}/transferencia/realizar")
     public String doRealizarTransferenciaEmpresa(@PathVariable("id") String id,
                                                  @PathVariable("personaId") String personaId, @ModelAttribute(
-                                                         "transaccion") TransaccionEntity transaccion) {
+            "transaccion") TransaccionEntity transaccion) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         transaccion.setFechaEjecucion(timestamp);
         transaccion.setFechaInstruccion(timestamp);
@@ -334,13 +360,127 @@ public class EmpresaController {
                 this.cuentaRepository.findById(transaccion.getCuentaBancoByCuentaDestino().getId()).orElse(null);
 
         if (origen != null && destino != null) {
+            OperacionEntity operacion = new OperacionEntity();
+
             origen.setSaldo(origen.getSaldo() - transaccion.getCantidad());
             destino.setSaldo(destino.getSaldo() + transaccion.getCantidad());
+            operacion.setPersonaByPersonaId(this.personaRepository.findById(Integer.parseInt(personaId)).orElse(null));
+            operacion.setTransaccionByTransaccionId(transaccion);
 
             this.transaccionRepository.save(transaccion);
             this.cuentaRepository.save(origen);
             this.cuentaRepository.save(destino);
+            this.operacionRepository.save(operacion);
         }
+
+        return "redirect:/empresa/".concat(id).concat("/persona");
+    }
+
+    @GetMapping("{id}/cuentas")
+    public String doCuentas(@PathVariable("id") String id, Model model) {
+        List<CuentaBancoEntity> cuentas = this.cuentaRepository.buscarPorCliente(Integer.parseInt(id));
+
+        model.addAttribute("cuentas", cuentas);
+
+        return "estadoCuentaEmpresa";
+    }
+
+    @GetMapping("{id}/cuenta/{cuentaId}/permiso/{seleccionadoId}")
+    public String doPermisoCuentas(@PathVariable("id") String id, @PathVariable("cuentaId") String cuentaId,
+                                   @PathVariable("seleccionadoId") String seleccionadoId,
+                                   @ModelAttribute("filtro") FiltroEmpresaPersona filtro, Model model) {
+        CuentaBancoEntity cuentaBanco = this.cuentaRepository.findById(Integer.parseInt(seleccionadoId)).orElse(null);
+
+        if (cuentaBanco.getEstadoCuentaByEstadoCuentaId().getTipo().equals("Activa")) {
+            cuentaBanco.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(4).orElse(null));
+        } else if (cuentaBanco.getEstadoCuentaByEstadoCuentaId().getTipo().equals("Bloqueada")) {
+            cuentaBanco.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(5).orElse(null));
+        }
+
+        this.cuentaRepository.save(cuentaBanco);
+
+        model.addAttribute("empresaId", id);
+        model.addAttribute("cuentaId", cuentaId);
+
+        return "redirect:/empresa/".concat(id).concat("/cuentas");
+    }
+
+    private String procesarFiltradoOperaciones(String empresaId, String personaId, FiltroOperacionesEmpresa filtro,
+                                               Model model) {
+        List<OperacionEntity> operaciones = null;
+        String urlTo = "listadoOperacionesEmpresa";
+
+        if (filtro == null) {
+            operaciones =
+                    this.operacionRepository.buscarPorCuentasYEmpresa(this.cuentaRepository.buscarPorCliente(Integer.parseInt(empresaId)), Integer.parseInt(empresaId));
+            filtro = new FiltroOperacionesEmpresa();
+        } else if (filtro.getCuenta().isBlank() && filtro.getCantidad() == null && !filtro.getFechaEjecucion()) {
+            String[] persona = filtro.getSocio().split(" ");
+
+            if (persona.length >= 3 && !persona[2].isBlank()) {
+                operaciones =
+                        this.operacionRepository.filtrarPorPersona(this.personaRepository.findByNombreAndApellido1AndApellido2(persona[0], persona[1], persona[2]));
+            } else if (persona.length >= 2 && !persona[1].isBlank()) {
+                operaciones =
+                        this.operacionRepository.filtrarPorPersona(this.personaRepository.findByNombreAndApellido1(persona[0], persona[1]));
+            } else {
+                operaciones =
+                        this.operacionRepository.filtrarPorPersona(this.personaRepository.findByNombre(filtro.getSocio()));
+            }
+        } else if (filtro.getSocio().isBlank() && filtro.getCantidad() == null && !filtro.getFechaEjecucion()) {
+            operaciones = this.operacionRepository.filtrarPorCuenta(filtro.getCuenta());
+        } else if (filtro.getSocio().isBlank() && filtro.getCuenta().isBlank() && !filtro.getFechaEjecucion()) {
+            operaciones = this.operacionRepository.findByTransaccionByTransaccionId_Cantidad(filtro.getCantidad());
+        } else if (filtro.getSocio().isBlank() && filtro.getCuenta().isBlank() && filtro.getCantidad() == null) {
+            operaciones = this.operacionRepository.filtrarPorFechaEjecucion();
+        }
+
+        model.addAttribute("operaciones", operaciones);
+        model.addAttribute("filtro", filtro);
+        model.addAttribute("socios", this.personaRepository.personasNombreCompletoPorEmpresa(empresaId));
+        model.addAttribute("cuentas", this.operacionRepository.listarTodasCuentasTransaccion());
+
+        return urlTo;
+    }
+
+    @GetMapping("{id}/persona/{personaId}/operaciones")
+    public String doOperaciones(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
+                                Model model) {
+        return this.procesarFiltradoOperaciones(id, personaId, null, model);
+    }
+
+    @PostMapping("{id}/persona/{personaId}/operaciones/filtrar")
+    public String doFiltrarOperaciones(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
+                                       @ModelAttribute("filtro") FiltroOperacionesEmpresa filtro, Model model) {
+        return this.procesarFiltradoOperaciones(id, personaId, filtro, model);
+    }
+
+    @GetMapping("{id}/cuenta/cambioDivisa")
+    public String doCambioDivisa(@PathVariable("id") String id, Model model) {
+        CuentaBancoEntity cuenta = this.cuentaRepository.buscarPorCliente(Integer.parseInt(id)).get(0);
+        List<DivisaEntity> divisas = this.divisaRepository.buscarSinMi(cuenta.getDivisaByDivisaId().getId());
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        List<String> cambios =
+                divisas.stream().map(d -> decimalFormat.format(cuenta.getSaldo() * cuenta.getDivisaByDivisaId().getEquivalencia() / d.getEquivalencia()) + " " + d.getNombre()).collect(Collectors.toList());
+
+        model.addAttribute("cuenta", cuenta);
+        model.addAttribute("divisas", divisas);
+        model.addAttribute("cambios", cambios);
+        model.addAttribute("cuentaId", cuenta.getId());
+
+        return "cambioDivisaEmpresa";
+    }
+
+    @PostMapping("{id}/cuenta/{cuentaId}/cambioDivisa/realizar")
+    public String doCambioDivisaRealizar(@PathVariable("id") String id, @PathVariable("cuentaId") String cuentaId,
+                                         @ModelAttribute("divisaSelect") Integer divisaId) {
+        DivisaEntity divisa = this.divisaRepository.findById(divisaId).orElse(null);
+        CuentaBancoEntity cuenta = this.cuentaRepository.findById(Integer.parseInt(cuentaId)).orElse(null);
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
+        cuenta.setSaldo(Double.parseDouble(decimalFormat.format((cuenta.getDivisaByDivisaId().getEquivalencia() * cuenta.getSaldo()) / divisa.getEquivalencia()).replace(",", ".")));
+        cuenta.setDivisaByDivisaId(divisa);
+        this.cuentaRepository.save(cuenta);
 
         return "redirect:/empresa/".concat(id).concat("/persona");
     }
