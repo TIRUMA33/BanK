@@ -191,8 +191,8 @@ public class CajeroController {
     public String solicitarDesbloqueo(Model model, @RequestParam("cuenta") Integer idCuenta){
         //Solicitar desbloqueo al gestor
         CuentaBancoEntity c = cuentaRepository.findById(idCuenta).get();
-        EstadoCuentaEntity activado = estadoCuentaRepository.findById(1).get();
-        c.setEstadoCuentaByEstadoCuentaId(activado);
+        EstadoCuentaEntity pendienteDesbloqueo = estadoCuentaRepository.findById(5).get();
+        c.setEstadoCuentaByEstadoCuentaId(pendienteDesbloqueo);
         cuentaRepository.save(c);
         return "redirect:/cajero/cuenta?cuenta="+idCuenta;
     }
