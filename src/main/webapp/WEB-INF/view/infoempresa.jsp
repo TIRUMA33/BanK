@@ -29,7 +29,8 @@
 
 <h3>Movimientos:</h3>
 <%for (CuentaBancoEntity c:listacuentas) {%>
-<h3>Cuenta: <%=c.getIbanCuenta()%></h3>
+<h3 style="display: inline">Cuenta: <%=c.getIbanCuenta()%>&nbsp; </h3> <h5  style="display: inline">(<%=c.getEstadoCuentaByEstadoCuentaId().getTipo()%>) &nbsp; <a href="/gestor/desactivarcuenta?id=<%=empresa.getId()%>"><%= (c.getEstadoCuentaByEstadoCuentaId().getId().equals(2) || c.getEstadoCuentaByEstadoCuentaId().getId().equals(5)) ? "DESBLOQUEAR" : "BLOQUEAR"%></a></h5>
+<hr style="border: 0">
       <table border="1">
         <tr>
           <th>Fecha Instrucción</th>

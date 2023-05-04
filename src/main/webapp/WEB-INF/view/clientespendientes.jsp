@@ -18,6 +18,8 @@
 </head>
 <body>
 <h1>SOLICITUDES</h1>
+<a href="/gestor/"><button>Volver a Inicio</button></a>
+<hr style="border: 0">
 <table border="1">
     <tr>
         <th>Tipo</th>
@@ -50,7 +52,6 @@
 <%
     }
 %>
-</table><br>
-<a href="/gestor/"><button>Volver Atrás</button></a>
+</table>
 </body>
 </html>

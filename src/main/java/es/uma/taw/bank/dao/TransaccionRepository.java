@@ -1,5 +1,6 @@
 package es.uma.taw.bank.dao;
 
+import es.uma.taw.bank.entity.CuentaBancoEntity;
 import es.uma.taw.bank.entity.TransaccionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,8 +24,9 @@ public interface TransaccionRepository extends JpaRepository<TransaccionEntity, 
     public List<TransaccionEntity> cuentaYFecha(@Param("cuenta") Integer idCuenta, @Param("cuentaFiltro") String idCuentaFiltro);
     @Query("select t from TransaccionEntity t where (t.cuentaBancoByCuentaDestino.id=:cuenta and t.cuentaBancoByCuentaOrigen.id=:cuentaFiltro) or (t.cuentaBancoByCuentaOrigen.id=:cuenta and t.cuentaBancoByCuentaDestino.id=:cuentaFiltro)")
     public List<TransaccionEntity> soloCuenta(@Param("cuenta") Integer idCuenta, @Param("cuentaFiltro") String idCuentaFiltro);
-
     @Query("select t from TransaccionEntity t order by t.fechaEjecucion desc")
     public List<TransaccionEntity> ordenarlistatransacciones();
+    @Query("select c from TransaccionEntity t, CuentaBancoEntity c where DATEDIFF(CURDATE() , t.fechaEjecucion) > 30 and t.cuentaBancoByCuentaOrigen = c")
+    public List<CuentaBancoEntity> listainactivos();
 
 }

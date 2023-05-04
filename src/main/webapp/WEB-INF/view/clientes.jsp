@@ -23,7 +23,6 @@
 
 <h1>Listado de clientes</h1>
 
-
 <table border="1">
     <tr>
         <th>ID</th>

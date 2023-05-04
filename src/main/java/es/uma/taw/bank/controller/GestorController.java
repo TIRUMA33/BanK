@@ -4,11 +4,13 @@ import es.uma.taw.bank.DataGenerator;
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +37,8 @@ protected EstadoCuentaRepository estadoCuentaRepository;
 protected DivisaRepository divisaRepository;
 @Autowired
 protected EstadoClienteRepository estadoClienteRepository;
+@Autowired
+protected CuentasSospechosas cuentasSospechosas;
 
 @GetMapping("/")
 public String doInicioGestor(){
@@ -74,10 +78,13 @@ public String doPendientes(Model model) {
         List<ClienteEntity> listaclientes = this.clienteRepository.findAll();
         List<EmpresaEntity> listaEmpresa = this.empresaRepository.findAll();
         List<PersonaEntity> listaPersonas = this.personaRepository.findAll();
+        List<CuentaSospechosaEntity> CuentasSospechosas = this.cuentasSospechosas.findAll();
 
         model.addAttribute("listaclientes",listaclientes);
         model.addAttribute("listaempresas",listaEmpresa);
         model.addAttribute("listapersonas",listaPersonas);
+        model.addAttribute("listasospechosos", CuentasSospechosas);
+
         return "listaclientes";
     }
 
@@ -159,5 +166,55 @@ public String doPendientes(Model model) {
     @GetMapping("/rechazocuenta")
     public String dorechazo(){
         return "redirect:/gestor/clientespendientes";
+    }
+
+    @GetMapping("/listainactivos")
+    public String doListarInactivos(Model model) {
+        List<CuentaBancoEntity> listacuentasinactivas = this.transaccionRepository.listainactivos();
+        List<ClienteEntity> listaclientes = this.clienteRepository.findAll();
+        List<EmpresaEntity> listaEmpresa = this.empresaRepository.findAll();
+        List<PersonaEntity> listaPersonas = this.personaRepository.findAll();
+        List<ClienteEntity> listaclientesinactivos = new ArrayList<ClienteEntity>();
+
+        for (ClienteEntity c:listaclientes ) {
+            for (CuentaBancoEntity a:listacuentasinactivas) {
+                if(a.getClienteByTitularId().getId() == c.getId() || c.getEstadoClienteByEstadoClienteId().getTipo().equals(2)){
+                    listaclientesinactivos.add(c);
+                }
+            }
+        }
+        for (ClienteEntity c:listaclientesinactivos) {
+
+        }
+
+        model.addAttribute("listaclientes",listaclientesinactivos);
+        model.addAttribute("listaempresas",listaEmpresa);
+        model.addAttribute("listapersonas",listaPersonas);
+
+        return "listaclientesinactivos";
+    }
+
+    @GetMapping("/desactivarcliente")
+    public String doDesactivarcliente(@RequestParam("id") Integer id){
+        ClienteEntity cliente = this.clienteRepository.findById(id).get();
+        if(cliente.getEstadoClienteByEstadoClienteId().getId().equals(1)){
+            cliente.setEstadoClienteByEstadoClienteId(this.estadoClienteRepository.findById(2).orElse(null));
+        }else{
+            cliente.setEstadoClienteByEstadoClienteId(this.estadoClienteRepository.findById(1).orElse(null));
+        }
+        this.clienteRepository.save(cliente);
+        return "redirect:/gestor/listainactivos";
+    }
+
+    @GetMapping("/desactivarcuenta")
+    public String doDesactivarcuenta(@RequestParam("id") Integer id){
+        CuentaBancoEntity cuenta = this.cuentaRepository.findById(id).get();
+        if(cuenta.getEstadoCuentaByEstadoCuentaId().getId().equals(1)){
+            cuenta.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(2).orElse(null));
+        }else{
+            cuenta.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(1).orElse(null));
+        }
+        this.cuentaRepository.save(cuenta);
+        return "redirect:/gestor/infopersona?id=" + id;
     }
 }

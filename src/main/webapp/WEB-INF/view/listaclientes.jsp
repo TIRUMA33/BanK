@@ -1,8 +1,5 @@
-<%@ page import="es.uma.taw.bank.entity.ClienteEntity" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.bank.entity.EmpresaEntity" %>
-<%@ page import="es.uma.taw.bank.entity.PersonaEntity" %>
-<%@ page import="es.uma.taw.bank.entity.EstadoClienteEntity" %><%--
+<%@ page import="es.uma.taw.bank.entity.*" %><%--
   Created by IntelliJ IDEA.
   User: itsso
   Date: 22/04/2023
@@ -13,46 +10,70 @@
 <%List<ClienteEntity> listaclientes = (List<ClienteEntity>) request.getAttribute("listaclientes");%>
 <%List<EmpresaEntity> listaEmpresas = (List<EmpresaEntity>) request.getAttribute("listaempresas");%>
 <%List<PersonaEntity> listaPersonas = (List<PersonaEntity>) request.getAttribute("listapersonas");%>
+<%List<CuentaSospechosaEntity> listasospechosos = (List<CuentaSospechosaEntity>) request.getAttribute("listasospechosos");%>
 
 <html>
 <head>
     <title>Gestor</title>
 </head>
 <body>
-<h1>LISTA CLIENTES</h1>
 
+<h1>LISTA CLIENTES</h1>
+<p>⚠ = Tiene alguna acción pendiente de realizar</p>
+<p>☢ = Ha realizado alguna acción con cuenta sospechosa</p>
+<p>
+    <button><a href="/gestor/" style="text-decoration: none"> Volver a Inicio</a></button>
+</p>
 <table>
     <tr>
         <td>
             <h2>Personas</h2>
-            <table border="1">
+            <table border="0">
                 <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Identificador</th>
-                    <th>Fecha Nacimiento</th>
-                    <th>Estado</th>
-                    <th>Info</th>
-
+                    <th style="border: black; border-style: solid; border-width: 1px">Id</th>
+                    <th style="border: black; border-style: solid; border-width: 1px">Nombre</th>
+                    <th style="border: black; border-style: solid; border-width: 1px">Identificador</th>
+                    <th style="border: black; border-style: solid; border-width: 1px">Fecha Nacimiento</th>
+                    <th style="border: black; border-style: solid; border-width: 1px">Estado</th>
+                    <th style="border: black; border-style: solid; border-width: 1px">Info</th>
+                    <th style="border: 0"></th>
+                    <th style="border: 0"></th>
                 </tr>
 
                 <%
                     for (PersonaEntity persona : listaPersonas) {
                 %>
                 <%
+                    Boolean pendiente = false;
+                    Boolean cuentasospechosa = false;
                     String estado="";
                     for (ClienteEntity c:listaclientes) {
                         if(c.getId() == persona.getId()){
                             estado = c.getEstadoClienteByEstadoClienteId().getTipo();
+
+                            for (CuentaBancoEntity cuenta:c.getCuentaBancosById()) {
+                                if(cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 4 || cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 5){
+                                    pendiente = true;
+                                }
+                                for (CuentaSospechosaEntity sospechosa:listasospechosos) {
+                                    for (TransaccionEntity transaccionorigen: cuenta.getTransaccionsById()) {
+                                        if(transaccionorigen.getCuentaBancoByCuentaDestino().getId().equals(sospechosa.getId())){
+                                            cuentasospechosa = true;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }%>
                 <tr>
-                    <td><%=persona.getId()%></td>
-                    <td><%=persona.getNombre()%> <%=persona.getApellido1()%> <%=persona.getApellido2()%></td>
-                    <td><%=persona.getDni()%></td>
-                    <td><%=persona.getFechaNacimiento().toString()%></td>
-                    <td><%=estado%></td>
-                    <td><a href="/gestor/infopersona?id=<%=persona.getId()%>">Info Avanzada</a></td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getId()%></td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getNombre()%> <%=persona.getApellido1()%> <%=persona.getApellido2()%></td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getDni()%></td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getFechaNacimiento().toString()%></td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=estado%></td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><a href="/gestor/infopersona?id=<%=persona.getId()%>">Info Avanzada</a></td>
+                    <td style="border: 0"><%= pendiente ? "⚠" : ""%></td>
+                    <td style="border: 0"><%= cuentasospechosa ? "☢" : ""%></td>
                 </tr>
                 <%
                     }
@@ -62,13 +83,15 @@
 
         <td>
             <h2>Empresas</h2>
-            <table border="1">
+            <table border="0">
                 <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Identificador</th>
-                    <th>Estado</th>
-                    <th>Info</th>
+                    <th style="border: black; border-style: solid; border-width: 1px">Id</th>
+                    <th style="border: black; border-style: solid; border-width: 1px">Nombre</th>
+                    <th style="border: black; border-style: solid; border-width: 1px">Identificador</th>
+                    <th style="border: black; border-style: solid; border-width: 1px">Estado</th>
+                    <th style="border: black; border-style: solid; border-width: 1px">Info</th>
+                    <th style="border: 0"></th>
+                    <th style="border: 0"></th>
                 </tr>
                 <%
                     for (EmpresaEntity empresas : listaEmpresas) {
@@ -76,21 +99,37 @@
 
 
                 <%
+                    Boolean pendiente = false;
+                    Boolean cuentasospechosa = false;
                     String estado="";
                     for (ClienteEntity c:listaclientes) {
                         if(c.getId() == empresas.getId()){
                             estado = c.getEstadoClienteByEstadoClienteId().getTipo();
+                            for (CuentaBancoEntity cuenta:c.getCuentaBancosById()) {
+                                if(cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 4 || cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 5){
+                                    pendiente = true;
+                                }
+                                for (CuentaSospechosaEntity sospechosa:listasospechosos) {
+                                    for (TransaccionEntity transaccionorigen: cuenta.getTransaccionsById()) {
+                                        if(transaccionorigen.getCuentaBancoByCuentaDestino().getId().equals(sospechosa.getId())){
+                                            cuentasospechosa = true;
+                                        }
+                                    }
+                                }
+                            }
                         }
                 }%>
 
 
 
                 <tr>
-                    <td><%=empresas.getId()%></td>
-                    <td><%=empresas.getNombre()%></td>
-                    <td><%=empresas.getCif()%></td>
-                    <td><%=estado%></td>
-                    <td><a href="/gestor/infoempresa?id=<%=empresas.getId()%>">Info Avanzada</a></td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=empresas.getId()%></td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=empresas.getNombre()%></td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=empresas.getCif()%></td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=estado%></td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><a href="/gestor/infoempresa?id=<%=empresas.getId()%>">Info Avanzada</a></td>
+                    <td style="border: 0"><%= pendiente ? "⚠" : ""%></td>
+                    <td style="border: 0"><%= cuentasospechosa ? "☢" : ""%></td>
                 </tr>
                 <%
                     }

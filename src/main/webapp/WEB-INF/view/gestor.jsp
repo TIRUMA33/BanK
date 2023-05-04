@@ -18,6 +18,9 @@
 <p>
     <a href="/gestor/lista"> Lista de clientes</a>
 </p>
+<p>
+    <a href="/gestor/listainactivos"> Lista de clientes Inactivos</a>
+</p>
 
 </body>
 </html>
