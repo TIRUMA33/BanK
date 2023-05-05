@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.bank.entity.*" %><%--
   Created by IntelliJ IDEA.
@@ -24,9 +25,15 @@
 <p>
     <button><a href="/gestor/" style="text-decoration: none"> Volver a Inicio</a></button>
 </p>
+<form:form action="/gestor/lista/filtrar" method="post" modelAttribute="filtro">
+    Ordenar por: <br/>
+    Estado: <form:checkbox path="estado"/>
+    Nombre:<form:checkbox path="nombre"/>
+    <button>Ordenar</button>
+</form:form>
 <table>
     <tr>
-        <td>
+        <td style="vertical-align:top;">
             <h2>Personas</h2>
             <table border="0">
                 <tr>
@@ -37,7 +44,6 @@
                     <th style="border: black; border-style: solid; border-width: 1px">Estado</th>
                     <th style="border: black; border-style: solid; border-width: 1px">Info</th>
                     <th style="border: 0"></th>
-                    <th style="border: 0"></th>
                 </tr>
 
                 <%
@@ -47,6 +53,7 @@
                     Boolean pendiente = false;
                     Boolean cuentasospechosa = false;
                     String estado="";
+                    String result="";
                     for (ClienteEntity c:listaclientes) {
                         if(c.getId() == persona.getId()){
                             estado = c.getEstadoClienteByEstadoClienteId().getTipo();
@@ -65,6 +72,16 @@
                             }
                         }
                     }%>
+                <%if(pendiente== true && cuentasospechosa == false){
+                    result = "⚠";
+                }else if(pendiente == true && cuentasospechosa == true){
+                    result = "⚠☢";
+                }else if(pendiente == false && cuentasospechosa == true){
+                    result = "☢";
+                }else{
+                    result = "";
+                }%>
+
                 <tr>
                     <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getId()%></td>
                     <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getNombre()%> <%=persona.getApellido1()%> <%=persona.getApellido2()%></td>
@@ -72,16 +89,14 @@
                     <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getFechaNacimiento().toString()%></td>
                     <td style="border: black; border-style: solid; border-width: 1px"><%=estado%></td>
                     <td style="border: black; border-style: solid; border-width: 1px"><a href="/gestor/infopersona?id=<%=persona.getId()%>">Info Avanzada</a></td>
-                    <td style="border: 0"><%= pendiente ? "⚠" : ""%></td>
-                    <td style="border: 0"><%= cuentasospechosa ? "☢" : ""%></td>
+                    <td style="border: 0"><%=result%></td>
                 </tr>
                 <%
                     }
                 %>
             </table>
         </td>
-
-        <td>
+        <td style="vertical-align:top;">
             <h2>Empresas</h2>
             <table border="0">
                 <tr>
@@ -90,7 +105,6 @@
                     <th style="border: black; border-style: solid; border-width: 1px">Identificador</th>
                     <th style="border: black; border-style: solid; border-width: 1px">Estado</th>
                     <th style="border: black; border-style: solid; border-width: 1px">Info</th>
-                    <th style="border: 0"></th>
                     <th style="border: 0"></th>
                 </tr>
                 <%
@@ -102,6 +116,7 @@
                     Boolean pendiente = false;
                     Boolean cuentasospechosa = false;
                     String estado="";
+                    String result= "";
                     for (ClienteEntity c:listaclientes) {
                         if(c.getId() == empresas.getId()){
                             estado = c.getEstadoClienteByEstadoClienteId().getTipo();
@@ -119,6 +134,15 @@
                             }
                         }
                 }%>
+                <%if(pendiente== true && cuentasospechosa == false){
+                    result = "⚠";
+                }else if(pendiente == true && cuentasospechosa == true){
+                    result = "⚠☢";
+                }else if(pendiente == false && cuentasospechosa == true){
+                    result = "☢";
+                }else{
+                    result = "";
+                }%>
 
 
 
@@ -128,8 +152,7 @@
                     <td style="border: black; border-style: solid; border-width: 1px"><%=empresas.getCif()%></td>
                     <td style="border: black; border-style: solid; border-width: 1px"><%=estado%></td>
                     <td style="border: black; border-style: solid; border-width: 1px"><a href="/gestor/infoempresa?id=<%=empresas.getId()%>">Info Avanzada</a></td>
-                    <td style="border: 0"><%= pendiente ? "⚠" : ""%></td>
-                    <td style="border: 0"><%= cuentasospechosa ? "☢" : ""%></td>
+                    <td style="border: 0"><%=result%></td>
                 </tr>
                 <%
                     }

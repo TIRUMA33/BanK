@@ -3,12 +3,13 @@ package es.uma.taw.bank.controller;
 import es.uma.taw.bank.DataGenerator;
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
+import es.uma.taw.bank.ui.FiltroOperaciones;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import es.uma.taw.bank.ui.FiltroCliente;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -75,15 +76,57 @@ public String doPendientes(Model model) {
 
     @GetMapping("/lista")
     public String doListarTodo(Model model) {
+        return procesarFiltrado(null,model);
+    }
+
+    @PostMapping("/lista/filtrar")
+    public String doFiltrar(@ModelAttribute("filtro") FiltroCliente filtro, Model model){
+        return this.procesarFiltrado(filtro, model);
+    }
+
+    protected String procesarFiltrado (FiltroCliente filtro, Model model) {
         List<ClienteEntity> listaclientes = this.clienteRepository.findAll();
         List<EmpresaEntity> listaEmpresa = this.empresaRepository.findAll();
         List<PersonaEntity> listaPersonas = this.personaRepository.findAll();
         List<CuentaSospechosaEntity> CuentasSospechosas = this.cuentasSospechosas.findAll();
+        List<EmpresaEntity> listaEmpresaaux = new ArrayList<>();
+        List<PersonaEntity> listaPersonasaux = new ArrayList<>();
+
+        if (filtro == null || (filtro.getEstado() == false && filtro.getNombre() == false)) {
+            listaclientes = this.clienteRepository.findAll();
+            filtro = new FiltroCliente();
+        } else if (filtro.getNombre() == true && filtro.getEstado() == false) {
+            listaEmpresa = this.clienteRepository.ordenadopornombreempresa();
+            listaPersonas = this.clienteRepository.ordenadopornombrepersona();
+        } else if (filtro.getEstado() == true && filtro.getNombre() == false) {
+            listaclientes = this.clienteRepository.ordenadoporestado();
+            //ordenar la lista de personas y de empresas en funcion a la de clientes
+            for (ClienteEntity c: listaclientes) { //lista clientes ordenada por estado
+                for (PersonaEntity p:listaPersonas) { //lista personas desordenada
+                    if(p.getId() == c.getId()){
+                        listaPersonasaux.add(p);
+                    }
+                }
+                for (EmpresaEntity e:listaEmpresa) {
+                    if(e.getId() == c.getId()){
+                        listaEmpresaaux.add(e);
+                    }
+                }
+            }
+            listaPersonas = listaPersonasaux;
+            listaEmpresa = listaEmpresaaux;
+        } else {
+            listaclientes = this.clienteRepository.ordenadoporestado();
+            listaEmpresa = this.clienteRepository.ordenadopornombreempresa();
+            listaPersonas = this.clienteRepository.ordenadopornombrepersona();
+        }
 
         model.addAttribute("listaclientes",listaclientes);
+        model.addAttribute("filtro", filtro);
         model.addAttribute("listaempresas",listaEmpresa);
         model.addAttribute("listapersonas",listaPersonas);
         model.addAttribute("listasospechosos", CuentasSospechosas);
+
 
         return "listaclientes";
     }
