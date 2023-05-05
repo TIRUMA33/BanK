@@ -1,5 +1,7 @@
 package es.uma.taw.bank.entity;
 
+import es.uma.taw.bank.dto.DTO;
+import es.uma.taw.bank.dto.DivisaDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +12,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "DIVISA", schema = "taw", catalog = "")
-public class DivisaEntity {
+public class DivisaEntity implements DTO<DivisaDTO> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
@@ -44,5 +46,14 @@ public class DivisaEntity {
         result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
         result = 31 * result + (equivalencia != null ? equivalencia.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public DivisaDTO toDTO() {
+        DivisaDTO dto = new DivisaDTO();
+        dto.setId(id);
+        dto.setEquivalencia(equivalencia);
+        dto.setNombre(nombre);
+        return dto;
     }
 }

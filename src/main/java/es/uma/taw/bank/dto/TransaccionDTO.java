@@ -9,6 +9,42 @@ public class TransaccionDTO implements Serializable {
     private Timestamp fechaInstruccion;
     private Timestamp fechaEjecucion;
     private Double cantidad;
+    private Integer cuentaOrigen;
+    private Integer cuentaDestino;
+    private String ibanOrigen;
+    private String ibanDestino;
+
+    public String getIbanOrigen() {
+        return ibanOrigen;
+    }
+
+    public void setIbanOrigen(String ibanOrigen) {
+        this.ibanOrigen = ibanOrigen;
+    }
+
+    public String getIbanDestino() {
+        return ibanDestino;
+    }
+
+    public void setIbanDestino(String ibanDestino) {
+        this.ibanDestino = ibanDestino;
+    }
+
+    public Integer getCuentaOrigen() {
+        return cuentaOrigen;
+    }
+
+    public void setCuentaOrigen(Integer cuentaOrigen) {
+        this.cuentaOrigen = cuentaOrigen;
+    }
+
+    public Integer getCuentaDestino() {
+        return cuentaDestino;
+    }
+
+    public void setCuentaDestino(Integer cuentaDestino) {
+        this.cuentaDestino = cuentaDestino;
+    }
 
     public Integer getId() {
         return id;

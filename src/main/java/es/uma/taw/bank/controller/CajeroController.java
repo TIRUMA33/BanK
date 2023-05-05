@@ -1,7 +1,9 @@
 package es.uma.taw.bank.controller;
 
 import es.uma.taw.bank.dao.*;
+import es.uma.taw.bank.dto.*;
 import es.uma.taw.bank.entity.*;
+import es.uma.taw.bank.service.*;
 import es.uma.taw.bank.ui.Cambio;
 import es.uma.taw.bank.ui.FiltroOperaciones;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,76 +31,73 @@ public class CajeroController {
     protected DivisaRepository divisaRepository;
     @Autowired
     protected EstadoCuentaRepository estadoCuentaRepository;
+    @Autowired
+    protected ClienteService clienteService;
+    @Autowired
+    protected TransaccionService transaccionService;
+    @Autowired
+    protected PersonaService personaService;
+    @Autowired
+    protected CuentaService cuentaService;
+    @Autowired
+    protected DivisaService divisaService;
     @GetMapping("/listar")
     public String doListar(Model model, @RequestParam("cliente") Integer idCliente ){
-        ClienteEntity cliente = clienteRepository.findById(idCliente).get();
-        PersonaEntity p = personaRepository.findById(idCliente).get();
-        List<CuentaBancoEntity> cuentas = cuentaRepository.buscarPorCliente(idCliente);
+        ClienteDTO cliente = clienteService.buscarCliente(idCliente);
+        PersonaDTO persona = personaService.buscarPersona(idCliente);
+        List<CuentaDTO> cuentas = cuentaService.cuentasPorCliente(idCliente);
         model.addAttribute("cuentas",cuentas);
         model.addAttribute("cliente",cliente);
-        model.addAttribute("persona",p);
+        model.addAttribute("persona",persona);
         return "cajero";
     }
     @GetMapping("/cuenta")
     public String doCuentaCajero(Model model, @RequestParam("cuenta") Integer idCuenta){
-        CuentaBancoEntity cuenta = cuentaRepository.findById(idCuenta).get();
+        CuentaDTO cuenta = cuentaService.buscarCuenta(idCuenta);
         model.addAttribute("cuenta",cuenta);
 
         return "cuenta";
     }
     @GetMapping("/datos")
     public String doDatos(Model model, @RequestParam("cliente") Integer idCliente){
-        PersonaEntity persona = personaRepository.findById(idCliente).get();
+        PersonaDTO persona = personaService.buscarPersona(idCliente);
         model.addAttribute("persona",persona);
 
         return "datos";
     }
     @PostMapping("/editar")
-    public String editar(Model model, @ModelAttribute("persona") PersonaEntity persona){
-        personaRepository.save(persona);
+    public String editar(Model model, @ModelAttribute("persona") PersonaDTO persona){
+        personaService.guardarPersona(persona);
         return "redirect:/cajero/listar?cliente="+persona.getId();
     }
     @GetMapping("/transferencia")
     public String transferencia(Model model, @RequestParam("cuenta") Integer idCuenta){
-        TransaccionEntity t = new TransaccionEntity();
-        t.setCuentaBancoByCuentaOrigen(cuentaRepository.findById(idCuenta).get());
-        List<CuentaBancoEntity> cuentas = cuentaRepository.buscarSinMi(idCuenta);
+        TransaccionDTO t = transaccionService.iniciarTransaccion(idCuenta);
+        List<CuentaDTO> cuentas = cuentaService.cuentasSinMi(idCuenta);
         model.addAttribute("cuentas",cuentas);
         model.addAttribute("transaccion",t);
         return "transferencia";
     }
 
     @PostMapping("/transferir")
-    public String transferir(Model model, @ModelAttribute("transaccion") TransaccionEntity transaccion){
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        transaccion.setFechaEjecucion(timestamp);
-        transaccion.setFechaInstruccion(timestamp);
-        transaccionRepository.save(transaccion);
-
-
-        CuentaBancoEntity origen=  cuentaRepository.findById(transaccion.getCuentaBancoByCuentaOrigen().getId()).get();
-        CuentaBancoEntity destino=  cuentaRepository.findById(transaccion.getCuentaBancoByCuentaDestino().getId()).get();
-
-        origen.setSaldo(origen.getSaldo()-transaccion.getCantidad());
-        destino.setSaldo(destino.getSaldo()+transaccion.getCantidad());
-
-        cuentaRepository.save(origen);
-        cuentaRepository.save(destino);
-        return "redirect:/cajero/cuenta?cuenta="+origen.getId();
+    public String transferir(Model model, @ModelAttribute("transaccion") TransaccionDTO transaccion){
+        transaccionService.guardarTransaccion(transaccion);
+        cuentaService.sumarSaldo(transaccion.getCuentaOrigen(), -(transaccion.getCantidad()));
+        cuentaService.sumarSaldo(transaccion.getCuentaDestino(), transaccion.getCantidad());
+        return "redirect:/cajero/cuenta?cuenta="+transaccion.getCuentaOrigen();
     }
 
     @GetMapping("/retirada")
     public String retirada(Model model, @RequestParam("cuenta") Integer idCuenta){
-        CuentaBancoEntity c = cuentaRepository.findById(idCuenta).get();
+        CuentaDTO c = cuentaService.buscarCuenta(idCuenta);
         model.addAttribute("cuenta",c);
 
         return "retirada";
     }
     @PostMapping("/retirar")
     public String retirar(Model model, @RequestParam("cuenta") Integer idCuenta, @RequestParam("cantidad") Double cantidad){
-        CuentaBancoEntity c = cuentaRepository.findById(idCuenta).get();
-        c.setSaldo(c.getSaldo()-cantidad);
-        cuentaRepository.save(c);
+        CuentaDTO c = cuentaService.buscarCuenta(idCuenta);
+        cuentaService.sumarSaldo(idCuenta,-cantidad);
         return "redirect:/cajero/cuenta?cuenta="+idCuenta;
     }
     @GetMapping("/operaciones")
@@ -110,39 +109,13 @@ public class CajeroController {
         return procesarFiltrado(model,idCuenta,filtro);
     }
     public String procesarFiltrado(Model model, Integer idCuenta, FiltroOperaciones filtro){
-        List<TransaccionEntity> operaciones = transaccionRepository.operacionesPorCuenta(idCuenta);
-        List<CuentaBancoEntity> cuentas = new ArrayList<>();
-        for(TransaccionEntity t: operaciones){
-            if(!cuentas.contains(t.getCuentaBancoByCuentaDestino()))if(t.getCuentaBancoByCuentaDestino().getId()!=idCuenta)cuentas.add(t.getCuentaBancoByCuentaDestino());
-            if(!cuentas.contains(t.getCuentaBancoByCuentaOrigen()))if(t.getCuentaBancoByCuentaOrigen().getId()!=idCuenta)cuentas.add(t.getCuentaBancoByCuentaOrigen());
-        }
+        List<TransaccionDTO> operaciones = transaccionService.listarTransaccionesPorCuenta(idCuenta);
+        List<CuentaDTO> cuentas = transaccionService.rellenarCuentas(idCuenta,operaciones);
         if(filtro==null){
             filtro=new FiltroOperaciones();
         }
-        //Con el filtro de cuentas puesto
-        else if(filtro.getCantidad() && filtro.getFechaEjecucion() && filtro.getCuentaFiltro()!=null && !filtro.getCuentaFiltro().equals("")){
-            operaciones=transaccionRepository.todoFiltrado(idCuenta,filtro.getCuentaFiltro());
-        }
-        else if(filtro.getCantidad() && !filtro.getFechaEjecucion() && filtro.getCuentaFiltro()!=null && !filtro.getCuentaFiltro().equals("")){
-            operaciones = transaccionRepository.cuentaYCantidad(idCuenta,filtro.getCuentaFiltro());
-        }
-        else if(!filtro.getCantidad() && filtro.getFechaEjecucion() && filtro.getCuentaFiltro()!=null && !filtro.getCuentaFiltro().equals("")){
-            operaciones = transaccionRepository.cuentaYFecha(idCuenta,filtro.getCuentaFiltro());
-        }
-        else if(!filtro.getCantidad() && !filtro.getFechaEjecucion() && filtro.getCuentaFiltro()!=null && !filtro.getCuentaFiltro().equals("")){
-            operaciones = transaccionRepository.soloCuenta(idCuenta,filtro.getCuentaFiltro());
-        }
-        else if(filtro.getCantidad() && filtro.getFechaEjecucion() && (filtro.getCuentaFiltro()==null || filtro.getCuentaFiltro().equals(""))){
-            operaciones=transaccionRepository.soloSinCuenta(idCuenta);
-        }
-        else if(filtro.getCantidad() && !filtro.getFechaEjecucion() && (filtro.getCuentaFiltro()==null || filtro.getCuentaFiltro().equals(""))){
-            operaciones = transaccionRepository.soloCantidad(idCuenta);
-        }
-        else if(!filtro.getCantidad() && filtro.getFechaEjecucion() && (filtro.getCuentaFiltro()==null || filtro.getCuentaFiltro().equals(""))){
-            operaciones = transaccionRepository.soloFecha(idCuenta);
-        }
-        else if(!filtro.getCantidad() && !filtro.getFechaEjecucion() && (filtro.getCuentaFiltro()==null || filtro.getCuentaFiltro().equals(""))){
-            operaciones=transaccionRepository.operacionesPorCuenta(idCuenta);
+        else{
+            operaciones = this.transaccionService.filtrar(idCuenta,filtro);
         }
 
         model.addAttribute("filtro", filtro);
@@ -153,13 +126,13 @@ public class CajeroController {
     }
     @GetMapping("/cambioDivisa")
     public String cambioDivisa(Model model, @RequestParam("cuenta") Integer idCuenta){
-        CuentaBancoEntity c = cuentaRepository.findById(idCuenta).get();
-        DivisaEntity divisaInicial = divisaRepository.buscarPorNombre(c.getDivisaByDivisaId().getNombre());
-        List<DivisaEntity> divisas = divisaRepository.findAll();
+        CuentaDTO c = cuentaService.buscarCuenta(idCuenta);
+        DivisaDTO divisaInicial = divisaService.buscarDivisaPorNombre(c.getDivisa());
+        List<DivisaDTO> divisas = divisaService.listarDivisas();
         divisas.removeIf(d -> (d.getNombre().equals(divisaInicial.getNombre())));
         List<Cambio> lista = new ArrayList<>();
         Double enDolares = divisaInicial.getEquivalencia();
-        for(DivisaEntity d:divisas){
+        for(DivisaDTO d:divisas){
             Cambio cambio = new Cambio(d.getNombre(),enDolares/d.getEquivalencia());
             lista.add(cambio);
         }
@@ -170,30 +143,25 @@ public class CajeroController {
     }
     @PostMapping("/cambiarA")
     public String cambiarA(Model model, @RequestParam("cuenta") Integer idCuenta, @RequestParam("moneda") String monedaDestino){
-        CuentaBancoEntity c = cuentaRepository.findById(idCuenta).get();
-        DivisaEntity origen = divisaRepository.buscarPorNombre(c.getDivisaByDivisaId().getNombre());
-        DivisaEntity destino = divisaRepository.buscarPorNombre(monedaDestino);
+        CuentaDTO c = cuentaService.buscarCuenta(idCuenta);
+        DivisaDTO origen = divisaService.buscarDivisaPorNombre(c.getDivisa());
+        DivisaDTO destino = divisaService.buscarDivisaPorNombre(monedaDestino);
         Double equivalencia = origen.getEquivalencia()/destino.getEquivalencia();
         model.addAttribute("cuenta",c);
-        model.addAttribute("origen",c.getDivisaByDivisaId().getNombre());
+        model.addAttribute("origen",c.getDivisa());
         model.addAttribute("destino",monedaDestino);
         model.addAttribute("equivalencia",equivalencia);
         return "cambiarA";
     }
     @PostMapping("/retirarCambio")
     public String retirarCambio(Model model, @RequestParam("cuenta") Integer idCuenta, @RequestParam("cantidad") Double cantidad){
-        CuentaBancoEntity c = cuentaRepository.findById(idCuenta).get();
-        c.setSaldo(c.getSaldo()-cantidad);
-        cuentaRepository.save(c);
+        cuentaService.sumarSaldo(idCuenta,-cantidad);
         return "redirect:/cajero/cuenta?cuenta="+idCuenta;
     }
     @GetMapping("desbloquear")
     public String solicitarDesbloqueo(Model model, @RequestParam("cuenta") Integer idCuenta){
         //Solicitar desbloqueo al gestor
-        CuentaBancoEntity c = cuentaRepository.findById(idCuenta).get();
-        EstadoCuentaEntity pendienteDesbloqueo = estadoCuentaRepository.findById(5).get();
-        c.setEstadoCuentaByEstadoCuentaId(pendienteDesbloqueo);
-        cuentaRepository.save(c);
+        cuentaService.pedirDesbloqueo(idCuenta);
         return "redirect:/cajero/cuenta?cuenta="+idCuenta;
     }
 }

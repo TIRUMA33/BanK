@@ -1,6 +1,7 @@
 <%@ page import="es.uma.taw.bank.entity.TransaccionEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.bank.dao.PersonaRepository" %>
+<%@ page import="es.uma.taw.bank.dto.TransaccionDTO" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
@@ -12,7 +13,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <%
-    List<TransaccionEntity> operaciones = (List<TransaccionEntity>) request.getAttribute("operaciones");
+    List<TransaccionDTO> operaciones = (List<TransaccionDTO>) request.getAttribute("operaciones");
 %>
 <head>
     <title>Operaciones de tu cuenta</title>
@@ -39,14 +40,14 @@
         <th>CUENTA DESTINO</th>
     </tr>
     <%
-        for(TransaccionEntity t: operaciones){
+        for(TransaccionDTO t: operaciones){
     %>
     <tr>
         <td><%= t.getFechaInstruccion().toString() %></td>
         <td><%= t.getFechaEjecucion().toString() %></td>
         <td><%= t.getCantidad() %></td>
-        <td><%= t.getCuentaBancoByCuentaOrigen().getIbanCuenta() %></td>
-        <td><%= t.getCuentaBancoByCuentaDestino().getIbanCuenta() %></td>
+        <td><%= t.getIbanOrigen() %></td>
+        <td><%= t.getIbanDestino() %></td>
     </tr>
     <%
         }

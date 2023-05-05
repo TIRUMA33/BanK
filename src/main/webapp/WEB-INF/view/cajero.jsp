@@ -1,7 +1,10 @@
 <%@ page import="es.uma.taw.bank.entity.CuentaBancoEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.bank.entity.ClienteEntity" %>
-<%@ page import="es.uma.taw.bank.entity.PersonaEntity" %><%--
+<%@ page import="es.uma.taw.bank.entity.PersonaEntity" %>
+<%@ page import="es.uma.taw.bank.dto.CuentaDTO" %>
+<%@ page import="es.uma.taw.bank.dto.ClienteDTO" %>
+<%@ page import="es.uma.taw.bank.dto.PersonaDTO" %><%--
   Created by IntelliJ IDEA.
   User: aleja
   Date: 20/04/2023
@@ -11,9 +14,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <%
-List<CuentaBancoEntity> cuentas = (List<CuentaBancoEntity>) request.getAttribute("cuentas");
-ClienteEntity cliente = (ClienteEntity) request.getAttribute("cliente");
-PersonaEntity persona = (PersonaEntity) request.getAttribute("persona");
+List<CuentaDTO> cuentas = (List<CuentaDTO>) request.getAttribute("cuentas");
+ClienteDTO cliente = (ClienteDTO) request.getAttribute("cliente");
+PersonaDTO persona = (PersonaDTO) request.getAttribute("persona");
 %>
 <head>
     <title>Cajero</title>
@@ -34,7 +37,7 @@ PersonaEntity persona = (PersonaEntity) request.getAttribute("persona");
     </tr>
 
 <%
-    for(CuentaBancoEntity c: cuentas){
+    for(CuentaDTO c: cuentas){
 %>
     <tr>
         <td>

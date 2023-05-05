@@ -1,4 +1,5 @@
 <%@ page import="es.uma.taw.bank.entity.CuentaBancoEntity" %>
+<%@ page import="es.uma.taw.bank.dto.CuentaDTO" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="from" uri="http://www.springframework.org/tags/form" %>
 <%--
@@ -17,13 +18,13 @@
 <h2>Tu cuenta:</h2>
 <h3>IBAN: ${cuenta.ibanCuenta}</h3>
 <%
-    CuentaBancoEntity cuenta = (CuentaBancoEntity) request.getAttribute("cuenta");
-    if (cuenta.getEstadoCuentaByEstadoCuentaId().getTipo().equals("Bloqueada")) {
+    CuentaDTO cuenta = (CuentaDTO) request.getAttribute("cuenta");
+    if (cuenta.getEstado().equals("Bloqueada")) {
 
 %>
 <h1>Tu cuenta está bloqueada, solicite un desbloqueo <a href="/cajero/desbloquear?cuenta=<%= cuenta.getId() %>"> aquí </a>.</h1>
 <%
-    }else if(cuenta.getEstadoCuentaByEstadoCuentaId().getTipo().equals("Pendiente de desbloqueo")){
+    }else if(cuenta.getEstado().equals("Pendiente de desbloqueo")){
 %>
 <h1>Tu cuenta está bloqueada, tienes la solicitud de desbloqueo pendiente.</h1>
 <%
@@ -40,7 +41,7 @@
         <th>FECHA DE CIERRE</th>
     </tr>
     <tr>
-        <td>${cuenta.divisaByDivisaId.nombre}</td>
+        <td>${cuenta.divisa}</td>
         <td>${cuenta.saldo}</td>
         <td>${cuenta.swift}</td>
         <td>${cuenta.pais}</td>

@@ -1,5 +1,7 @@
 package es.uma.taw.bank.entity;
 
+import es.uma.taw.bank.dto.CuentaDTO;
+import es.uma.taw.bank.dto.DTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "CUENTA_BANCO", schema = "taw", catalog = "")
-public class CuentaBancoEntity {
+public class CuentaBancoEntity implements DTO<CuentaDTO> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
@@ -80,5 +82,23 @@ public class CuentaBancoEntity {
         result = 31 * result + (fechaApertura != null ? fechaApertura.hashCode() : 0);
         result = 31 * result + (fechaCierre != null ? fechaCierre.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public CuentaDTO toDTO() {
+        CuentaDTO dto = new CuentaDTO();
+        dto.setFechaApertura(fechaApertura);
+        dto.setIbanCuenta(ibanCuenta);
+        dto.setId(id);
+        dto.setSaldo(saldo);
+        dto.setPais(pais);
+        dto.setFechaCierre(fechaCierre);
+        dto.setSwift(swift);
+        dto.setCliente(this.getClienteByTitularId().getId());
+        dto.setEntidad(this.getEntidadBancariaByEntidadBancariaId().getId());
+        dto.setDivisa(this.getDivisaByDivisaId().getNombre());
+        dto.setEstado(this.getEstadoCuentaByEstadoCuentaId().getTipo());
+
+        return dto;
     }
 }

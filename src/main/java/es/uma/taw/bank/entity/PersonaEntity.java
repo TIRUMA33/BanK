@@ -1,5 +1,8 @@
 package es.uma.taw.bank.entity;
 
+import es.uma.taw.bank.dto.ClienteDTO;
+import es.uma.taw.bank.dto.DTO;
+import es.uma.taw.bank.dto.PersonaDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +14,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "PERSONA", schema = "taw", catalog = "")
-public class PersonaEntity {
+public class PersonaEntity implements DTO<PersonaDTO> {
     @Id
     @Column(name = "ID", nullable = false)
     private Integer id;
@@ -62,5 +65,18 @@ public class PersonaEntity {
         result = 31 * result + (fechaNacimiento != null ? fechaNacimiento.hashCode() : 0);
         result = 31 * result + (dni != null ? dni.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public PersonaDTO toDTO() {
+        PersonaDTO dto = new PersonaDTO();
+        dto.setId(id);
+        dto.setDni(dni);
+        dto.setApellido1(apellido1);
+        dto.setApellido2(apellido2);
+        dto.setNombre(nombre);
+        dto.setFechaNacimiento(fechaNacimiento);
+
+        return dto;
     }
 }

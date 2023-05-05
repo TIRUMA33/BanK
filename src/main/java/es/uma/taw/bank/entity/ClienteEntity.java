@@ -1,5 +1,8 @@
 package es.uma.taw.bank.entity;
 
+import es.uma.taw.bank.dto.ClienteDTO;
+import es.uma.taw.bank.dto.DTO;
+import es.uma.taw.bank.dto.TransaccionDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +14,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "CLIENTE", schema = "taw", catalog = "")
-public class ClienteEntity {
+public class ClienteEntity implements DTO<ClienteDTO> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
@@ -45,5 +48,15 @@ public class ClienteEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (fechaInicio != null ? fechaInicio.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public ClienteDTO toDTO() {
+        ClienteDTO dto = new ClienteDTO();
+        dto.setId(id);
+        dto.setFechaInicio(fechaInicio);
+
+        return dto;
+
     }
 }
