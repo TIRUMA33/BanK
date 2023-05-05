@@ -138,8 +138,9 @@ public class PersonaController {
     }
 
     @GetMapping("/solicitar")
-    public String doSolicitado(@ModelAttribute("cuenta") CuentaBancoEntity cuenta) {
+    public String doSolicitado(@ModelAttribute("id") Integer cuentaid) {
         EstadoCuentaEntity estado = new EstadoCuentaEntity();
+        CuentaBancoEntity cuenta = cuentaRepository.findById(cuentaid).orElse(null);
         if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 1) {
             estado.setId(4);
         } else if(cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 2) {

@@ -29,10 +29,12 @@
   <a href="/persona/transferencia?id=<%= usuario.getId() %>">Realizar transferencia</a>
   <a href="/asistencia/?id=<%= usuario.getTipoUsuarioByTipoUsuario().getId() %>">Asistencia</a>
   <% if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 1) { %>
-      <a href="/persona/solicitar">Solcitar bloqueo de cuenta</a>
+      <a href="/persona/solicitar?id=<%= cuenta.getId()%>">Solicitar bloqueo de cuenta</a>
   <% } else if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 2){  %>
-    <a href="/cajero/desbloquear?cuenta=<%= cuenta.getId() %>">Solcitar activacion de cuenta</a>
-  <% } %>
+      <a href="/persona/solicitar?id=<%= cuenta.getId()%>">Solicitar activacion de cuenta</a>
+  <% } else {%>
+      Solicitud pendiente
+  <%}%>
 
 </form>
 </body>
