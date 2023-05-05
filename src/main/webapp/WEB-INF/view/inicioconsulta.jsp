@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.uma.taw.bank.entity.MensajeEntity" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
@@ -12,16 +13,16 @@
     <title></title>
 </head>
 <body>
-<%
-List <MensajeEntity> mensajescliente = (List<MensajeEntity>) request.getAttribute("mensajescliente");
-%>
 
 <h1>Asistencia virtual</h1>
 
-<form action="/asistencia/chat" method="post">
-    Introduzca su consulta:<br/> <textarea name="mensaje" size="500" maxlength="500" rows="10" cols="50"> </textarea>
+<form:form action="/asistencia/consultar" modelAttribute="mensaje" method="post">
+    <form:hidden path="id"/>
+    Introduzca su consulta:<br/> <form:textarea path="contenido" size="500" maxlength="500" rows="10" cols="50"/>
+    <form:hidden path="conversacionByConversacion"/>
+    <form:hidden path="usuarioByEmisor"/>
     <input type="submit" value="Enviar">
-</form>
+</form:form>
 
 
 </body>

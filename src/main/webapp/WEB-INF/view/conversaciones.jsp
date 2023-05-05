@@ -18,7 +18,8 @@
 
 <jsp:include page="cabecera.jsp"/>
 
-<h1>Listado de conversaciones</h1>
+<h1>Bienvenido</h1>
+<h2>Lista de conversaciones almacenadas</h2>
 
 <%
   if(conversaciones != null && !conversaciones.isEmpty()) {
@@ -54,9 +55,15 @@
   </tr>
   <%
     }
-    }
   %>
 </table>
+<%
+    }else{
+%>
+<p>No hay conversaciones almacenadas</p>
+<%
+  }
+%>
 
 
 </body>
