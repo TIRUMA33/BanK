@@ -5,9 +5,20 @@ public class FiltroCliente {
     private Boolean nombre;
     private Boolean estado;
 
+    private String texto;
+
     public FiltroCliente(){
         nombre = false;
         estado = false;
+        texto = "";
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
     }
 
     public Boolean getNombre() {

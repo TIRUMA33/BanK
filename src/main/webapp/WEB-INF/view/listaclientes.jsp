@@ -29,7 +29,8 @@
     Ordenar por: <br/>
     Estado: <form:checkbox path="estado"/>
     Nombre:<form:checkbox path="nombre"/>
-    <button>Ordenar</button>
+    Buscar: <form:input path="texto"/>
+    <button>Filtrar</button>
 </form:form>
 <table>
     <tr>

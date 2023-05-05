@@ -92,15 +92,58 @@ public String doPendientes(Model model) {
         List<EmpresaEntity> listaEmpresaaux = new ArrayList<>();
         List<PersonaEntity> listaPersonasaux = new ArrayList<>();
 
-        if (filtro == null || (filtro.getEstado() == false && filtro.getNombre() == false)) {
+        if (filtro == null || (filtro.getEstado() == false && filtro.getNombre() == false && filtro.getTexto().isEmpty())) {
             listaclientes = this.clienteRepository.findAll();
             filtro = new FiltroCliente();
-        } else if (filtro.getNombre() == true && filtro.getEstado() == false) {
+        } else if (filtro.getNombre() == true && filtro.getEstado() == false && filtro.getTexto().isEmpty()) {
             listaEmpresa = this.clienteRepository.ordenadopornombreempresa();
             listaPersonas = this.clienteRepository.ordenadopornombrepersona();
-        } else if (filtro.getEstado() == true && filtro.getNombre() == false) {
+        } else if (filtro.getNombre() == true && filtro.getEstado() == true && filtro.getTexto().isEmpty()) {
             listaclientes = this.clienteRepository.ordenadoporestado();
+            listaEmpresa = this.clienteRepository.ordenadopornombreempresa();
+            listaPersonas = this.clienteRepository.ordenadopornombrepersona();
+            for (ClienteEntity c: listaclientes) { //lista clientes ordenada por estado
+                for (PersonaEntity p:listaPersonas) { //lista personas desordenada
+                    if(p.getId() == c.getId()){
+                        listaPersonasaux.add(p);
+                    }
+                }
+                for (EmpresaEntity e:listaEmpresa) {
+                    if(e.getId() == c.getId()){
+                        listaEmpresaaux.add(e);
+                    }
+                }
+            }
+            listaPersonas = listaPersonasaux;
+            listaEmpresa = listaEmpresaaux;
+        } else if (filtro.getEstado() == true && filtro.getNombre() == false && !filtro.getTexto().isEmpty()) {
+            listaclientes = this.clienteRepository.ordenadoporestado();
+            listaEmpresa = this.clienteRepository.buscarPorNombreEmpresa(filtro.getTexto());
+            listaPersonas = this.clienteRepository.buscarPorNombrePersona(filtro.getTexto());
+
             //ordenar la lista de personas y de empresas en funcion a la de clientes
+            for (ClienteEntity c: listaclientes) { //lista clientes ordenada por estado
+                for (PersonaEntity p:listaPersonas) { //lista personas desordenada
+                    if(p.getId() == c.getId()){
+                        listaPersonasaux.add(p);
+                    }
+                }
+                for (EmpresaEntity e:listaEmpresa) {
+                    if(e.getId() == c.getId()){
+                        listaEmpresaaux.add(e);
+                    }
+                }
+            }
+            listaPersonas = listaPersonasaux;
+            listaEmpresa = listaEmpresaaux;
+        } else if (filtro.getNombre() == false && filtro.getEstado() == false && !filtro.getTexto().isEmpty()) {
+            listaEmpresa = this.clienteRepository.buscarPorNombreEmpresa(filtro.getTexto());
+            listaPersonas = this.clienteRepository.buscarPorNombrePersona(filtro.getTexto());
+        } else if (filtro.getNombre() == true && filtro.getEstado() == false && !filtro.getTexto().isEmpty()) {
+            listaEmpresa = this.clienteRepository.buscarPorNombreEmpresaordenado(filtro.getTexto());
+            listaPersonas = this.clienteRepository.buscarPorNombrePersonaordenado(filtro.getTexto());
+        } else if (filtro.getEstado() == true && filtro.getNombre() == false && filtro.getTexto().isEmpty()) {
+            listaclientes = this.clienteRepository.ordenadoporestado();
             for (ClienteEntity c: listaclientes) { //lista clientes ordenada por estado
                 for (PersonaEntity p:listaPersonas) { //lista personas desordenada
                     if(p.getId() == c.getId()){
@@ -117,8 +160,22 @@ public String doPendientes(Model model) {
             listaEmpresa = listaEmpresaaux;
         } else {
             listaclientes = this.clienteRepository.ordenadoporestado();
-            listaEmpresa = this.clienteRepository.ordenadopornombreempresa();
-            listaPersonas = this.clienteRepository.ordenadopornombrepersona();
+            listaEmpresa = this.clienteRepository.buscarPorNombreEmpresaordenado(filtro.getTexto());
+            listaPersonas = this.clienteRepository.buscarPorNombrePersonaordenado(filtro.getTexto());
+            for (ClienteEntity c: listaclientes) { //lista clientes ordenada por estado
+                for (PersonaEntity p:listaPersonas) { //lista personas desordenada
+                    if(p.getId() == c.getId()){
+                        listaPersonasaux.add(p);
+                    }
+                }
+                for (EmpresaEntity e:listaEmpresa) {
+                    if(e.getId() == c.getId()){
+                        listaEmpresaaux.add(e);
+                    }
+                }
+            }
+            listaPersonas = listaPersonasaux;
+            listaEmpresa = listaEmpresaaux;
         }
 
         model.addAttribute("listaclientes",listaclientes);
