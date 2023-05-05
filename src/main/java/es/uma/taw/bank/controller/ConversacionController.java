@@ -30,10 +30,9 @@ public class ConversacionController {
     @GetMapping("/")
     public String doAsistencia(@RequestParam("id")Integer id, Model model){
 
-        String urlTo = "chat";
         ConversacionEntity conver = this.conversacionRepository.findConversacionAbiertaByUsuario(id);
+        String urlTo = "redirect:/asistencia/chat?id="+conver.getId();
         if(conver==null){
-            conver = new ConversacionEntity();
             urlTo = "inicioconsulta";
         }
 
@@ -48,15 +47,37 @@ public class ConversacionController {
     @PostMapping("/consultar")
     public String doConsultar(@ModelAttribute("mensaje")MensajeEntity mensaje, Model model){
         mensaje.setFecha(new java.sql.Timestamp(System.currentTimeMillis()));
+        ConversacionEntity conver = new ConversacionEntity();
+        conver.setUsuarioByEmisor(mensaje.getUsuarioByEmisor());
+        conver.setUsuarioByReceptor(this.usuarioRepository.findAsistente());
+        conver.setTerminada((byte) 0);
+        this.conversacionRepository.save(conver);
+        mensaje.setConversacionByConversacion(conver);
         this.mensajeRepository.save(mensaje);
 
-        return "redirect:/asistencia";
+        return "redirect:/asistencia/?id="+mensaje.getUsuarioByEmisor().getId();
     }
 
-    /*@GetMapping("/chat")
-    public String doChat(@RequestParam("id")Integer id, Model model){
-        return "chat";
-    }*/
+    @GetMapping("/chat")
+    public String doChat(@RequestParam("id") Integer id, Model model){
+        ConversacionEntity conver = this.conversacionRepository.findById(id).orElse(null);
+        List<MensajeEntity> msjs = this.mensajeRepository.findMensajesByConversacion(conver.getId());
+        model.addAttribute("mensajes", msjs);
+        if (conver.getTerminada()==0){
+            MensajeEntity msj = new MensajeEntity();
+            msj.setUsuarioByEmisor(conver.getUsuarioByEmisor());
+            msj.setConversacionByConversacion(conver);
+            model.addAttribute("mensaje", msj);
+        }
+        return "chatcliente";
+    }
+
+    @PostMapping("/enviar")
+    public String doEnviarMensaje(@ModelAttribute("mensaje") MensajeEntity mensaje, Model model){
+        mensaje.setFecha(new java.sql.Timestamp(System.currentTimeMillis()));
+        this.mensajeRepository.save(mensaje);
+        return "redirect:/asistencia/chat/?id="+mensaje.getConversacionByConversacion().getId();
+    }
 
     @GetMapping("/conversaciones")
     public String doListarConversaciones(Model model){

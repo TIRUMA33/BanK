@@ -8,4 +8,7 @@ import org.springframework.data.repository.query.Param;
 public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer> {
     @Query("select u from UsuarioEntity u where u.nif = :nif and u.contrasena = :contrasena")
     UsuarioEntity autenticar(@Param("nif") String nif, @Param("contrasena") String contrasena);
+
+    @Query("select u from UsuarioEntity u where u.tipoUsuarioByTipoUsuario.id = 3")
+    UsuarioEntity findAsistente();
 }

@@ -16,13 +16,13 @@ public class ConversacionEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "TERMINADA", nullable = true)
+    @Column(name = "TERMINADA", nullable = true, columnDefinition = "byte default 0")
     private Byte terminada;
     @ManyToOne
     @JoinColumn(name = "EMISOR", referencedColumnName = "ID", nullable = false)
     private UsuarioEntity usuarioByEmisor;
     @ManyToOne
-    @JoinColumn(name = "RECEPTOR", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "RECEPTOR", referencedColumnName = "ID", nullable = false, columnDefinition = "integer default 27")
     private UsuarioEntity usuarioByReceptor;
     @OneToMany(mappedBy = "conversacionByConversacion")
     private List<MensajeEntity> mensajesById;
