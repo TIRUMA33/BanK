@@ -12,7 +12,7 @@ public class PersonaService {
     protected PersonaRepository personaRepository;
 
     public PersonaDTO buscarPersona(Integer id){
-        PersonaEntity persona = personaRepository.findById(id).get();
+        PersonaEntity persona = personaRepository.findById(id).orElse(null);
         if(persona!=null)return persona.toDTO();
         else return null;
     }

@@ -11,9 +11,11 @@
     <title>Retira tu dinero en otra divisa</title>
 </head>
 <body>
+<a href="/cajero/cuenta?cuenta=${cuenta.id}">Volver</a><br>
+<a href="/cajero/cambioDivisa?cuenta=${cuenta.id}">Seleccionar otra divisa</a>
 <h1>Realizar una retirada en:</h1>
 <form method="post" action="/cajero/retirarCambio" onsubmit="comprobarSaldo()">
-    <h3>Saldo disponible: <span style="color: ${cuenta.saldo<0?"crimson" : "black"}">${cuenta.saldo}</span></h3>
+    <h3>Saldo disponible: <span style="color: ${cuenta.saldo<0?"crimson" : "black"}">${cuenta.saldo}</span> ${cuenta.divisa}</h3>
     <input hidden="true" value="${cuenta.id}" name="cuenta">
     Cantidad en ${origen}:<input id="origen" type="number" name="cantidad" onkeyup="cambiar()" required="required">
     Cantidad en ${destino}:<input id="destino" type="number" disabled>

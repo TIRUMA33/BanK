@@ -15,6 +15,7 @@
     <title>Tu cuenta</title>
 </head>
 <body>
+<a href="/cajero/listar?cliente=${cuenta.cliente}">Volver a mis cuentas</a>
 <h2>Tu cuenta:</h2>
 <h3>IBAN: ${cuenta.ibanCuenta}</h3>
 <%

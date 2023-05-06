@@ -22,6 +22,9 @@ PersonaDTO persona = (PersonaDTO) request.getAttribute("persona");
     <title>Cajero</title>
 </head>
 <body>
+<%
+if(persona!=null){
+%>
 <h1>Bienvenido, <%= persona.getNombre()+" "+persona.getApellido1()+" "+persona.getApellido2() %></h1>
 <br>
 <p><a href="/cajero/datos?cliente=<%= persona.getId() %>">Modificar mis datos</a></p>
@@ -47,6 +50,13 @@ PersonaDTO persona = (PersonaDTO) request.getAttribute("persona");
             <%= c.getSaldo() %>
         </td>
     </tr>
+<%
+    }
+%>
+<%
+}else{
+%>
+    <h1>Lo sentimos, el cajero solo está disponible para personas, no para empresas.</h1>
 <%
     }
 %>

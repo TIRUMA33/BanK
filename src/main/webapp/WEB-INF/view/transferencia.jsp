@@ -12,6 +12,7 @@
     <title>Transferencia entre cuentas</title>
 </head>
 <body>
+<a href="/cajero/cuenta?cuenta=${transaccion.cuentaOrigen}">Volver</a>
 <h1>Realizar una transferencia:</h1>
 <form:form method="post" modelAttribute="transaccion" action="/cajero/transferir">
     <form:hidden path="id"></form:hidden>

@@ -15,6 +15,7 @@
     <title>Cambio de divisa</title>
 </head>
 <body>
+<a href="/cajero/cuenta?cuenta=${cuenta.id}">Volver</a>
 <h1>Cambia de divisa</h1>
 <h3>Tu cuenta contiene ${cuenta.divisa}</h3>
 <form method="post" action="/cajero/cambiarA">

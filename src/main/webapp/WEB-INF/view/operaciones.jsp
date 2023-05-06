@@ -19,6 +19,7 @@
     <title>Operaciones de tu cuenta</title>
 </head>
 <body>
+<a href="/cajero/cuenta?cuenta=${idCuenta}">Volver</a>
 <h1>Lista de operaciones</h1>
 <p>Ordenar por:</p>
 <form:form method="post" modelAttribute="filtro" action="/cajero/operaciones/filtrar">

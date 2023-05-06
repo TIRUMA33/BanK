@@ -28,19 +28,19 @@ public class CuentaService {
         return this.listaEntidadesADTO(cuentas);
     }
     public void sumarSaldo(Integer idCuenta, Double cantidad){
-        CuentaBancoEntity c = this.cuentaRepository.findById(idCuenta).get();
+        CuentaBancoEntity c = this.cuentaRepository.findById(idCuenta).orElse(null);
         c.setSaldo(c.getSaldo()+cantidad);
         cuentaRepository.save(c);
     }
     public void pedirDesbloqueo(Integer idCuenta){
-        CuentaBancoEntity c = this.cuentaRepository.findById(idCuenta).get();
-        EstadoCuentaEntity pendienteDesbloqueo = estadoCuentaRepository.findById(5).get();
+        CuentaBancoEntity c = this.cuentaRepository.findById(idCuenta).orElse(null);
+        EstadoCuentaEntity pendienteDesbloqueo = estadoCuentaRepository.findById(5).orElse(null);
         c.setEstadoCuentaByEstadoCuentaId(pendienteDesbloqueo);
         cuentaRepository.save(c);
     }
 
     public CuentaDTO buscarCuenta(Integer id){
-        CuentaBancoEntity cuenta = cuentaRepository.findById(id).get();
+        CuentaBancoEntity cuenta = cuentaRepository.findById(id).orElse(null);
         if(cuenta!=null)return cuenta.toDTO();
         else return null;
     }

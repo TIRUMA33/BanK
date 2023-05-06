@@ -12,9 +12,10 @@
     <title>Retirada</title>
 </head>
 <body>
+<a href="/cajero/cuenta?cuenta=${cuenta.id}">Volver</a>
 <h1>Realizar una retirada:</h1>
 <form method="post" action="/cajero/retirar" onsubmit="comprobarSaldo()">
-    <h3>Saldo disponible: <span style="color: ${cuenta.saldo<0?"crimson" : "black"}">${cuenta.saldo}</span></h3>
+    <h3>Saldo disponible: <span style="color: ${cuenta.saldo<0?"crimson" : "black"}">${cuenta.saldo}</span> ${cuenta.divisa}</h3>
     <input hidden="true" value="${cuenta.id}" name="cuenta">
     Cantidad:<input id="cantidad" type="number" name="cantidad" required="required">
     <button id="boton">Retirar</button>

@@ -20,18 +20,6 @@ import java.util.List;
 @RequestMapping("/cajero")
 public class CajeroController {
     @Autowired
-    protected CuentaRepository cuentaRepository;
-    @Autowired
-    protected ClienteRepository clienteRepository;
-    @Autowired
-    protected PersonaRepository personaRepository;
-    @Autowired
-    protected TransaccionRepository transaccionRepository;
-    @Autowired
-    protected DivisaRepository divisaRepository;
-    @Autowired
-    protected EstadoCuentaRepository estadoCuentaRepository;
-    @Autowired
     protected ClienteService clienteService;
     @Autowired
     protected TransaccionService transaccionService;

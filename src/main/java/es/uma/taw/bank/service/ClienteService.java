@@ -12,7 +12,7 @@ public class ClienteService {
     protected ClienteRepository clienteRepository;
 
     public ClienteDTO buscarCliente(Integer id){
-        ClienteEntity cliente = clienteRepository.findById(id).get();
+        ClienteEntity cliente = clienteRepository.findById(id).orElse(null);
         if(cliente!=null){
             return cliente.toDTO();
         }

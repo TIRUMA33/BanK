@@ -35,10 +35,10 @@ public class TransaccionService {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         t.setFechaEjecucion(timestamp);
         t.setFechaInstruccion(timestamp);
-        t.setCuentaBancoByCuentaOrigen(this.cuentaRepository.findById(dto.getCuentaOrigen()).get());
+        t.setCuentaBancoByCuentaOrigen(this.cuentaRepository.findById(dto.getCuentaOrigen()).orElse(null));
         t.setId(dto.getId());
         t.setCantidad(dto.getCantidad());
-        t.setCuentaBancoByCuentaDestino(this.cuentaRepository.findById(dto.getCuentaDestino()).get());
+        t.setCuentaBancoByCuentaDestino(this.cuentaRepository.findById(dto.getCuentaDestino()).orElse(null));
 
         this.transaccionRepository.save(t);
     }
@@ -82,8 +82,8 @@ public class TransaccionService {
     public List<CuentaDTO> rellenarCuentas(Integer idCuenta, List<TransaccionDTO> operaciones) {
         List<CuentaDTO> cuentas = new ArrayList<>();
         for(TransaccionDTO t: operaciones){
-            CuentaDTO cuentaDestino = cuentaRepository.findById(t.getCuentaDestino()).get().toDTO();
-            CuentaDTO cuentaOrigen = cuentaRepository.findById(t.getCuentaOrigen()).get().toDTO();
+            CuentaDTO cuentaDestino = cuentaRepository.findById(t.getCuentaDestino()).orElse(null).toDTO();
+            CuentaDTO cuentaOrigen = cuentaRepository.findById(t.getCuentaOrigen()).orElse(null).toDTO();
             if(!cuentas.contains(cuentaDestino))if(cuentaDestino.getId()!=idCuenta)cuentas.add(cuentaDestino);
             if(!cuentas.contains(cuentaOrigen))if(cuentaOrigen.getId()!=idCuenta)cuentas.add(cuentaOrigen);
         }
