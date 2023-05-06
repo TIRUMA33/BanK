@@ -31,9 +31,9 @@ public class ConversacionController {
     public String doAsistencia(@RequestParam("id")Integer id, Model model){
 
         ConversacionEntity conver = this.conversacionRepository.findConversacionAbiertaByUsuario(id);
-        String urlTo = "redirect:/asistencia/chat?id="+conver.getId();
-        if(conver==null){
-            urlTo = "inicioconsulta";
+        String urlTo = "inicioconsulta";
+        if(conver!=null){
+            urlTo = "redirect:/asistencia/chat?id="+conver.getId();
         }
 
         MensajeEntity msj = new MensajeEntity();
@@ -72,11 +72,29 @@ public class ConversacionController {
         return "chatcliente";
     }
 
+    @GetMapping("/asistir")
+    public String doAsistir(@RequestParam("id") Integer id, Model model){
+        ConversacionEntity conver = this.conversacionRepository.findById(id).orElse(null);
+        List<MensajeEntity> msjs = this.mensajeRepository.findMensajesByConversacion(conver.getId());
+        model.addAttribute("mensajes", msjs);
+        if (conver.getTerminada()==0){
+            MensajeEntity msj = new MensajeEntity();
+            msj.setUsuarioByEmisor(conver.getUsuarioByReceptor());
+            msj.setConversacionByConversacion(conver);
+            model.addAttribute("mensaje", msj);
+        }
+        return "chatasistente";
+    }
+
     @PostMapping("/enviar")
     public String doEnviarMensaje(@ModelAttribute("mensaje") MensajeEntity mensaje, Model model){
+        String urlTo = "redirect:/asistencia/chat?id="+mensaje.getConversacionByConversacion().getId();
         mensaje.setFecha(new java.sql.Timestamp(System.currentTimeMillis()));
         this.mensajeRepository.save(mensaje);
-        return "redirect:/asistencia/chat/?id="+mensaje.getConversacionByConversacion().getId();
+        if(mensaje.getUsuarioByEmisor().getTipoUsuarioByTipoUsuario().getId()==3){
+            urlTo = "redirect:/asistencia/asistir?id="+mensaje.getConversacionByConversacion().getId();
+        }
+        return urlTo;
     }
 
     @GetMapping("/conversaciones")

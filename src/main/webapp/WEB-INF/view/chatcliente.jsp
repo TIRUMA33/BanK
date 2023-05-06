@@ -17,20 +17,20 @@
    List<MensajeEntity> mensajes = (List<MensajeEntity>) request.getAttribute("mensajes");
 %>
 
-<table border="1">
+<table border="1" style="width: 100%; table-layout:fixed">
     <%
         for (MensajeEntity msj : mensajes) {
             if(msj.getUsuarioByEmisor().getId()!=27){
     %>
     <tr>
         <td></td>
-        <td><%=msj.getContenido()%></td>
+        <td style="word-wrap: break-word"><b>Yo: </b><%=msj.getContenido()%></td>
     </tr>
     <%
         }else{
     %>
     <tr>
-        <td><%=msj.getContenido()%></td>
+        <td style="word-wrap: break-word"><b>Asistente: </b><%=msj.getContenido()%></td>
         <td></td>
     </tr>
     <%
@@ -40,7 +40,7 @@
 </table>
 <form:form action="/asistencia/enviar" method="post" modelAttribute="mensaje">
     <form:hidden path="id"/>
-    Introduzca su consulta:<br/> <form:textarea path="contenido" size="500" maxlength="500" rows="10" cols="50"/>
+    Escriba su mensaje:<br/> <form:textarea path="contenido" size="500" maxlength="500" rows="10" cols="50"/>
     <form:hidden path="conversacionByConversacion"/>
     <form:hidden path="usuarioByEmisor"/>
     <input type="submit" value="Enviar">

@@ -38,7 +38,10 @@
       <a href="/persona/solicitar?id=<%= cuenta.getId()%>">Solicitar activacion de cuenta</a>
     <% } else {%>
       Solicitud pendiente
-    <%}%>
+    <%
+      }
+    }
+    %>
     <a href="/asistencia/?id=<%= usuario.getId() %>">Asistencia</a>
 
 </form>

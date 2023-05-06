@@ -2,28 +2,38 @@ package es.uma.taw.bank.ui;
 
 public class FiltroOperacionesPersona {
 
-    private Boolean fechaEjecucion;
+    private String Iban;
+    private Boolean cantidad;
 
-    private double cantidad;
+    private Boolean fecha;
 
     public FiltroOperacionesPersona() {
-        fechaEjecucion = false;
-        cantidad = 0.0;
+        Iban = "";
+        cantidad = false;
+        fecha = false;
     }
 
-    public Boolean getFechaEjecucion() {
-        return fechaEjecucion;
+    public String getIban() {
+        return Iban;
     }
 
-    public void setFechaEjecucion(Boolean fechaEjecucion) {
-        this.fechaEjecucion = fechaEjecucion;
+    public void setIban(String iban) {
+        Iban = iban;
     }
 
-    public double getCantidad() {
+    public Boolean getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(double cantidad) {
+    public void setCantidad(Boolean cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Boolean getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Boolean fecha) {
+        this.fecha = fecha;
     }
 }

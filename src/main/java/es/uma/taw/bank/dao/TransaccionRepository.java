@@ -36,8 +36,20 @@ public interface TransaccionRepository extends JpaRepository<TransaccionEntity, 
     public List<TransaccionEntity> filtraPorTextoyordenarPorCantidad(@Param("texto") String texto);
     @Query("select t from TransaccionEntity t where t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta and t.cantidad=:cantidad")
     public List<TransaccionEntity> buscarporCuentaYCantidad(@Param(("cuenta")) Integer cuenta, @Param(("cantidad")) double cantidad);
+    @Query("select t from TransaccionEntity t where t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta")
+    public List<TransaccionEntity> buscarporCuenta(@Param("cuenta") Integer cuenta);
+    @Query("select t from TransaccionEntity t where t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta order by t.cantidad asc")
+    public List<TransaccionEntity> buscaryordporCuentaYCantidad(@Param("cuenta") Integer cuenta);
     @Query("select t from TransaccionEntity t where t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta order by t.fechaEjecucion asc")
-    public List<TransaccionEntity> buscarporCuentayFecha(@Param("cuenta") Integer cuenta);
-    @Query("select t from TransaccionEntity t where t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta and t.cantidad=:cantidad order by t.fechaEjecucion asc")
-    public List<TransaccionEntity> buscarporCuentaYFechaYCantidad(@Param("cuenta") Integer cuenta, @Param(("cantidad")) double cantidad);
+    public List<TransaccionEntity> buscaryordporCuentaYFecha(@Param("cuenta") Integer cuenta);
+    @Query("select t from TransaccionEntity t where (t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta) and (t.cuentaBancoByCuentaOrigen.ibanCuenta like CONCAT('%', :iban, '%') or t.cuentaBancoByCuentaDestino.ibanCuenta like CONCAT('%', :iban, '%'))")
+    public List<TransaccionEntity> buscarpordoblecuenta(@Param("cuenta") Integer cuenta, @Param("iban") String iban);
+    @Query("select t from TransaccionEntity t where (t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta) and (t.cuentaBancoByCuentaOrigen.ibanCuenta like CONCAT('%', :iban, '%') or t.cuentaBancoByCuentaDestino.ibanCuenta like CONCAT('%', :iban, '%')) order by t.cantidad desc")
+    public List<TransaccionEntity> buscarporDobleCuentayCantidad(@Param("cuenta") Integer cuenta, @Param("iban") String iban);
+    @Query("select t from TransaccionEntity t where (t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta) and (t.cuentaBancoByCuentaOrigen.ibanCuenta like CONCAT('%', :iban, '%') or t.cuentaBancoByCuentaDestino.ibanCuenta like CONCAT('%', :iban, '%')) order by t.fechaEjecucion desc")
+    public List<TransaccionEntity> buscarporDobleCuentayFecha(@Param("cuenta") Integer cuenta, @Param("iban") String iban);
+    @Query("select t from TransaccionEntity t where t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta order by t.fechaEjecucion asc, t.cantidad desc")
+    public List<TransaccionEntity> buscaryordporCuentaFechaYCantidad(@Param("cuenta") Integer cuenta);
+    @Query("select t from TransaccionEntity t where (t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta) and (t.cuentaBancoByCuentaOrigen.ibanCuenta like CONCAT('%', :iban, '%') or t.cuentaBancoByCuentaDestino.ibanCuenta like CONCAT('%', :iban, '%')) order by t.fechaEjecucion desc, t.cantidad desc")
+    public List<TransaccionEntity> buscarporDobleCuentaFechaYCantidad(@Param("cuenta") Integer cuenta, @Param("iban") String iban);
 }

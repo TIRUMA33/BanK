@@ -196,20 +196,28 @@ public class PersonaController {
         return this.procesarFiltradoOperaciones(personaId, filtro, model);
     }
 
-    private String procesarFiltradoOperaciones(Integer cuentaid,FiltroOperacionesPersona filtro,Model model) {
+    private String procesarFiltradoOperaciones(Integer cuentaid, FiltroOperacionesPersona filtro,Model model) {
 
         List<TransaccionEntity> operaciones = null;
         String urlTo = "operacionesPersona";
 
-        if(filtro == null || filtro.getCantidad()== 0.0 && filtro.getFechaEjecucion()==null) {
-            operaciones = this.transaccionRepository.operacionesPorCuenta(cuentaid);
+        if (filtro == null || filtro.getIban()=="" && !filtro.getFecha() && !filtro.getCantidad()) {
+            operaciones = this.transaccionRepository.buscarporCuenta(cuentaid);
             filtro = new FiltroOperacionesPersona();
-        } else if (filtro.getFechaEjecucion()==null) {
-            operaciones = transaccionRepository.buscarporCuentaYCantidad(cuentaid, filtro.getCantidad());
-        } else if (filtro.getCantidad() == 0.0) {
-            operaciones = transaccionRepository.buscarporCuentayFecha(cuentaid);
-        } else {
-            operaciones = transaccionRepository.buscarporCuentaYFechaYCantidad(cuentaid, filtro.getCantidad());
+        }else if (filtro.getIban()=="" && !filtro.getFecha()) {
+            operaciones = transaccionRepository.buscaryordporCuentaYCantidad(cuentaid);
+        } else if (filtro.getIban()=="" && !filtro.getCantidad()) {
+            operaciones = transaccionRepository.buscaryordporCuentaYFecha(cuentaid);
+        } else if (!filtro.getFecha() && !filtro.getCantidad()){
+            operaciones = transaccionRepository.buscarpordoblecuenta(cuentaid, filtro.getIban());
+        } else if(!filtro.getFecha()) {
+            operaciones = transaccionRepository.buscarporDobleCuentayCantidad(cuentaid, filtro.getIban());
+        } else if (!filtro.getCantidad()) {
+            operaciones = transaccionRepository.buscarporDobleCuentayFecha(cuentaid, filtro.getIban());
+        } else if (filtro.getIban()==""){
+            operaciones = transaccionRepository.buscaryordporCuentaFechaYCantidad(cuentaid);
+        }else {
+            operaciones = transaccionRepository.buscarporDobleCuentaFechaYCantidad(cuentaid, filtro.getIban());
         }
         model.addAttribute("operaciones", operaciones);
         model.addAttribute("filtro", filtro);
