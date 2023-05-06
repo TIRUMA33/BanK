@@ -43,7 +43,7 @@
       status = "En curso";
     %>
     <td>
-      <a href="/asistencia/chat?id=<%=conversacion.getId() %>"><%=status%></a>
+      <a href="/asistencia/asistir?id=<%=conversacion.getId() %>"><%=status%></a>
     </td>
     <%
       }else{
