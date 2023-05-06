@@ -1,6 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.uma.taw.bank.entity.OperacionEntity" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="es.uma.taw.bank.entity.EmpresaEntity" %>
+<%@ page import="es.uma.taw.bank.entity.PersonaEntity" %><%--
   Created by IntelliJ IDEA.
   User: oscfd
   Date: 02/05/2023
@@ -10,6 +12,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
     List<OperacionEntity> operaciones = (List<OperacionEntity>) request.getAttribute("operaciones");
+    List<EmpresaEntity> empresas = (List<EmpresaEntity>) request.getAttribute("empresas");
+    List<PersonaEntity> personas = (List<PersonaEntity>) request.getAttribute("personas");
 %>
 <html>
 <head>
@@ -25,25 +29,20 @@
 %>
 <h1>Lista de operaciones</h1>
 
-<form:form action="/empresa/${id}/persona/${personaId}/operaciones/filtrar" modelAttribute="filtro" method="post">
+<form:form action="/empresa/${id}/operaciones/filtrar" modelAttribute="filtro" method="post">
     <label>Buscar por:</label> <br/>
-    <form:label path="socio">Nombre:</form:label>
-    <form:input path="socio"/>
     <form:label path="cuenta">Cuenta:</form:label>
-    <form:select path="cuenta" multiple="true">
-        <form:option value="" label=""/>
-        <form:options items="${cuentas}" itemLabel="ibanCuenta" itemValue="ibanCuenta"/>
-    </form:select>
-    <form:label path="cantidad">Cantidad:</form:label>
-    <form:input path="cantidad"/>
+    <form:input path="cuenta" size="24" maxlength="24"/>
+    <form:checkbox path="cantidad" label="Cantidad"/>
     <form:checkbox path="fechaEjecucion" label="Fecha de ejecución"/>
     <form:button type="submit">Filtrar</form:button>
 </form:form>
 
 <table border="1">
     <tr>
-        <th>Socio</th>
+        <th>Ordenante</th>
         <th>Cuenta origen</th>
+        <th>Beneficiario</th>
         <th>Cuenta destino</th>
         <th>Cantidad</th>
         <th>Fecha de instrucción</th>
@@ -57,6 +56,26 @@
         %> <%= operacion.getPersonaByPersonaId().getApellido2() %>
         </td>
         <td><%= operacion.getTransaccionByTransaccionId().getCuentaBancoByCuentaOrigen().getIbanCuenta() %>
+        </td>
+        <td>
+            <%
+                for (EmpresaEntity empresa : empresas) {
+                    if
+                    (empresa.getId().equals(operacion.getTransaccionByTransaccionId().getCuentaBancoByCuentaDestino().getClienteByTitularId().getId())) {
+            %>
+            <%= empresa.getNombre() %>
+            <%
+                    }
+                }
+                for (PersonaEntity persona : personas) {
+                    if
+                    (persona.getId().equals(operacion.getTransaccionByTransaccionId().getCuentaBancoByCuentaDestino().getClienteByTitularId().getId())) {
+            %>
+            <%= persona.getNombre() + " " + persona.getApellido1() + " " + persona.getApellido2() %>
+            <%
+                    }
+                }
+            %>
         </td>
         <td><%= operacion.getTransaccionByTransaccionId().getCuentaBancoByCuentaDestino().getIbanCuenta() %>
         </td>

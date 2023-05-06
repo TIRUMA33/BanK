@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpRequest;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -268,24 +267,24 @@ public class EmpresaController {
         if (filtro == null) {
             personas = this.personaRepository.distintasPersonasPorEmpresa(empresaId, personaId);
             filtro = new FiltroEmpresaPersona();
-        } else if (!filtro.getFechaNacimiento() && (filtro.getTipo() == null || filtro.getTipo().isEmpty())) {
-            personas = this.personaRepository.filtrarPersonasPorEmpresaPorDniNombre(empresaId, personaId,
+        } else if (!filtro.getFechaNacimiento() && filtro.getTipo().isBlank()) {
+            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTexto(empresaId, personaId,
                     filtro.getTexto());
-        } else if (filtro.getTexto().isBlank() && (filtro.getTipo() == null || filtro.getTipo().isEmpty())) {
+        } else if (filtro.getTexto().isBlank() && filtro.getTipo().isBlank()) {
             personas = this.personaRepository.filtrarPersonasPorEmpresaPorFechaNacimiento(empresaId, personaId);
         } else if (filtro.getTexto().isBlank() && !filtro.getFechaNacimiento()) {
             personas = this.personaRepository.filtrarPersonasPorEmpresaPorTipo(empresaId, personaId, filtro.getTipo());
-        } else if (filtro.getTipo() == null || filtro.getTipo().isEmpty()) {
-            personas = this.personaRepository.filtrarPersonasPorEmpresaPorDniNombreFechaNacimiento(empresaId,
+        } else if (filtro.getTipo().isBlank()) {
+            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTextoFechaNacimiento(empresaId,
                     personaId, filtro.getTexto());
         } else if (!filtro.getFechaNacimiento()) {
-            personas = this.personaRepository.filtrarPersonasPorEmpresaPorDniNombreTipo(empresaId, personaId,
+            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTextoTipo(empresaId, personaId,
                     filtro.getTexto(), filtro.getTipo());
         } else if (filtro.getTexto().isBlank()) {
             personas = this.personaRepository.filtrarPersonasPorEmpresaPorFechaNacimientoTipo(empresaId, personaId,
                     filtro.getTipo());
         } else {
-            personas = this.personaRepository.filtrarPersonasPorEmpresaPorDniNombreFechaNacimientoTipo(empresaId,
+            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTextoFechaNacimientoTipo(empresaId,
                     personaId, filtro.getTexto(), filtro.getTipo());
         }
 
@@ -405,54 +404,57 @@ public class EmpresaController {
         return "redirect:/empresa/".concat(id).concat("/cuentas");
     }
 
-    private String procesarFiltradoOperaciones(String empresaId, String personaId, FiltroOperacionesEmpresa filtro,
-                                               Model model) {
-        List<OperacionEntity> operaciones = null;
+    private String procesarFiltradoOperaciones(Integer empresaId, FiltroOperacionesEmpresa filtro, Model model) {
+        List<CuentaBancoEntity> cuentas = this.cuentaRepository.buscarPorCliente(empresaId);
+        List<OperacionEntity> ops = null;
+        List<OperacionEntity> operaciones = this.operacionRepository.buscarPorCuentasYEmpresa(cuentas, empresaId);
+        List<EmpresaEntity> empresas = this.empresaRepository.findAll();
+        List<PersonaEntity> personas = this.personaRepository.findAll();
         String urlTo = "listadoOperacionesEmpresa";
 
         if (filtro == null) {
-            operaciones =
-                    this.operacionRepository.buscarPorCuentasYEmpresa(this.cuentaRepository.buscarPorCliente(Integer.parseInt(empresaId)), Integer.parseInt(empresaId));
             filtro = new FiltroOperacionesEmpresa();
-        } else if (filtro.getCuenta().isBlank() && filtro.getCantidad() == null && !filtro.getFechaEjecucion()) {
-            String[] persona = filtro.getSocio().split(" ");
+        } else if (!filtro.getCantidad() && !filtro.getFechaEjecucion()) {
+            ops =
+                    this.operacionRepository.buscarPorCuenta(filtro.getCuenta());
+        } else if (filtro.getCuenta().isBlank() && !filtro.getFechaEjecucion()) {
+            ops = this.operacionRepository.ordenarPorCantidad();
+        } else if (filtro.getCuenta().isBlank() && !filtro.getCantidad()) {
+            ops = this.operacionRepository.ordenarPorFechaEjecucion();
+        } else if (filtro.getCuenta().isBlank()) {
+            ops = this.operacionRepository.ordenarPorCantidadYFechaEjecucion();
+        } else if (!filtro.getCantidad()) {
+            ops = this.operacionRepository.buscarPorCuentaYOrdenarPorFechaEjecucion(filtro.getCuenta());
+        } else if (!filtro.getFechaEjecucion()) {
+            ops =
+                    this.operacionRepository.buscarPorCuentaYOrdenarPorCantidad(filtro.getCuenta());
+        } else {
+            ops =
+                    this.operacionRepository.buscarPorCuentaYOrdenarPorCantidadYFechaEjecucion(filtro.getCuenta());
+        }
 
-            if (persona.length >= 3 && !persona[2].isBlank()) {
-                operaciones =
-                        this.operacionRepository.filtrarPorPersona(this.personaRepository.findByNombreAndApellido1AndApellido2(persona[0], persona[1], persona[2]));
-            } else if (persona.length >= 2 && !persona[1].isBlank()) {
-                operaciones =
-                        this.operacionRepository.filtrarPorPersona(this.personaRepository.findByNombreAndApellido1(persona[0], persona[1]));
-            } else {
-                operaciones =
-                        this.operacionRepository.filtrarPorPersona(this.personaRepository.findByNombre(filtro.getSocio()));
-            }
-        } else if (filtro.getSocio().isBlank() && filtro.getCantidad() == null && !filtro.getFechaEjecucion()) {
-            operaciones = this.operacionRepository.filtrarPorCuenta(filtro.getCuenta());
-        } else if (filtro.getSocio().isBlank() && filtro.getCuenta().isBlank() && !filtro.getFechaEjecucion()) {
-            operaciones = this.operacionRepository.findByTransaccionByTransaccionId_Cantidad(filtro.getCantidad());
-        } else if (filtro.getSocio().isBlank() && filtro.getCuenta().isBlank() && filtro.getCantidad() == null) {
-            operaciones = this.operacionRepository.filtrarPorFechaEjecucion();
+        if (ops != null) {
+            operaciones.retainAll(ops);
         }
 
         model.addAttribute("operaciones", operaciones);
         model.addAttribute("filtro", filtro);
-        model.addAttribute("socios", this.personaRepository.personasNombreCompletoPorEmpresa(empresaId));
-        model.addAttribute("cuentas", this.operacionRepository.listarTodasCuentasTransaccion());
+        model.addAttribute("cuentas", this.operacionRepository.listarTodasCuentasTransaccion(cuentas));
+        model.addAttribute("empresas", empresas);
+        model.addAttribute("personas", personas);
 
         return urlTo;
     }
 
-    @GetMapping("{id}/persona/{personaId}/operaciones")
-    public String doOperaciones(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
-                                Model model) {
-        return this.procesarFiltradoOperaciones(id, personaId, null, model);
+    @GetMapping("{id}/operaciones")
+    public String doOperaciones(@PathVariable("id") Integer id, Model model) {
+        return this.procesarFiltradoOperaciones(id, null, model);
     }
 
-    @PostMapping("{id}/persona/{personaId}/operaciones/filtrar")
-    public String doFiltrarOperaciones(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
+    @PostMapping("{id}/operaciones/filtrar")
+    public String doFiltrarOperaciones(@PathVariable("id") Integer id,
                                        @ModelAttribute("filtro") FiltroOperacionesEmpresa filtro, Model model) {
-        return this.procesarFiltradoOperaciones(id, personaId, filtro, model);
+        return this.procesarFiltradoOperaciones(id, filtro, model);
     }
 
     @GetMapping("{id}/cuenta/cambioDivisa")
