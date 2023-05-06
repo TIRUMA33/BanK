@@ -24,24 +24,23 @@
 
 <form action="/empresa/${empresa.id}/persona" method="post">
     <h2>Operaciones</h2>
-    <table style="border: 0px; width: 100%">
+    <table style="border: 0; width: 100%">
         <tr>
             <td><a href="/empresa/${empresa.id}/persona/<%= usuario.getId() %>/transferencia">Transferencias</a></td>
             <td><a href="/empresa/${empresa.id}/cuenta/cambioDivisa">Cambio de divisas</a></td>
-            <td><a href="/empresa/${empresa.id}/persona/<%= usuario.getId() %>/operaciones">Historial de
-                operaciones</a></td>
+            <td><a href="/empresa/${empresa.id}/operaciones">Historial de operaciones</a></td>
             <td><a href="/empresa/${empresa.id}/persona/<%= usuario.getId() %>/listar">Socios/Autorizados</a></td>
         </tr>
     </table>
     <h2>Gestiones</h2>
-    <table style="border: 0px; width: 100%">
+    <table style="border: 0; width: 100%">
         <tr>
             <td><a href="/registro/empresa/${empresa.id}/persona">Personas autorizadas</a></td>
             <td><a href="/empresa/${empresa.id}/cuentas">Cuentas</a></td>
         </tr>
     </table>
     <h2>Perfil</h2>
-    <table style="border: 0px; width: 100%">
+    <table style="border: 0; width: 100%">
         <tr>
             <td><a href="/empresa/${empresa.id}/persona/<%= usuario.getId() %>/editar">Personal</a></td>
             <td><a href="/empresa/${empresa.id}/editar">Empresa</a></td>

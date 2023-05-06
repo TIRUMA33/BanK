@@ -7,17 +7,15 @@ import lombok.Setter;
 @Setter
 public class FiltroOperacionesEmpresa {
 
-    private String socio;
-
     private String cuenta;
 
-    private Double cantidad;
+    private Boolean cantidad;
 
     private Boolean fechaEjecucion;
 
     public FiltroOperacionesEmpresa() {
-        socio = "";
         cuenta = "";
+        cantidad = false;
         fechaEjecucion = false;
     }
 }

@@ -2,8 +2,11 @@ package es.uma.taw.bank.controller;
 
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
+import es.uma.taw.bank.ui.FiltroOperacionesEmpresa;
+import es.uma.taw.bank.ui.FiltroOperacionesPersona;
 import es.uma.taw.bank.ui.RegistroEmpresa;
 import es.uma.taw.bank.ui.RegistroPersona;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/persona")
@@ -31,6 +36,9 @@ public class PersonaController {
 
     @Autowired
     TransaccionRepository transaccionRepository;
+
+    @Autowired
+    DivisaRepository divisaRepository;
 
     @GetMapping("/")
     public String doPersona(Model model, HttpSession session){
@@ -150,4 +158,65 @@ public class PersonaController {
         this.cuentaRepository.save(cuenta);
         return "redirect:/persona/";
     }
+
+    @GetMapping("/cambioDivisa")
+    public String doCambio(@RequestParam("id") Integer cuentaid, Model model) {
+        CuentaBancoEntity cuenta = cuentaRepository.findById(cuentaid).orElse(null);
+        List<DivisaEntity> divisas = this.divisaRepository.buscarSinMi(cuenta.getDivisaByDivisaId().getId());
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        List<String> cambios = divisas.stream().map(d->decimalFormat.format(cuenta.getSaldo() * cuenta.getDivisaByDivisaId().getEquivalencia() / d.getEquivalencia()) + " " + d.getNombre()).collect(Collectors.toList());
+
+        model.addAttribute("cuenta", cuenta);
+        model.addAttribute("divisas", divisas);
+        model.addAttribute("cambios", cambios);
+        return "cambioDivisaPersona";
+    }
+
+    @PostMapping("/cambioDivisa/{cuentaId}/realizar")
+    public String doCambioRealizado(@PathVariable("cuentaId") String cuentaid, @ModelAttribute("divisaSelect") Integer divisaid) {
+        DivisaEntity divisa = this.divisaRepository.findById(divisaid).orElse(null);
+        CuentaBancoEntity cuenta = this.cuentaRepository.findById(Integer.parseInt(cuentaid)).orElse(null);
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
+        cuenta.setSaldo(Double.parseDouble(decimalFormat.format(cuenta.getSaldo() * cuenta.getDivisaByDivisaId().getEquivalencia() / divisa.getEquivalencia()).replace(",", ".")));
+        cuenta.setDivisaByDivisaId(divisa);
+        this.cuentaRepository.save(cuenta);
+        return "redirect:/persona/";
+    }
+
+    @GetMapping("/operaciones")
+    public String doOperaciones(@RequestParam("id") Integer cuentaId,
+                                Model model) {
+        return this.procesarFiltradoOperaciones(cuentaId, null, model);
+    }
+
+    @PostMapping("/operaciones/{cuentaid}/filtrar")
+    public String doFiltrarOperaciones(@PathVariable("cuentaid") Integer personaId,
+                                       @ModelAttribute("filtro") FiltroOperacionesPersona filtro, Model model) {
+        return this.procesarFiltradoOperaciones(personaId, filtro, model);
+    }
+
+    private String procesarFiltradoOperaciones(Integer cuentaid,FiltroOperacionesPersona filtro,Model model) {
+
+        List<TransaccionEntity> operaciones = null;
+        String urlTo = "operacionesPersona";
+
+        if(filtro == null || filtro.getCantidad()== 0.0 && filtro.getFechaEjecucion()==null) {
+            operaciones = this.transaccionRepository.operacionesPorCuenta(cuentaid);
+            filtro = new FiltroOperacionesPersona();
+        } else if (filtro.getFechaEjecucion()==null) {
+            operaciones = transaccionRepository.buscarporCuentaYCantidad(cuentaid, filtro.getCantidad());
+        } else if (filtro.getCantidad() == 0.0) {
+            operaciones = transaccionRepository.buscarporCuentayFecha(cuentaid);
+        } else {
+            operaciones = transaccionRepository.buscarporCuentaYFechaYCantidad(cuentaid, filtro.getCantidad());
+        }
+        model.addAttribute("operaciones", operaciones);
+        model.addAttribute("filtro", filtro);
+        model.addAttribute("cuentaid", cuentaid);
+        return urlTo;
+    }
+
+
+
 }

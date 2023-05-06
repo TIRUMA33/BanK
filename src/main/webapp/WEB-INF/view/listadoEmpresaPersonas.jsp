@@ -25,10 +25,9 @@
     <form:input path="texto"/>
     <form:checkbox path="fechaNacimiento" label="Fecha de nacimiento"/>
     <form:label path="tipo">Tipo:</form:label>
-    <!-- TODO No funciona y falta filtrar código postal y país -->
-    <form:select path="tipo" multiple="true">
+    <form:select path="tipo">
         <form:option value="" label=""/>
-        <form:options items="${tipoPersonaRelacionada}" itemLabel="tipo" itemValue="id"/>
+        <form:options items="${tipoPersonaRelacionada}" itemLabel="tipo" itemValue="tipo"/>
     </form:select>
     <form:button type="submit">Filtrar</form:button>
 </form:form>

@@ -28,5 +28,10 @@ public interface TransaccionRepository extends JpaRepository<TransaccionEntity, 
     public List<TransaccionEntity> ordenarlistatransacciones();
     @Query("select c from TransaccionEntity t, CuentaBancoEntity c where DATEDIFF(CURDATE() , t.fechaEjecucion) > 30 and t.cuentaBancoByCuentaOrigen = c")
     public List<CuentaBancoEntity> listainactivos();
-
+    @Query("select t from TransaccionEntity t where t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta and t.cantidad=:cantidad")
+    public List<TransaccionEntity> buscarporCuentaYCantidad(@Param(("cuenta")) Integer cuenta, @Param(("cantidad")) double cantidad);
+    @Query("select t from TransaccionEntity t where t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta order by t.fechaEjecucion asc")
+    public List<TransaccionEntity> buscarporCuentayFecha(@Param("cuenta") Integer cuenta);
+    @Query("select t from TransaccionEntity t where t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta and t.cantidad=:cantidad order by t.fechaEjecucion asc")
+    public List<TransaccionEntity> buscarporCuentaYFechaYCantidad(@Param("cuenta") Integer cuenta, @Param(("cantidad")) double cantidad);
 }
