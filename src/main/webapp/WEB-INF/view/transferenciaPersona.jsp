@@ -34,7 +34,7 @@
         </tr>
         <tr>
             <th>Importe</th>
-            <td><form:input path="cantidad"/> ${transaccion.cuentaBancoByCuentaOrigen.divisaByDivisaId.nombre}</td>
+            <td><form:input required="required" path="cantidad"/> ${transaccion.cuentaBancoByCuentaOrigen.divisaByDivisaId.nombre}</td>
         </tr>
     </table>
     <form:button>Realizar</form:button>

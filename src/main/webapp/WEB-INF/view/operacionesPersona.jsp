@@ -23,6 +23,7 @@
     <title>BanK</title>
 </head>
 <body>
+<a href="/persona/">Volver</a>
 <%
   if (operaciones.isEmpty()) {
 %>
