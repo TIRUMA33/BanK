@@ -1,5 +1,7 @@
 package es.uma.taw.bank.entity;
 
+import es.uma.taw.bank.dto.DTO;
+import es.uma.taw.bank.dto.UsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +12,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "USUARIO", schema = "taw", catalog = "")
-public class UsuarioEntity {
+public class UsuarioEntity implements DTO<UsuarioDTO> {
     @Id
     @Column(name = "ID", nullable = false)
     private Integer id;
@@ -50,5 +52,16 @@ public class UsuarioEntity {
         result = 31 * result + (nif != null ? nif.hashCode() : 0);
         result = 31 * result + (contrasena != null ? contrasena.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public UsuarioDTO toDTO() {
+        UsuarioDTO dto = new UsuarioDTO();
+
+        dto.setId(this.id);
+        dto.setNif(this.nif);
+        dto.setContrasena(this.contrasena);
+
+        return dto;
     }
 }

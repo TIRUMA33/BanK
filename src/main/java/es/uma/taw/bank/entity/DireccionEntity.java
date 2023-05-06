@@ -1,5 +1,7 @@
 package es.uma.taw.bank.entity;
 
+import es.uma.taw.bank.dto.DTO;
+import es.uma.taw.bank.dto.DireccionDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "DIRECCION", schema = "taw", catalog = "")
-public class DireccionEntity {
+public class DireccionEntity implements DTO<DireccionDTO> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
@@ -75,5 +77,22 @@ public class DireccionEntity {
         result = 31 * result + (pais != null ? pais.hashCode() : 0);
         result = 31 * result + (valida != null ? valida.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public DireccionDTO toDTO() {
+        DireccionDTO dto = new DireccionDTO();
+
+        dto.setId(this.id);
+        dto.setCalle(this.calle);
+        dto.setNumero(this.numero);
+        dto.setPlantaPuertaOficina(this.plantaPuertaOficina);
+        dto.setCiudad(this.ciudad);
+        dto.setRegion(this.region);
+        dto.setCodigoPostal(this.codigoPostal);
+        dto.setPais(this.pais);
+        dto.setValida(this.valida);
+
+        return dto;
     }
 }

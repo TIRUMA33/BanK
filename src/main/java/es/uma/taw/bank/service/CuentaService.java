@@ -1,7 +1,6 @@
 package es.uma.taw.bank.service;
 
 import es.uma.taw.bank.dao.CuentaRepository;
-import es.uma.taw.bank.dao.EstadoClienteRepository;
 import es.uma.taw.bank.dao.EstadoCuentaRepository;
 import es.uma.taw.bank.dto.CuentaDTO;
 import es.uma.taw.bank.entity.CuentaBancoEntity;
