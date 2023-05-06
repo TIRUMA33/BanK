@@ -68,12 +68,14 @@ public class ConversacionController {
             msj.setUsuarioByEmisor(conver.getUsuarioByEmisor());
             msj.setConversacionByConversacion(conver);
             model.addAttribute("mensaje", msj);
+            model.addAttribute("conversacion", conver);
         }
         return "chatcliente";
     }
 
     @GetMapping("/asistir")
     public String doAsistir(@RequestParam("id") Integer id, Model model){
+        String urlTo = "chatasistente";
         ConversacionEntity conver = this.conversacionRepository.findById(id).orElse(null);
         List<MensajeEntity> msjs = this.mensajeRepository.findMensajesByConversacion(conver.getId());
         model.addAttribute("mensajes", msjs);
@@ -82,8 +84,10 @@ public class ConversacionController {
             msj.setUsuarioByEmisor(conver.getUsuarioByReceptor());
             msj.setConversacionByConversacion(conver);
             model.addAttribute("mensaje", msj);
+        }else{
+            urlTo = "redirect:/asistencia/conversaciones";
         }
-        return "chatasistente";
+        return urlTo;
     }
 
     @PostMapping("/enviar")
@@ -102,6 +106,14 @@ public class ConversacionController {
         List<ConversacionEntity> lista = this.conversacionRepository.findAll();
         model.addAttribute("conversaciones", lista);
         return "conversaciones";
+    }
+
+    @GetMapping("/cerrar")
+    public String doCerrarConversacion(@RequestParam("id") Integer id){
+        ConversacionEntity conver = this.conversacionRepository.findById(id).orElse(null);
+        conver.setTerminada((byte) 1);
+        this.conversacionRepository.save(conver);
+        return "redirect:/persona/";
     }
 
     /*@GetMapping("/mensajes")

@@ -45,6 +45,7 @@
     <form:hidden path="usuarioByEmisor"/>
     <input type="submit" value="Enviar">
 </form:form>
+<a href="/asistencia/cerrar?id=${conversacion.id}">Cerrar</a>
 
 </body>
 </html>
