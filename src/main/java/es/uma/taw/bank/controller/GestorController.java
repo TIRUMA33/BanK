@@ -4,6 +4,7 @@ import es.uma.taw.bank.DataGenerator;
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
 import es.uma.taw.bank.ui.FiltroOperaciones;
+import es.uma.taw.bank.ui.FiltroOperacionesEmpresa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
@@ -190,27 +191,67 @@ public String doPendientes(Model model) {
 
     @GetMapping("/infopersona")
     public String doInfopersona(@RequestParam("id") Integer idcliente, Model model){
-    ClienteEntity cliente = this.clienteRepository.findById(idcliente).orElse(null);
-    PersonaEntity persona = this.personaRepository.findById(idcliente).orElse(null);
-    List<CuentaBancoEntity> listacuentas = cliente.getCuentaBancosById();
-    List<TransaccionEntity> listatransa = this.transaccionRepository.ordenarlistatransacciones();
+    return procesarFiltradoPersona(idcliente,null, model);
+    }
 
-    model.addAttribute("listatransa", listatransa);
-    model.addAttribute("clientes", cliente);
-    model.addAttribute("personas", persona);
-    model.addAttribute("listacuentas",listacuentas);
+    @PostMapping("/infopersona/filtrar")
+    public String doFiltrarpersona(@RequestParam("id") Integer idcliente,@ModelAttribute("filtropersona") FiltroOperaciones filtropersona, Model model){
+        return this.procesarFiltradoPersona(idcliente,filtropersona, model);
+    }
 
-    return "infopersona";
+    protected String procesarFiltradoPersona (@RequestParam("id") Integer idcliente,FiltroOperaciones filtropersona, Model model) {
+            ClienteEntity cliente = this.clienteRepository.findById(idcliente).orElse(null);
+            PersonaEntity persona = this.personaRepository.findById(idcliente).orElse(null);
+            List<CuentaBancoEntity> listacuentas = cliente.getCuentaBancosById();
+            List<TransaccionEntity> listatransa = this.transaccionRepository.ordenarlistatransacciones();
+
+            if(filtropersona == null || filtropersona.getCantidad() == false && filtropersona.getCuentaFiltro().isEmpty()){
+                listatransa = this.transaccionRepository.findAll();
+                filtropersona = new FiltroOperaciones();
+            } else if (filtropersona.getCantidad() == true && filtropersona.getCuentaFiltro().isEmpty()) {
+                listatransa = this.transaccionRepository.ordenarPorCantidad();
+            } else if (filtropersona.getCantidad() == false && !filtropersona.getCuentaFiltro().isEmpty()) {
+                listatransa = this.transaccionRepository.filtrarPorTexto(filtropersona.getCuentaFiltro());
+            } else {
+                listatransa = this.transaccionRepository.filtraPorTextoyordenarPorCantidad(filtropersona.getCuentaFiltro());
+            }
+            model.addAttribute("listatransa", listatransa);
+            model.addAttribute("filtropersona", filtropersona);
+            model.addAttribute("clientes", cliente);
+            model.addAttribute("personas", persona);
+            model.addAttribute("listacuentas",listacuentas);
+
+            return "infopersona";
     }
 
     @GetMapping("/infoempresa")
     public String doInfoempresa(@RequestParam("id") Integer idcliente, Model model){
+        return procesarFiltradoEmpresa(idcliente,null, model);
+    }
+
+    @PostMapping("/infoempresa/filtrar")
+    public String doFiltrarEmpresa(@RequestParam("id") Integer idcliente,@ModelAttribute("filtroempresa") FiltroOperaciones filtroempresa, Model model){
+        return this.procesarFiltradoEmpresa(idcliente,filtroempresa, model);
+    }
+
+    protected String procesarFiltradoEmpresa (@RequestParam("id") Integer idcliente,FiltroOperaciones filtroempresa, Model model) {
         ClienteEntity cliente = this.clienteRepository.findById(idcliente).orElse(null);
         EmpresaEntity empresa = this.empresaRepository.findById(idcliente).orElse(null);
         List<CuentaBancoEntity> listacuentas = cliente.getCuentaBancosById();
         List<TransaccionEntity> listatransa = this.transaccionRepository.ordenarlistatransacciones();
 
+        if(filtroempresa == null || filtroempresa.getCantidad() == false && filtroempresa.getCuentaFiltro().isEmpty()){
+            listatransa = this.transaccionRepository.findAll();
+            filtroempresa = new FiltroOperaciones();
+        } else if (filtroempresa.getCantidad() == true && filtroempresa.getCuentaFiltro().isEmpty()) {
+            listatransa = this.transaccionRepository.ordenarPorCantidad();
+        } else if (filtroempresa.getCantidad() == false && !filtroempresa.getCuentaFiltro().isEmpty()) {
+            listatransa = this.transaccionRepository.filtrarPorTexto(filtroempresa.getCuentaFiltro());
+        } else {
+            listatransa = this.transaccionRepository.filtraPorTextoyordenarPorCantidad(filtroempresa.getCuentaFiltro());
+        }
         model.addAttribute("listatransa", listatransa);
+        model.addAttribute("filtroempresa", filtroempresa);
         model.addAttribute("clientes", cliente);
         model.addAttribute("empresa", empresa);
         model.addAttribute("listacuentas",listacuentas);
