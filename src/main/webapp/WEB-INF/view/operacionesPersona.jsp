@@ -3,6 +3,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="org.hibernate.id.IncrementGenerator" %>
 <%@ page import="es.uma.taw.bank.entity.TransaccionEntity" %>
+<%@ page import="es.uma.taw.bank.ui.FiltroOperacionesPersona" %>
+<%@ page import="javax.swing.text.StyledEditorKit" %>
 <%--
   Created by IntelliJ IDEA.
   User: pablo
@@ -14,6 +16,7 @@
 <%
   List<TransaccionEntity> operaciones = (List<TransaccionEntity>) request.getAttribute("operaciones");
   Integer cuentaid = (Integer) request.getAttribute("cuentaid");
+  FiltroOperacionesPersona f= (FiltroOperacionesPersona) request.getAttribute("filtro");
 %>
 <html>
 <head>
@@ -31,9 +34,11 @@
 
 <form:form action="/persona/operaciones/${cuentaid}/filtrar" modelAttribute="filtro" method="post">
   <label>Buscar por:</label> <br/>
-  <form:label path="cantidad">Cantidad:</form:label>
-  <form:input path="cantidad"/>
-  <form:checkbox path="fechaEjecucion" label="Fecha de ejecución"/>
+  <form:label path="Iban">Iban:</form:label>
+  <form:input path="Iban"/>
+  <h5>Ordenar por:</h5>
+  <form:checkbox path="fecha" label="Fecha"/>
+  <form:checkbox path="cantidad" label="Cantidad"/>
   <form:button type="submit">Filtrar</form:button>
 </form:form>
 
@@ -53,8 +58,7 @@
     </td>
     <td><%= operacion.getCuentaBancoByCuentaDestino().getIbanCuenta() %>
     </td>
-    <td><%= operacion.getCantidad() %> <%=
-    operacion.getCuentaBancoByCuentaOrigen().getDivisaByDivisaId().getNombre() %>
+    <td><%= operacion.getCantidad() %> <%= operacion.getCuentaBancoByCuentaOrigen().getDivisaByDivisaId().getNombre() %>
     </td>
     <td><%= operacion.getFechaInstruccion() %>
     </td>

@@ -2,7 +2,8 @@
 <%@ page import="es.uma.taw.bank.entity.OperacionEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.bank.entity.EmpresaEntity" %>
-<%@ page import="es.uma.taw.bank.entity.PersonaEntity" %><%--
+<%@ page import="es.uma.taw.bank.entity.PersonaEntity" %>
+<%--
   Created by IntelliJ IDEA.
   User: oscfd
   Date: 02/05/2023
