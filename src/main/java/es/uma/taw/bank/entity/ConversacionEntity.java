@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
@@ -18,6 +19,9 @@ public class ConversacionEntity {
     @Basic
     @Column(name = "TERMINADA", nullable = true, columnDefinition = "byte default 0")
     private Byte terminada;
+    @Basic
+    @Column(name = "FECHA_CREACION", nullable = false)
+    private Timestamp fechaCreacion;
     @ManyToOne
     @JoinColumn(name = "EMISOR", referencedColumnName = "ID", nullable = false)
     private UsuarioEntity usuarioByEmisor;

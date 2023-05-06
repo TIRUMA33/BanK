@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.bank.entity.ConversacionEntity" %><%--
   Created by IntelliJ IDEA.
@@ -21,6 +22,23 @@
 <h1>Bienvenido</h1>
 <h2>Lista de conversaciones almacenadas</h2>
 
+<form:form action="/asistencia/filtrar" method="post" modelAttribute="filtro">
+  Buscar por: <br/>
+  DNI/NIF: <form:input path="dni"/>
+  Estado de la conversación:
+  <form:select path="estado">
+    <form:option value=""></form:option>
+    <form:option value="0">En curso</form:option>
+    <form:option value="1">Terminada</form:option>
+  </form:select> <br/>
+  Ordenar por: <br/>
+  <form:checkbox path="pendientes" label="Estado"/>
+  <form:checkbox path="fecha" label="Fecha de creación"/>
+  <br/>
+  
+  <button>Filtrar</button>
+</form:form>
+
 <%
   if(conversaciones != null && !conversaciones.isEmpty()) {
 %>
@@ -29,6 +47,7 @@
   <tr>
     <th>Cliente</th>
     <th>Estado</th>
+    <th>Fecha de creación</th>
   </tr>
   <%
     for(ConversacionEntity conversacion : conversaciones) {
@@ -50,12 +69,13 @@
     %>
     <td><%=status%></td>
     <%
-      }
+        }
+    %>
+    <td><%= conversacion.getFechaCreacion() %></td>
+    <%
+        }
     %>
   </tr>
-  <%
-    }
-  %>
 </table>
 <%
     }else{
