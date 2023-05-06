@@ -17,7 +17,7 @@
    List<MensajeEntity> mensajes = (List<MensajeEntity>) request.getAttribute("mensajes");
 %>
 
-<table border="1">
+<table border="1" style="width: 100%">
     <%
         for (MensajeEntity msj : mensajes) {
             if(msj.getUsuarioByEmisor().getId()!=27){
