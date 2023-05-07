@@ -5,6 +5,7 @@ import es.uma.taw.bank.dao.TransaccionRepository;
 import es.uma.taw.bank.dto.CuentaDTO;
 import es.uma.taw.bank.dto.TransaccionDTO;
 import es.uma.taw.bank.entity.CuentaBancoEntity;
+import es.uma.taw.bank.entity.DivisaEntity;
 import es.uma.taw.bank.entity.TransaccionEntity;
 import es.uma.taw.bank.ui.FiltroOperaciones;
 import es.uma.taw.bank.ui.FiltroOperacionesPersona;
@@ -43,7 +44,14 @@ public class TransaccionService {
         t.setFechaInstruccion(timestamp);
         t.setCuentaBancoByCuentaOrigen(this.cuentaRepository.findById(dto.getCuentaOrigen()).orElse(null));
         t.setId(dto.getId());
-        t.setCantidad(dto.getCantidad());
+        DivisaEntity divisaOrigen = this.cuentaRepository.findById(dto.getCuentaOrigen()).orElse(null).getDivisaByDivisaId();
+        DivisaEntity divisaDestino = this.cuentaRepository.findById(dto.getCuentaDestino()).orElse(null).getDivisaByDivisaId();
+        if(divisaOrigen.getId()==divisaDestino.getId()){
+            t.setCantidad(dto.getCantidad());
+        }
+        else{
+            t.setCantidad(dto.getCantidad()*divisaOrigen.getEquivalencia()/divisaDestino.getEquivalencia());
+        }
         t.setCuentaBancoByCuentaDestino(this.cuentaRepository.findById(dto.getCuentaDestino()).orElse(null));
 
         this.transaccionRepository.save(t);
