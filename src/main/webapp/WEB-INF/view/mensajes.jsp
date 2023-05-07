@@ -17,6 +17,7 @@
 <a href="/asistencia/conversaciones">Volver</a>
 <%
   List<MensajeDTO> mensajes = (List<MensajeDTO>) request.getAttribute("todomensajes");
+  if(mensajes!=null && !mensajes.isEmpty()){
 %>
 <h1>Mensajes intercambiados con el usuario <%=mensajes.get(0).getEmisorNif()%></h1>
 <table border="1">
@@ -48,6 +49,12 @@
     %>
 
 </table>
-
+<%
+  }else{
+%>
+<h1>No hay mensajes intercambiados con el usuario</h1>
+<%
+  }
+%>
 </body>
 </html>
