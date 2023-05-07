@@ -21,7 +21,15 @@ public class DivisaService {
         if(d!=null)return d.toDTO();
         else return null;
     }
-
+    public DivisaDTO findById(Integer id){
+        DivisaEntity d = divisaRepository.findById(id).orElse(null);
+        if(d!=null)return d.toDTO();
+        else return null;
+    }
+    public List<DivisaDTO> buscarSinMi(String idDivisa){
+        List<DivisaEntity> divisas = divisaRepository.buscarSinMiPorNombre(idDivisa);
+        return this.listaEntidadesADTO(divisas);
+    }
     public List<DivisaDTO> listarDivisas(){
         List<DivisaEntity> divisas = divisaRepository.findAll();
         return this.listaEntidadesADTO(divisas);

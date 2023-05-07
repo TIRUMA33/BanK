@@ -3,7 +3,6 @@ package es.uma.taw.bank.ui;
 import es.uma.taw.bank.dto.ClienteDTO;
 import es.uma.taw.bank.dto.DireccionDTO;
 import es.uma.taw.bank.dto.PersonaDTO;
-import es.uma.taw.bank.DTO.*;
 import es.uma.taw.bank.dto.UsuarioDTO;
 import lombok.Getter;
 import lombok.Setter;

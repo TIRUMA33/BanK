@@ -9,6 +9,16 @@ public class ClienteDTO implements Serializable {
 
     private Timestamp fechaInicio;
 
+    private Integer Estadoid;
+
+    public Integer getEstadoid() {
+        return Estadoid;
+    }
+
+    public void setEstadoid(Integer estadoid) {
+        Estadoid = estadoid;
+    }
+
     public Integer getId() {
         return id;
     }
