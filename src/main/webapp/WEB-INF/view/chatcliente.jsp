@@ -13,6 +13,9 @@
     <title>Title</title>
 </head>
 <body>
+<jsp:include page="cabecera.jsp"/>
+<a href="/persona/">Volver</a>
+<h1>Conversación con el asistente</h1>
 <%
    List<MensajeEntity> mensajes = (List<MensajeEntity>) request.getAttribute("mensajes");
 %>
@@ -24,7 +27,7 @@
     %>
     <tr>
         <td></td>
-        <td style="word-wrap: break-word"><b>Yo: </b><%=msj.getContenido()%></td>
+        <td style="word-wrap: break-word"><b>Tú: </b><%=msj.getContenido()%></td>
     </tr>
     <%
         }else{

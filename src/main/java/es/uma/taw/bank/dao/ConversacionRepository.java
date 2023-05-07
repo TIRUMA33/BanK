@@ -37,4 +37,9 @@ public interface ConversacionRepository extends JpaRepository<ConversacionEntity
 
     @Query("SELECT c FROM ConversacionEntity c WHERE c.usuarioByEmisor.nif like CONCAT('%', :nif, '%') and c.terminada = :status order by c.terminada desc, c.fechaCreacion")
     public List<ConversacionEntity> findByNifAndEstadoOrderByFechayEstado(@Param("nif") String nif, @Param("status") Byte status);
+
+    @Query("SELECT c FROM ConversacionEntity c WHERE c.usuarioByEmisor.id = :id")
+    public List<ConversacionEntity> findAllByEmisor(@Param("id") Integer id);
+
+
 }

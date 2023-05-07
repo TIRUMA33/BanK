@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -146,10 +147,16 @@ public class ConversacionController {
         return "conversaciones";
     }
 
-    /*@GetMapping("/mensajes")
+    @GetMapping("/mensajes")
     public String doListarMensajes(@RequestParam("id")Integer id, Model model){
-        List<MensajeEntity> msjs = this.mensajeRepository.findByConversacionById(id);
+        List<ConversacionEntity> convers = this.conversacionRepository.findAllByEmisor(id);
+        List<MensajeEntity> allmsjs = new ArrayList<>();
+        for (ConversacionEntity c: convers) {
+            List<MensajeEntity> msjs = this.mensajeRepository.findMensajesByConversacion(c.getId());
+            allmsjs.addAll(msjs);
+        }
+        model.addAttribute("todomensajes", allmsjs);
         return "mensajes";
-    }*/
+    }
 
 }

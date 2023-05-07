@@ -13,6 +13,8 @@
     <title></title>
 </head>
 <body>
+<jsp:include page="cabecera.jsp"/>
+<a href="/persona/">Volver</a>
 
 <h1>Asistencia virtual</h1>
 

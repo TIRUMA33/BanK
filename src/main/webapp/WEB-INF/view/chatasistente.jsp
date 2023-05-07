@@ -13,9 +13,12 @@
     <title>Title</title>
 </head>
 <body>
+<jsp:include page="cabecera.jsp"/>
+<a href="/asistencia/conversaciones">Volver</a>
 <%
     List<MensajeEntity> mensajes = (List<MensajeEntity>) request.getAttribute("mensajes");
 %>
+<h1>Conversación con <%=mensajes.get(0).getUsuarioByEmisor().getNif()%></h1>
 
 <table border="1" style="width: 100%; table-layout:fixed">
     <%
@@ -31,7 +34,7 @@
     %>
     <tr>
         <td></td>
-        <td style="word-wrap: break-word"><b>Yo: </b><%=msj.getContenido()%></td>
+        <td style="word-wrap: break-word"><b>Tú: </b><%=msj.getContenido()%></td>
     </tr>
     <%
             }
