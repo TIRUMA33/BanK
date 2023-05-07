@@ -2,7 +2,7 @@
 <%@ page import="es.uma.taw.bank.entity.PersonaEntity" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
-  User: oscfd
+  User: Óscar Fernández Díaz
   Date: 22/04/2023
   Time: 15:39
   To change this template use File | Settings | File Templates.

@@ -1,7 +1,8 @@
 <%@ page import="es.uma.taw.bank.entity.CuentaBancoEntity" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%--
   Created by IntelliJ IDEA.
-  User: oscfd
+  User: Óscar Fernández Díaz
   Date: 30/04/2023
   Time: 13:03
   To change this template use File | Settings | File Templates.
