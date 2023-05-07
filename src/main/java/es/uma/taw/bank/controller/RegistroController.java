@@ -21,11 +21,7 @@ public class RegistroController {
 
     private ClienteService clienteService;
 
-    private CuentaService cuentaService;
-
     private DireccionService direccionService;
-
-    private DivisaService divisaService;
 
     private EmpresaClienteService empresaClienteService;
 
@@ -33,19 +29,9 @@ public class RegistroController {
 
     private EmpresaService empresaService;
 
-    private EntidadBancariaService entidadBancariaService;
-
-    private EstadoClienteService estadoClienteService;
-
-    private EstadoCuentaService estadoCuentaService;
-
     private PersonaService personaService;
 
-    private TipoClienteRelacionadoService tipoClienteRelacionadoService;
-
     private TipoPersonaRelacionadaService tipoPersonaRelacionadaService;
-
-    private TipoUsuarioService tipoUsuarioService;
 
     private UsuarioService usuarioService;
 
@@ -55,18 +41,8 @@ public class RegistroController {
     }
 
     @Autowired
-    public void setCuentaBancoService(CuentaService cuentaService) {
-        this.cuentaService = cuentaService;
-    }
-
-    @Autowired
     public void setDireccionService(DireccionService direccionService) {
         this.direccionService = direccionService;
-    }
-
-    @Autowired
-    public void setDivisaService(DivisaService divisaService) {
-        this.divisaService = divisaService;
     }
 
     @Autowired
@@ -85,21 +61,6 @@ public class RegistroController {
     }
 
     @Autowired
-    public void setEntidadBancariaService(EntidadBancariaService entidadBancariaService) {
-        this.entidadBancariaService = entidadBancariaService;
-    }
-
-    @Autowired
-    public void setEstadoClienteService(EstadoClienteService estadoClienteService) {
-        this.estadoClienteService = estadoClienteService;
-    }
-
-    @Autowired
-    public void setEstadoCuentaService(EstadoCuentaService estadoCuentaService) {
-        this.estadoCuentaService = estadoCuentaService;
-    }
-
-    @Autowired
     public void setPersonaService(PersonaService personaService) {
         this.personaService = personaService;
     }
@@ -110,18 +71,8 @@ public class RegistroController {
     }
 
     @Autowired
-    public void setTipoClienteRelacionadoService(TipoClienteRelacionadoService tipoClienteRelacionadoService) {
-        this.tipoClienteRelacionadoService = tipoClienteRelacionadoService;
-    }
-
-    @Autowired
     public void setTipoPersonaRelacionadaService(TipoPersonaRelacionadaService tipoPersonaRelacionadaService) {
         this.tipoPersonaRelacionadaService = tipoPersonaRelacionadaService;
-    }
-
-    @Autowired
-    public void setTipoUsuarioService(TipoUsuarioService tipoUsuarioService) {
-        this.tipoUsuarioService = tipoUsuarioService;
     }
 
     private void guardadoComun(ClienteDTO cliente, DireccionDTO direccion, boolean valida) {
@@ -179,7 +130,6 @@ public class RegistroController {
 
         return urlTo;
     }
-*/
 
     @PostMapping("/persona/")
     public String doRegistrarPersona(@ModelAttribute("persona") RegistroPersona registroPersona) {
@@ -206,7 +156,7 @@ public class RegistroController {
         }
 
         return urlTo;
-    }*/
+    }
 
     @GetMapping("/empresa/{id}/persona")
     public String doRegistroEmpresaPersona(@PathVariable("id") Integer id, Model model) {
