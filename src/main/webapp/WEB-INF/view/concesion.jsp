@@ -7,6 +7,7 @@
   Date: 24/04/2023
   Time: 17:51
   To change this template use File | Settings | File Templates.
+  @author: David Castaños Benedicto
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%ClienteEntity cliente = (ClienteEntity) request.getAttribute("cliente");%>
