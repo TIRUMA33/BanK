@@ -42,4 +42,6 @@ public interface ConversacionRepository extends JpaRepository<ConversacionEntity
     public List<ConversacionEntity> findAllByEmisor(@Param("id") Integer id);
 
 
+
+
 }

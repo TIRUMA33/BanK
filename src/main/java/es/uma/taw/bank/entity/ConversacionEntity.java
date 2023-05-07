@@ -1,5 +1,7 @@
 package es.uma.taw.bank.entity;
 
+import es.uma.taw.bank.dto.ConversacionDTO;
+import es.uma.taw.bank.dto.DTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "CONVERSACION", schema = "taw", catalog = "")
-public class ConversacionEntity {
+public class ConversacionEntity implements DTO<ConversacionDTO> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
@@ -49,5 +51,20 @@ public class ConversacionEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (terminada != null ? terminada.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public ConversacionDTO toDTO() {
+        ConversacionDTO dto = new ConversacionDTO();
+        dto.setId(this.id);
+        dto.setTerminada(this.terminada);
+        dto.setFechaCreacion(this.fechaCreacion);
+        dto.setEmisor(this.usuarioByEmisor.getId());
+        dto.setEmisorContrasena(this.usuarioByEmisor.getContrasena());
+        dto.setEmisorNif(this.usuarioByEmisor.getNif());
+        dto.setReceptor(this.usuarioByReceptor.getId());
+        dto.setReceptorContrasena(this.usuarioByReceptor.getContrasena());
+        dto.setReceptorNif(this.usuarioByReceptor.getNif());
+        return dto;
     }
 }

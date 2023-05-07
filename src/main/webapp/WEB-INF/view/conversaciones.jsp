@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.bank.entity.ConversacionEntity" %><%--
+<%@ page import="es.uma.taw.bank.entity.ConversacionEntity" %>
+<%@ page import="es.uma.taw.bank.dto.ConversacionDTO" %><%--
   Created by IntelliJ IDEA.
   User: probl
   Date: 04/05/2023
@@ -14,7 +15,7 @@
 </head>
 <body>
 <%
-  List<ConversacionEntity> conversaciones = (List<ConversacionEntity>) request.getAttribute("conversaciones");
+  List<ConversacionDTO> conversaciones = (List<ConversacionDTO>) request.getAttribute("conversaciones");
 %>
 
 <jsp:include page="cabecera.jsp"/>
@@ -50,11 +51,11 @@
     <th>Fecha de creación</th>
   </tr>
   <%
-    for(ConversacionEntity conversacion : conversaciones) {
+    for(ConversacionDTO conversacion : conversaciones) {
   %>
   <tr>
     <td>
-      <a href="/asistencia/mensajes?id=<%=conversacion.getUsuarioByEmisor().getId() %>"><%= conversacion.getUsuarioByEmisor().getNif() %></a>
+      <a href="/asistencia/mensajes?id=<%=conversacion.getEmisor() %>"><%= conversacion.getEmisorNif() %></a>
     </td>
     <%
       String status = "Terminada";

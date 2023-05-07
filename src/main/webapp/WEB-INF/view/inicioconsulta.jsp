@@ -20,9 +20,14 @@
 
 <form:form action="/asistencia/consultar" method="post" modelAttribute="mensaje">
     <form:hidden path="id"/>
-    Introduzca su consulta:<br/> <form:textarea path="contenido" size="500" maxlength="500" rows="10" cols="50"/>
-    <form:hidden path="conversacionByConversacion"/>
-    <form:hidden path="usuarioByEmisor"/>
+    Escriba su mensaje:<br/> <form:textarea path="contenido" size="500" maxlength="500" rows="10" cols="50"/> <br/>
+    <form:hidden path="fecha"/>
+    <form:hidden path="conversacion"/>
+    <form:hidden path="conversacionTerminada"/>
+    <form:hidden path="conversacionFechaCreacion"/>
+    <form:hidden path="emisor"/>
+    <form:hidden path="emisorNif"/>
+    <form:hidden path="emisorContrasena"/>
     <input type="submit" value="Enviar">
 </form:form>
 
