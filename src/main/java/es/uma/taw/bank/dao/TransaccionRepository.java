@@ -30,9 +30,9 @@ public interface TransaccionRepository extends JpaRepository<TransaccionEntity, 
     public List<CuentaBancoEntity> listainactivos();
     @Query("select t from TransaccionEntity t order by t.cantidad desc")
     public List<TransaccionEntity> ordenarPorCantidad();
-    @Query("select t from TransaccionEntity t where t.cantidad =:texto or t.cuentaBancoByCuentaDestino =:texto or t.fechaEjecucion =:texto order by t.fechaEjecucion, t.cantidad desc")
+    @Query("select t from TransaccionEntity t where cast(t.cantidad  as string) like :texto or cast(t.cuentaBancoByCuentaDestino.ibanCuenta as string) like :texto or  CAST(t.fechaEjecucion as string)  like CONCAT('%', :texto, '%') or CAST(t.fechaInstruccion as string)  like CONCAT('%', :texto, '%') order by t.fechaEjecucion desc")
     public List<TransaccionEntity> filtrarPorTexto(@Param("texto") String texto);
-    @Query("select t from TransaccionEntity t where t.cantidad =:texto or t.cuentaBancoByCuentaDestino =:texto or t.fechaEjecucion =:texto order by t.cantidad desc")
+    @Query("select t from TransaccionEntity t where cast(t.cantidad  as string) like :texto or cast(t.cuentaBancoByCuentaDestino.ibanCuenta as string) like :texto or CAST(t.fechaEjecucion as string) like CONCAT('%', :texto, '%') or CAST(t.fechaInstruccion as string)  like CONCAT('%', :texto, '%') order by t.cantidad desc")
     public List<TransaccionEntity> filtraPorTextoyordenarPorCantidad(@Param("texto") String texto);
     @Query("select t from TransaccionEntity t where t.cuentaBancoByCuentaDestino.id=:cuenta or t.cuentaBancoByCuentaOrigen.id=:cuenta and t.cantidad=:cantidad")
     public List<TransaccionEntity> buscarporCuentaYCantidad(@Param(("cuenta")) Integer cuenta, @Param(("cantidad")) double cantidad);
