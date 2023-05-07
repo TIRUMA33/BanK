@@ -40,4 +40,8 @@ public class EmpresaPersonaService {
 
         this.empresaPersonaRepository.save(empresaPersona);
     }
+
+    public void borrarEmpresaPersonaPorPersona(Integer id) {
+        this.empresaPersonaRepository.deleteByPersonaByIdPersona_Id(id);
+    }
 }

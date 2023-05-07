@@ -56,4 +56,8 @@ public class UsuarioService {
             return null;
         }
     }
+
+    public void borrarUsuario(Integer id) {
+        this.usuarioRepository.deleteById(id);
+    }
 }

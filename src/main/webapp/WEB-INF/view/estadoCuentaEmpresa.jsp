@@ -1,4 +1,4 @@
-<%@ page import="es.uma.taw.bank.entity.CuentaBancoEntity" %>
+<%@ page import="es.uma.taw.bank.dto.CuentaDTO" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: oscfd
@@ -8,7 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
-    List<CuentaBancoEntity> cuentas = (List<CuentaBancoEntity>) request.getAttribute("cuentas");
+    List<CuentaDTO> cuentas = (List<CuentaDTO>) request.getAttribute("cuentas");
 %>
 <html>
 <head>
@@ -30,7 +30,7 @@
             <th>ESTADO</th>
         </tr>
         <%
-            for (CuentaBancoEntity cuentaBanco : cuentas) {
+            for (CuentaDTO cuentaBanco : cuentas) {
         %>
         <tr>
             <td><%= cuentaBanco.getIbanCuenta() %>
@@ -39,9 +39,9 @@
             </td>
             <td><%= cuentaBanco.getSaldo() %>
             </td>
-            <td><%= cuentaBanco.getDivisaByDivisaId().getNombre() %>
+            <td><%= cuentaBanco.getDivisaNombre() %>
             </td>
-            <td><%= cuentaBanco.getEntidadBancariaByEntidadBancariaId().getNombre() %>
+            <td><%= cuentaBanco.getEntidadNombre() %>
             </td>
             <td><%= cuentaBanco.getPais() %>
             </td>
@@ -51,14 +51,14 @@
             </td>
             <td>
                 <%
-                    if (cuentaBanco.getEstadoCuentaByEstadoCuentaId().getTipo().startsWith("Pendiente")) {
+                    if (cuentaBanco.getEstadoTipo().startsWith("Pendiente")) {
                 %>
-                <%= cuentaBanco.getEstadoCuentaByEstadoCuentaId().getTipo() %>
+                <%= cuentaBanco.getEstadoTipo() %>
                 <%
                 } else {
                 %>
                 <a href="/empresa/${id}/cuenta/<%= cuentaBanco.getId() %>/permiso/<%= cuentaBanco.getId() %>"><%=
-                cuentaBanco.getEstadoCuentaByEstadoCuentaId().getTipo() %>
+                cuentaBanco.getEstadoTipo() %>
                 </a>
                 <%
                     }
