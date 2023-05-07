@@ -1,5 +1,6 @@
 package es.uma.taw.bank.entity;
 
+import es.uma.taw.bank.dto.TipoUsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,5 +40,12 @@ public class TipoUsuarioEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (tipo != null ? tipo.hashCode() : 0);
         return result;
+    }
+
+    public TipoUsuarioDTO toDTO() {
+        TipoUsuarioDTO dto = new TipoUsuarioDTO();
+        dto.setId(this.getId());
+        dto.setTipo(this.getTipo());
+        return dto;
     }
 }

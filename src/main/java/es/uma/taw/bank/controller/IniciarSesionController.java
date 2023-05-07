@@ -1,8 +1,8 @@
 package es.uma.taw.bank.controller;
 
-import es.uma.taw.bank.dao.EmpresaRepository;
-import es.uma.taw.bank.dao.UsuarioRepository;
-import es.uma.taw.bank.entity.UsuarioEntity;
+import es.uma.taw.bank.dto.UsuarioDTO;
+import es.uma.taw.bank.service.EmpresaService;
+import es.uma.taw.bank.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,20 +17,22 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/iniciarSesion")
 public class IniciarSesionController {
-
-    private EmpresaRepository empresaRepository;
-
-    private UsuarioRepository usuarioRepository;
-
     @Autowired
-    public void setEmpresaRepository(EmpresaRepository empresaRepository) {
-        this.empresaRepository = empresaRepository;
+    private EmpresaService empresaService;
+    @Autowired
+    private UsuarioService usuarioService;
+
+/*
+    @Autowired
+    public void setEmpresaService(EmpresaService empresaService) {
+        this.empresaService = empresaService;
     }
 
     @Autowired
-    public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    public void setUsuarioService(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
     }
+*/
 
     @GetMapping("/")
     public String doIniciarSesion() {
@@ -41,7 +43,7 @@ public class IniciarSesionController {
     public String doAutenticar(@RequestParam("nif") String nif, @RequestParam("contrasena") String contrasena,
                                Model model, HttpSession session) {
         String urlTo;
-        UsuarioEntity usuario = this.usuarioRepository.autenticar(nif, contrasena);
+        UsuarioDTO usuario = this.usuarioService.autenticar(nif, contrasena);
 
         if (usuario == null) {
             model.addAttribute("error", "Credenciales incorrectas");
@@ -50,11 +52,11 @@ public class IniciarSesionController {
             session.setAttribute("usuario", usuario);
             if (usuario.getTipoUsuarioByTipoUsuario().getId().equals(3)){
                 urlTo = "redirect:/asistencia/conversaciones";
-            }else if (this.empresaRepository.findById(usuario.getId()).isPresent()) {
+            }/*else if (this.empresaService.buscarEmpresa(usuario.getId())!=null) { //he puesto un null en vez de ispresent porque no funcionaba
                 urlTo = "redirect:/empresa/" + usuario.getId();
             } else if (usuario.getTipoUsuarioByTipoUsuario().getId().equals(2)) {
-                urlTo = "redirect:/empresa/" + Objects.requireNonNull(this.empresaRepository.findByCif(usuario.getNif()).orElse(null)).getId() + "/persona";
-            } else {
+                urlTo = "redirect:/empresa/" + Objects.requireNonNull(this.empresaService.buscarEmpresaPorCif(usuario.getNif())).getId() + "/persona";
+            }*/ else {
                 urlTo = "redirect:/persona/";
             }
         }
