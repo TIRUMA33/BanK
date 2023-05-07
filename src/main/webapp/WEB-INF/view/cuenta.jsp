@@ -23,13 +23,14 @@
     if (cuenta.getEstado().equals("Bloqueada")) {
 
 %>
-<h1>Tu cuenta está bloqueada, solicite un desbloqueo <a href="/cajero/desbloquear?cuenta=<%= cuenta.getId() %>"> aquí </a>.</h1>
+<h1>Tu cuenta está bloqueada, solicite un desbloqueo <a href="/cajero/desbloquear?cuenta=<%= cuenta.getId() %>">
+    aquí </a>.</h1>
 <%
-    }else if(cuenta.getEstado().equals("Pendiente de desbloqueo")){
+} else if (cuenta.getEstado().equals("Pendiente de desbloqueo")) {
 %>
 <h1>Tu cuenta está bloqueada, tienes la solicitud de desbloqueo pendiente.</h1>
 <%
-    }else{
+} else {
 %>
 
 <table border="1">

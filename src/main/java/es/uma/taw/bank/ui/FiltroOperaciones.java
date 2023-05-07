@@ -1,16 +1,14 @@
 package es.uma.taw.bank.ui;
 
-import java.util.Date;
-
-public class    FiltroOperaciones {
+public class FiltroOperaciones {
     private Boolean fechaEjecucion;
     private Boolean cantidad;
     private String cuentaFiltro;
 
     public FiltroOperaciones() {
-        fechaEjecucion=false;
-        cantidad=false;
-        cuentaFiltro=null;
+        fechaEjecucion = false;
+        cantidad = false;
+        cuentaFiltro = null;
     }
 
     public Boolean getFechaEjecucion() {

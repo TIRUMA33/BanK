@@ -1,5 +1,6 @@
 package es.uma.taw.bank.service;
 //Autor Pablo Robles Mansilla
+
 import es.uma.taw.bank.dao.ConversacionRepository;
 import es.uma.taw.bank.dao.MensajeRepository;
 import es.uma.taw.bank.dao.UsuarioRepository;
@@ -27,7 +28,7 @@ public class MensajeService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public void save(MensajeDTO mensajeDTO){
+    public void save(MensajeDTO mensajeDTO) {
         MensajeEntity mensaje = new MensajeEntity();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         mensaje.setFecha(timestamp);
@@ -37,27 +38,27 @@ public class MensajeService {
         this.mensajeRepository.save(mensaje);
     }
 
-    public List<MensajeDTO> findMensajesByConversacion(Integer id){
+    public List<MensajeDTO> findMensajesByConversacion(Integer id) {
         List<MensajeEntity> mensajes = this.mensajeRepository.findMensajesByConversacion(id);
         List<MensajeDTO> mensajesDTO = new ArrayList<>();
-        for(MensajeEntity m : mensajes){
+        for (MensajeEntity m : mensajes) {
             mensajesDTO.add(m.toDTO());
         }
         return mensajesDTO;
     }
 
-    public MensajeDTO setMensaje(Integer id, ConversacionDTO conversacionDTO){
+    public MensajeDTO setMensaje(Integer id, ConversacionDTO conversacionDTO) {
         MensajeEntity msj = new MensajeEntity();
         UsuarioEntity usuario = this.usuarioRepository.findById(id).orElse(null);
         ConversacionEntity conver;
-        if(conversacionDTO == null){
+        if (conversacionDTO == null) {
             conver = new ConversacionEntity();
             conver.setFechaCreacion(new java.sql.Timestamp(System.currentTimeMillis()));
             conver.setTerminada((byte) 0);
             conver.setUsuarioByEmisor(usuario);
             conver.setUsuarioByReceptor(this.usuarioRepository.findAsistente());
             this.conversacionRepository.save(conver);
-        }else{
+        } else {
             conver = this.conversacionRepository.findById(conversacionDTO.getId()).orElse(null);
         }
         msj.setUsuarioByEmisor(usuario);

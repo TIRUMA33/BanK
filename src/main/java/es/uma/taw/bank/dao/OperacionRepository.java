@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface OperacionRepository extends JpaRepository<OperacionEntity, Integer> {
     @Query("select o from EmpresaPersonaEntity ep, OperacionEntity o, TransaccionEntity t where o" +
-            ".transaccionByTransaccionId = t and t.cuentaBancoByCuentaOrigen in :cuentas and ep.empresaByIdEmpresa.id" +
-            " = :id")
+            ".transaccionByTransaccionId = t and t.cuentaBancoByCuentaOrigen in :cuentas and ep.empresaByIdEmpresa" +
+            ".id" + " = :id")
     List<OperacionEntity> buscarPorCuentasYEmpresa(@Param("cuentas") List<CuentaBancoEntity> cuentas,
                                                    @Param("id") Integer id);
 
@@ -19,16 +19,13 @@ public interface OperacionRepository extends JpaRepository<OperacionEntity, Inte
             ".cuentaBancoByCuentaDestino.ibanCuenta like concat('%', :iban, '%')")
     List<OperacionEntity> buscarPorCuenta(@Param("iban") String iban);
 
-    @Query("select o from OperacionEntity o, TransaccionEntity t where o.transaccionByTransaccionId = t order by t" +
-            ".cantidad")
+    @Query("select o from OperacionEntity o, TransaccionEntity t where o.transaccionByTransaccionId = t order by t" + ".cantidad")
     List<OperacionEntity> ordenarPorCantidad();
 
-    @Query("select o from OperacionEntity o, TransaccionEntity t where o.transaccionByTransaccionId = t order by t" +
-            ".fechaEjecucion")
+    @Query("select o from OperacionEntity o, TransaccionEntity t where o.transaccionByTransaccionId = t order by t" + ".fechaEjecucion")
     List<OperacionEntity> ordenarPorFechaEjecucion();
 
-    @Query("select o from OperacionEntity o, TransaccionEntity t where o.transaccionByTransaccionId = t order by t" +
-            ".cantidad, t.fechaEjecucion")
+    @Query("select o from OperacionEntity o, TransaccionEntity t where o.transaccionByTransaccionId = t order by t" + ".cantidad, t.fechaEjecucion")
     List<OperacionEntity> ordenarPorCantidadYFechaEjecucion();
 
     @Query("select o from OperacionEntity o, TransaccionEntity t where o.transaccionByTransaccionId = t and t" +

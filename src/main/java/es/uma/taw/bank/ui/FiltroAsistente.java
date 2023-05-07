@@ -8,11 +8,11 @@ public class FiltroAsistente {
     private boolean fecha;
 
 
-    public FiltroAsistente(){
-        pendientes=false;
-        estado=null;
-        dni="";
-        fecha=false;
+    public FiltroAsistente() {
+        pendientes = false;
+        estado = null;
+        dni = "";
+        fecha = false;
 
     }
 
@@ -24,27 +24,27 @@ public class FiltroAsistente {
         this.pendientes = pendientes;
     }
 
-    public Byte getEstado(){
+    public Byte getEstado() {
         return estado;
     }
 
-    public void setEstado(Byte estado){
+    public void setEstado(Byte estado) {
         this.estado = estado;
     }
 
-    public String getDni(){
+    public String getDni() {
         return dni;
     }
 
-    public void setDni(String dni){
+    public void setDni(String dni) {
         this.dni = dni;
     }
 
-    public boolean isFecha(){
+    public boolean isFecha() {
         return fecha;
     }
 
-    public void setFecha(boolean fecha){
+    public void setFecha(boolean fecha) {
         this.fecha = fecha;
     }
 }

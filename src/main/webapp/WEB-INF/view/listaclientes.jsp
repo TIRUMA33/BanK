@@ -54,19 +54,19 @@
                 <%
                     Boolean pendiente = false;
                     Boolean cuentasospechosa = false;
-                    String estado="";
-                    String result="";
-                    for (ClienteEntity c:listaclientes) {
-                        if(c.getId() == persona.getId()){
+                    String estado = "";
+                    String result = "";
+                    for (ClienteEntity c : listaclientes) {
+                        if (c.getId() == persona.getId()) {
                             estado = c.getEstadoClienteByEstadoClienteId().getTipo();
 
-                            for (CuentaBancoEntity cuenta:c.getCuentaBancosById()) {
-                                if(cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 4 || cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 5){
+                            for (CuentaBancoEntity cuenta : c.getCuentaBancosById()) {
+                                if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 4 || cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 5) {
                                     pendiente = true;
                                 }
-                                for (CuentaSospechosaEntity sospechosa:listasospechosos) {
-                                    for (TransaccionEntity transaccionorigen: cuenta.getTransaccionsById()) {
-                                        if(transaccionorigen.getCuentaBancoByCuentaDestino().getId().equals(sospechosa.getId())){
+                                for (CuentaSospechosaEntity sospechosa : listasospechosos) {
+                                    for (TransaccionEntity transaccionorigen : cuenta.getTransaccionsById()) {
+                                        if (transaccionorigen.getCuentaBancoByCuentaDestino().getId().equals(sospechosa.getId())) {
                                             cuentasospechosa = true;
                                         }
                                     }
@@ -74,24 +74,33 @@
                             }
                         }
                     }%>
-                <%if(pendiente== true && cuentasospechosa == false){
-                    result = "⚠";
-                }else if(pendiente == true && cuentasospechosa == true){
-                    result = "⚠☢";
-                }else if(pendiente == false && cuentasospechosa == true){
-                    result = "☢";
-                }else{
-                    result = "";
-                }%>
+                <%
+                    if (pendiente == true && cuentasospechosa == false) {
+                        result = "⚠";
+                    } else if (pendiente == true && cuentasospechosa == true) {
+                        result = "⚠☢";
+                    } else if (pendiente == false && cuentasospechosa == true) {
+                        result = "☢";
+                    } else {
+                        result = "";
+                    }
+                %>
 
                 <tr>
-                    <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getId()%></td>
-                    <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getNombre()%> <%=persona.getApellido1()%> <%=persona.getApellido2()%></td>
-                    <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getDni()%></td>
-                    <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getFechaNacimiento().toString()%></td>
-                    <td style="border: black; border-style: solid; border-width: 1px"><%=estado%></td>
-                    <td style="border: black; border-style: solid; border-width: 1px"><a href="/gestor/infopersona?id=<%=persona.getId()%>">Info Avanzada</a></td>
-                    <td style="border: 0"><%=result%></td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getId()%>
+                    </td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getNombre()%> <%=persona.getApellido1()%> <%=persona.getApellido2()%>
+                    </td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getDni()%>
+                    </td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=persona.getFechaNacimiento().toString()%>
+                    </td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=estado%>
+                    </td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><a
+                            href="/gestor/infopersona?id=<%=persona.getId()%>">Info Avanzada</a></td>
+                    <td style="border: 0"><%=result%>
+                    </td>
                 </tr>
                 <%
                     }
@@ -109,12 +118,12 @@
                     <th style="border: black; border-style: solid; border-width: 1px">Info</th>
                     <th style="border: 0"></th>
                 </tr>
-                <%
+                    <%
                     for (EmpresaEntity empresas : listaEmpresas) {
                 %>
 
 
-                <%
+                    <%
                     Boolean pendiente = false;
                     Boolean cuentasospechosa = false;
                     String estado="";
@@ -136,7 +145,7 @@
                             }
                         }
                 }%>
-                <%if(pendiente== true && cuentasospechosa == false){
+                    <%if(pendiente== true && cuentasospechosa == false){
                     result = "⚠";
                 }else if(pendiente == true && cuentasospechosa == true){
                     result = "⚠☢";
@@ -147,22 +156,27 @@
                 }%>
 
 
-
                 <tr>
-                    <td style="border: black; border-style: solid; border-width: 1px"><%=empresas.getId()%></td>
-                    <td style="border: black; border-style: solid; border-width: 1px"><%=empresas.getNombre()%></td>
-                    <td style="border: black; border-style: solid; border-width: 1px"><%=empresas.getCif()%></td>
-                    <td style="border: black; border-style: solid; border-width: 1px"><%=estado%></td>
-                    <td style="border: black; border-style: solid; border-width: 1px"><a href="/gestor/infoempresa?id=<%=empresas.getId()%>">Info Avanzada</a></td>
-                    <td style="border: 0"><%=result%></td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=empresas.getId()%>
+                    </td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=empresas.getNombre()%>
+                    </td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=empresas.getCif()%>
+                    </td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><%=estado%>
+                    </td>
+                    <td style="border: black; border-style: solid; border-width: 1px"><a
+                            href="/gestor/infoempresa?id=<%=empresas.getId()%>">Info Avanzada</a></td>
+                    <td style="border: 0"><%=result%>
+                    </td>
                 </tr>
-                <%
+                    <%
                     }
                 %>
 
-                </td>
-            </tr>
-            </table>
+        </td>
+    </tr>
+</table>
 </table>
 </body>
 </html>

@@ -19,7 +19,9 @@
 </head>
 <body>
 <h1>SOLICITUDES</h1>
-<a href="/gestor/"><button>Volver a Inicio</button></a>
+<a href="/gestor/">
+    <button>Volver a Inicio</button>
+</a>
 <hr style="border: 0">
 <table border="1">
     <tr>
@@ -29,30 +31,34 @@
         <th>Concesión</th>
     </tr>
 
-<%
-    for(PersonaEntity persona: PersonasPendientes){
-%>
-<tr>
-    <td>Persona</td>
-    <td><%=persona.getNombre()%> <%=persona.getApellido1()%> <%=persona.getApellido2()%></td>
-    <td><%=persona.getDni()%></td>
-    <td><a  href="/gestor/concesion?id=<%=persona.getId()%>">Gestionar</a></td>
-</tr>
-<%
-    }
-%>
-<%
-    for(EmpresaEntity empresas: EmpresasPendientes){
-%>
-<tr>
-    <td>Empresa</td>
-    <td><%=empresas.getNombre()%></td>
-    <td><%=empresas.getCif()%></td>
-    <td><a href="/gestor/concesion?id=<%=empresas.getId()%>">Gestionar</a></td>
-</tr>
-<%
-    }
-%>
+    <%
+        for (PersonaEntity persona : PersonasPendientes) {
+    %>
+    <tr>
+        <td>Persona</td>
+        <td><%=persona.getNombre()%> <%=persona.getApellido1()%> <%=persona.getApellido2()%>
+        </td>
+        <td><%=persona.getDni()%>
+        </td>
+        <td><a href="/gestor/concesion?id=<%=persona.getId()%>">Gestionar</a></td>
+    </tr>
+    <%
+        }
+    %>
+    <%
+        for (EmpresaEntity empresas : EmpresasPendientes) {
+    %>
+    <tr>
+        <td>Empresa</td>
+        <td><%=empresas.getNombre()%>
+        </td>
+        <td><%=empresas.getCif()%>
+        </td>
+        <td><a href="/gestor/concesion?id=<%=empresas.getId()%>">Gestionar</a></td>
+    </tr>
+    <%
+        }
+    %>
 </table>
 </body>
 </html>

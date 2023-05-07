@@ -1,5 +1,9 @@
 package es.uma.taw.bank.dao;
 
+/**
+ * @author Óscar Fernández Díaz
+ */
+
 import es.uma.taw.bank.entity.EmpresaPersonaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

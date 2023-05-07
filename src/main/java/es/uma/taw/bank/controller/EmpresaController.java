@@ -210,8 +210,8 @@ public class EmpresaController {
     }
 
     @GetMapping("/{id}/persona/{personaId}/editar")
-    public String doEditarEmpresaPersona(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
-                                         Model model) {
+    public String doEditarEmpresaPersona(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId
+            , Model model) {
         List<TipoPersonaRelacionadaEntity> tipoPersonaRelacionada = this.tipoPersonaRelacionadaRepository.findAll();
 
         model.addAttribute("registroEmpresaPersona", recuperarInfoEmpresaPersona(personaId));
@@ -279,8 +279,8 @@ public class EmpresaController {
         } else if (filtro.getTexto().isBlank() && !filtro.getFechaNacimiento()) {
             personas = this.personaRepository.filtrarPersonasPorEmpresaPorTipo(empresaId, personaId, filtro.getTipo());
         } else if (filtro.getTipo().isBlank()) {
-            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTextoFechaNacimiento(empresaId,
-                    personaId, filtro.getTexto());
+            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTextoFechaNacimiento(empresaId, personaId,
+                    filtro.getTexto());
         } else if (!filtro.getFechaNacimiento()) {
             personas = this.personaRepository.filtrarPersonasPorEmpresaPorTextoTipo(empresaId, personaId,
                     filtro.getTexto(), filtro.getTipo());
@@ -302,21 +302,22 @@ public class EmpresaController {
     }
 
     @GetMapping("{id}/persona/{personaId}/listar")
-    public String doListarEmpresaPersonas(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
-                                          Model model) {
+    public String doListarEmpresaPersonas(@PathVariable("id") Integer id,
+                                          @PathVariable("personaId") Integer personaId, Model model) {
         return this.procesarFiltrado(id, personaId, null, model);
     }
 
     @PostMapping("{id}/persona/{personaId}/filtrar")
-    public String doFiltrarEmpresaPersona(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
+    public String doFiltrarEmpresaPersona(@PathVariable("id") Integer id,
+                                          @PathVariable("personaId") Integer personaId,
                                           @ModelAttribute("filtro") FiltroEmpresaPersona filtro, Model model) {
         return this.procesarFiltrado(id, personaId, filtro, model);
     }
 
     @GetMapping("{id}/persona/{personaId}/permiso/{seleccionadoId}")
-    public String doPermisoEmpresaPersona(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
-                                          @PathVariable("seleccionadoId") Integer seleccionadoId, @ModelAttribute(
-            "filtro") FiltroEmpresaPersona filtro, Model model) {
+    public String doPermisoEmpresaPersona(@PathVariable("id") Integer id,
+                                          @PathVariable("personaId") Integer personaId, @PathVariable("seleccionadoId"
+    ) Integer seleccionadoId, @ModelAttribute("filtro") FiltroEmpresaPersona filtro, Model model) {
         EmpresaClienteEntity empresaCliente = this.empresaClienteRepository.buscarTipoPorPersona(seleccionadoId);
 
         if (empresaCliente.getTipoClienteRelacionadoByIdTipo().getId() == 1) {
@@ -334,8 +335,8 @@ public class EmpresaController {
     }
 
     @GetMapping("{id}/persona/{personaId}/transferencia")
-    public String doTransferenciaEmpresa(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
-                                         Model model) {
+    public String doTransferenciaEmpresa(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId
+            , Model model) {
         TransaccionEntity transaccion = new TransaccionEntity();
         transaccion.setCuentaBancoByCuentaOrigen(this.cuentaRepository.buscarPorCliente(id).get(0));
         List<CuentaBancoEntity> cuentas =
@@ -352,7 +353,7 @@ public class EmpresaController {
     @PostMapping("{id}/persona/{personaId}/transferencia/realizar")
     public String doRealizarTransferenciaEmpresa(@PathVariable("id") Integer id,
                                                  @PathVariable("personaId") Integer personaId, @ModelAttribute(
-            "transaccion") TransaccionEntity transaccion) {
+                                                         "transaccion") TransaccionEntity transaccion) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         transaccion.setFechaEjecucion(timestamp);
         transaccion.setFechaInstruccion(timestamp);
@@ -419,8 +420,7 @@ public class EmpresaController {
         if (filtro == null) {
             filtro = new FiltroOperacionesEmpresa();
         } else if (!filtro.getCantidad() && !filtro.getFechaEjecucion()) {
-            ops =
-                    this.operacionRepository.buscarPorCuenta(filtro.getCuenta());
+            ops = this.operacionRepository.buscarPorCuenta(filtro.getCuenta());
         } else if (filtro.getCuenta().isBlank() && !filtro.getFechaEjecucion()) {
             ops = this.operacionRepository.ordenarPorCantidad();
         } else if (filtro.getCuenta().isBlank() && !filtro.getCantidad()) {
@@ -430,11 +430,9 @@ public class EmpresaController {
         } else if (!filtro.getCantidad()) {
             ops = this.operacionRepository.buscarPorCuentaYOrdenarPorFechaEjecucion(filtro.getCuenta());
         } else if (!filtro.getFechaEjecucion()) {
-            ops =
-                    this.operacionRepository.buscarPorCuentaYOrdenarPorCantidad(filtro.getCuenta());
+            ops = this.operacionRepository.buscarPorCuentaYOrdenarPorCantidad(filtro.getCuenta());
         } else {
-            ops =
-                    this.operacionRepository.buscarPorCuentaYOrdenarPorCantidadYFechaEjecucion(filtro.getCuenta());
+            ops = this.operacionRepository.buscarPorCuentaYOrdenarPorCantidadYFechaEjecucion(filtro.getCuenta());
         }
 
         if (ops != null) {

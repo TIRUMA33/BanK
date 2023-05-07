@@ -1,12 +1,10 @@
 package es.uma.taw.bank.controller;
 //Pablo Ruiz Galianez
+
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
-import es.uma.taw.bank.ui.FiltroOperacionesEmpresa;
 import es.uma.taw.bank.ui.FiltroOperacionesPersona;
-import es.uma.taw.bank.ui.RegistroEmpresa;
 import es.uma.taw.bank.ui.RegistroPersona;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +39,7 @@ public class PersonaController {
     DivisaRepository divisaRepository;
 
     @GetMapping("/")
-    public String doPersona(Model model, HttpSession session){
+    public String doPersona(Model model, HttpSession session) {
         String urlTo;
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
 
@@ -68,13 +66,13 @@ public class PersonaController {
     }
 
     @GetMapping("/editar")
-    public String doEditar(@RequestParam("id") Integer idpersona, Model model){
+    public String doEditar(@RequestParam("id") Integer idpersona, Model model) {
         model.addAttribute("registroPersona", recuperarInfoPersona(idpersona));
         return "editarPersona";
     }
 
     @PostMapping("/guardar")
-    public String doGuardar(@ModelAttribute("registroPersona") RegistroPersona edicionPersona){
+    public String doGuardar(@ModelAttribute("registroPersona") RegistroPersona edicionPersona) {
         RegistroPersona registroPersona = recuperarInfoPersona(edicionPersona.getPersona().getId());
         PersonaEntity personaActualizada = registroPersona.getPersona();
         PersonaEntity personaForm = edicionPersona.getPersona();
@@ -102,7 +100,7 @@ public class PersonaController {
 
         usuarioActualizado.setNif(personaForm.getDni());
         if (!(usuarioForm.getContrasena().isBlank() || registroPersona.getRcontrasena().isBlank())) {
-            if(usuarioForm.getContrasena().equals(registroPersona.getRcontrasena())) {
+            if (usuarioForm.getContrasena().equals(registroPersona.getRcontrasena())) {
                 usuarioActualizado.setContrasena(usuarioForm.getContrasena());
             }
         }
@@ -111,11 +109,12 @@ public class PersonaController {
     }
 
     @GetMapping("/transferencia")
-    public String doTransferencia(@RequestParam("id") Integer idpersona, Model model){
+    public String doTransferencia(@RequestParam("id") Integer idpersona, Model model) {
 
         TransaccionEntity transaccion = new TransaccionEntity();
         transaccion.setCuentaBancoByCuentaOrigen(this.cuentaRepository.buscarPorCliente(idpersona).get(0));
-        List<CuentaBancoEntity> cuentas = this.cuentaRepository.buscarSinMi(transaccion.getCuentaBancoByCuentaOrigen().getId());
+        List<CuentaBancoEntity> cuentas =
+                this.cuentaRepository.buscarSinMi(transaccion.getCuentaBancoByCuentaOrigen().getId());
 
         model.addAttribute("cuentas", cuentas);
         model.addAttribute("transaccion", transaccion);
@@ -133,7 +132,7 @@ public class PersonaController {
         CuentaBancoEntity destino =
                 this.cuentaRepository.findById(transaccion.getCuentaBancoByCuentaDestino().getId()).orElse(null);
 
-        if(origen != null && destino != null) {
+        if (origen != null && destino != null) {
             origen.setSaldo(origen.getSaldo() - transaccion.getCantidad());
             destino.setSaldo(destino.getSaldo() + transaccion.getCantidad());
 
@@ -151,7 +150,7 @@ public class PersonaController {
         CuentaBancoEntity cuenta = cuentaRepository.findById(cuentaid).orElse(null);
         if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 1) {
             estado.setId(4);
-        } else if(cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 2) {
+        } else if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 2) {
             estado.setId(5);
         }
         cuenta.setEstadoCuentaByEstadoCuentaId(estado);
@@ -164,7 +163,8 @@ public class PersonaController {
         CuentaBancoEntity cuenta = cuentaRepository.findById(cuentaid).orElse(null);
         List<DivisaEntity> divisas = this.divisaRepository.buscarSinMi(cuenta.getDivisaByDivisaId().getId());
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        List<String> cambios = divisas.stream().map(d->decimalFormat.format(cuenta.getSaldo() * cuenta.getDivisaByDivisaId().getEquivalencia() / d.getEquivalencia()) + " " + d.getNombre()).collect(Collectors.toList());
+        List<String> cambios =
+                divisas.stream().map(d -> decimalFormat.format(cuenta.getSaldo() * cuenta.getDivisaByDivisaId().getEquivalencia() / d.getEquivalencia()) + " " + d.getNombre()).collect(Collectors.toList());
 
         model.addAttribute("cuenta", cuenta);
         model.addAttribute("divisas", divisas);
@@ -173,7 +173,8 @@ public class PersonaController {
     }
 
     @PostMapping("/cambioDivisa/{cuentaId}/realizar")
-    public String doCambioRealizado(@PathVariable("cuentaId") String cuentaid, @ModelAttribute("divisaSelect") Integer divisaid) {
+    public String doCambioRealizado(@PathVariable("cuentaId") String cuentaid,
+                                    @ModelAttribute("divisaSelect") Integer divisaid) {
         DivisaEntity divisa = this.divisaRepository.findById(divisaid).orElse(null);
         CuentaBancoEntity cuenta = this.cuentaRepository.findById(Integer.parseInt(cuentaid)).orElse(null);
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
@@ -185,8 +186,7 @@ public class PersonaController {
     }
 
     @GetMapping("/operaciones")
-    public String doOperaciones(@RequestParam("id") Integer cuentaId,
-                                Model model) {
+    public String doOperaciones(@RequestParam("id") Integer cuentaId, Model model) {
         return this.procesarFiltradoOperaciones(cuentaId, null, model);
     }
 
@@ -196,27 +196,27 @@ public class PersonaController {
         return this.procesarFiltradoOperaciones(personaId, filtro, model);
     }
 
-    private String procesarFiltradoOperaciones(Integer cuentaid, FiltroOperacionesPersona filtro,Model model) {
+    private String procesarFiltradoOperaciones(Integer cuentaid, FiltroOperacionesPersona filtro, Model model) {
 
         List<TransaccionEntity> operaciones = null;
         String urlTo = "operacionesPersona";
 
-        if (filtro == null || filtro.getIban()=="" && !filtro.getFecha() && !filtro.getCantidad()) {
+        if (filtro == null || filtro.getIban() == "" && !filtro.getFecha() && !filtro.getCantidad()) {
             operaciones = this.transaccionRepository.buscarporCuenta(cuentaid);
             filtro = new FiltroOperacionesPersona();
-        }else if (filtro.getIban()=="" && !filtro.getFecha()) {
+        } else if (filtro.getIban() == "" && !filtro.getFecha()) {
             operaciones = transaccionRepository.buscaryordporCuentaYCantidad(cuentaid);
-        } else if (filtro.getIban()=="" && !filtro.getCantidad()) {
+        } else if (filtro.getIban() == "" && !filtro.getCantidad()) {
             operaciones = transaccionRepository.buscaryordporCuentaYFecha(cuentaid);
-        } else if (!filtro.getFecha() && !filtro.getCantidad()){
+        } else if (!filtro.getFecha() && !filtro.getCantidad()) {
             operaciones = transaccionRepository.buscarpordoblecuenta(cuentaid, filtro.getIban());
-        } else if(!filtro.getFecha()) {
+        } else if (!filtro.getFecha()) {
             operaciones = transaccionRepository.buscarporDobleCuentayCantidad(cuentaid, filtro.getIban());
         } else if (!filtro.getCantidad()) {
             operaciones = transaccionRepository.buscarporDobleCuentayFecha(cuentaid, filtro.getIban());
-        } else if (filtro.getIban()==""){
+        } else if (filtro.getIban() == "") {
             operaciones = transaccionRepository.buscaryordporCuentaFechaYCantidad(cuentaid);
-        }else {
+        } else {
             operaciones = transaccionRepository.buscarporDobleCuentaFechaYCantidad(cuentaid, filtro.getIban());
         }
         model.addAttribute("operaciones", operaciones);
@@ -224,7 +224,6 @@ public class PersonaController {
         model.addAttribute("cuentaid", cuentaid);
         return urlTo;
     }
-
 
 
 }

@@ -42,14 +42,19 @@
         <th>CUENTA DESTINO</th>
     </tr>
     <%
-        for(TransaccionDTO t: operaciones){
+        for (TransaccionDTO t : operaciones) {
     %>
     <tr>
-        <td><%= t.getFechaInstruccion().toString() %></td>
-        <td><%= t.getFechaEjecucion().toString() %></td>
-        <td><%= t.getCantidad() %> <%= t.getDivisaDestino()%></td>
-        <td><%= t.getCuentaOrigenIbanCuenta() %><% if(t.getCuentaOrigen()==(Integer)request.getAttribute("idCuenta")) {%>(Tú) <% } %> </td>
-        <td><%= t.getCuentaDestinoIbanCuenta() %><% if(t.getCuentaDestino()==(Integer)request.getAttribute("idCuenta")) {%>(Tú) <% }%> </td>
+        <td><%= t.getFechaInstruccion().toString() %>
+        </td>
+        <td><%= t.getFechaEjecucion().toString() %>
+        </td>
+        <td><%= t.getCantidad() %> <%= t.getDivisaDestino()%>
+        </td>
+        <td><%= t.getCuentaOrigenIbanCuenta() %><% if (t.getCuentaOrigen() == (Integer) request.getAttribute("idCuenta")) {%>
+            (Tú) <% } %></td>
+        <td><%= t.getCuentaDestinoIbanCuenta() %><% if (t.getCuentaDestino() == (Integer) request.getAttribute("idCuenta")) {%>
+            (Tú) <% }%></td>
     </tr>
     <%
         }

@@ -1,5 +1,6 @@
 package es.uma.taw.bank.service;
 //Pablo Ruiz Galianez 7%
+
 import es.uma.taw.bank.dao.PersonaRepository;
 import es.uma.taw.bank.dto.PersonaDTO;
 import es.uma.taw.bank.entity.DireccionEntity;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 //Autores Alejandro Guerra 20% Óscar Fernández 70% Pablo Ruiz 10%
 @Service
 public class PersonaService {

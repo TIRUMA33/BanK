@@ -1,9 +1,12 @@
 package es.uma.taw.bank.ui;
 //@author: Pablo Ruiz Galianez
-import es.uma.taw.bank.entity.*;
+
+import es.uma.taw.bank.entity.ClienteEntity;
+import es.uma.taw.bank.entity.DireccionEntity;
+import es.uma.taw.bank.entity.PersonaEntity;
+import es.uma.taw.bank.entity.UsuarioEntity;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Getter
 @Setter
@@ -16,7 +19,7 @@ public class RegistroPersona {
     private Boolean valida;
     private String rcontrasena;
 
-    public RegistroPersona(){
+    public RegistroPersona() {
         cliente = new ClienteEntity();
         direccion = new DireccionEntity();
         usuario = new UsuarioEntity();

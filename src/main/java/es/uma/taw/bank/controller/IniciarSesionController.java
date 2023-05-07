@@ -52,15 +52,15 @@ public class IniciarSesionController {
             urlTo = "iniciarSesion";
         } else {
             session.setAttribute("usuario", usuario);
-            if(usuario.getTipoUsuarioByTipoUsuario().getId().equals(3)){
+            if (usuario.getTipoUsuarioByTipoUsuario().getId().equals(3)) {
                 urlTo = "redirect:/asistencia/conversaciones";
-            }else if (this.empresaRepository.findById(usuario.getId()).isPresent()) {
+            } else if (this.empresaRepository.findById(usuario.getId()).isPresent()) {
                 urlTo = "redirect:/empresa/" + usuario.getId();
             } else if (usuario.getTipoUsuarioByTipoUsuario().getId().equals(2)) {
                 urlTo = "redirect:/empresa/" + Objects.requireNonNull(this.empresaRepository.findByCif(usuario.getNif()).orElse(null)).getId() + "/persona";
-            } else if(usuario.getTipoUsuarioByTipoUsuario().getId().equals(3)) {
+            } else if (usuario.getTipoUsuarioByTipoUsuario().getId().equals(3)) {
                 urlTo = "redirect:/asistencia/conversaciones";
-            }else{
+            } else {
                 urlTo = "redirect:/persona/";
             }
         }

@@ -45,7 +45,7 @@
         <tr>
             <td><form:label path="direccion.calle">Calle (*)</form:label></td>
             <td><form:input path="direccion.calle" required="required" size="45" maxlength="45"/></td>
-            <td><form:label path="direccion.numero" >Número (*)</form:label></td>
+            <td><form:label path="direccion.numero">Número (*)</form:label></td>
             <td><form:input path="direccion.numero" required="required"/></td>
         </tr>
         <tr>

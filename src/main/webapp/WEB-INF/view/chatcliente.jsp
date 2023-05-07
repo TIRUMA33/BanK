@@ -19,23 +19,25 @@
 <a href="/persona/">Volver</a>
 <h1>Conversación con el asistente</h1>
 <%
-   List<MensajeDTO> mensajes = (List<MensajeDTO>) request.getAttribute("mensajes");
+    List<MensajeDTO> mensajes = (List<MensajeDTO>) request.getAttribute("mensajes");
 %>
 
 <table style="width: 100%; table-layout:fixed">
     <%
         for (MensajeDTO msj : mensajes) {
-            if(msj.getEmisor()!=27){
+            if (msj.getEmisor() != 27) {
     %>
     <tr>
         <td></td>
-        <td style="word-wrap: break-word; border: black 1px solid"><b>Tú: </b><%=msj.getContenido()%></td>
+        <td style="word-wrap: break-word; border: black 1px solid"><b>Tú: </b><%=msj.getContenido()%>
+        </td>
     </tr>
     <%
-        }else{
+    } else {
     %>
     <tr>
-        <td style="word-wrap: break-word; border: black 1px solid"><b>Asistente: </b><%=msj.getContenido()%></td>
+        <td style="word-wrap: break-word; border: black 1px solid"><b>Asistente: </b><%=msj.getContenido()%>
+        </td>
         <td></td>
     </tr>
     <%

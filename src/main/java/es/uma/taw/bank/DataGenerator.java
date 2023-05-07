@@ -21,6 +21,7 @@ public class DataGenerator {
         int Z = 90;
         int limite = 11;
 
-        return rnd.ints(A, Z + 1).limit(limite).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+        return rnd.ints(A, Z + 1).limit(limite).collect(StringBuilder::new, StringBuilder::appendCodePoint,
+                StringBuilder::append).toString();
     }
 }

@@ -13,8 +13,9 @@
 </head>
 <body>
 <h1>Editar información</h1>
-<form:form action="/empresa/${registroEmpresaPersona.empresaPersona.empresaByIdEmpresa.id}/persona/${registroEmpresaPersona.empresaPersona.personaByIdPersona.id}/guardar"
-           modelAttribute="registroEmpresaPersona" method="post">
+<form:form
+        action="/empresa/${registroEmpresaPersona.empresaPersona.empresaByIdEmpresa.id}/persona/${registroEmpresaPersona.empresaPersona.personaByIdPersona.id}/guardar"
+        modelAttribute="registroEmpresaPersona" method="post">
     <h2>Datos personales</h2>
     <table>
         <tr>

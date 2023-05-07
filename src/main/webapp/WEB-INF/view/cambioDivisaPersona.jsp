@@ -38,7 +38,8 @@
                 <%
                     for (int i = 0; i < divisas.size(); i++) {
                 %>
-                <option value="<%= divisas.get(i).getId() %>"><%= cambios.get(i) %></option>
+                <option value="<%= divisas.get(i).getId() %>"><%= cambios.get(i) %>
+                </option>
                 <%
                     }
                 %>

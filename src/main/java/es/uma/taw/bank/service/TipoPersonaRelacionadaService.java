@@ -1,5 +1,9 @@
 package es.uma.taw.bank.service;
 
+/**
+ * @author Óscar Fernández Díaz
+ */
+
 import es.uma.taw.bank.dao.TipoPersonaRelacionadaRepository;
 import es.uma.taw.bank.dto.TipoPersonaRelacionadaDTO;
 import es.uma.taw.bank.entity.TipoPersonaRelacionadaEntity;

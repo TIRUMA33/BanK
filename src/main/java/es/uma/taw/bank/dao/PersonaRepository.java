@@ -1,5 +1,10 @@
 package es.uma.taw.bank.dao;
 
+/**
+ * @author Óscar Fernández Díaz 90%
+ * @author David Castaños Benedicto 10%
+ */
+
 import es.uma.taw.bank.entity.PersonaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,73 +24,62 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Integer>
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where p.id != " +
-            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" +
-            ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id")
+            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" + ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id")
     List<Object[]> distintasPersonasPorEmpresa(@Param("id") Integer id, @Param("personaId") Integer personaId);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where (p.id != " +
-            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" +
-            ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and ((p.dni like CONCAT" +
-            "('%', " + ":texto, '%')) or (p.nombre like CONCAT('%', :texto, '%')) or (p.apellido1 like CONCAT('%', " +
-            ":texto, '%')) or (p.apellido2 like CONCAT('%', :texto, '%') or (d.pais like CONCAT('%', :texto, '%'))))")
-    List<Object[]> filtrarPersonasPorEmpresaPorTexto(@Param("id") Integer id, @Param("personaId") Integer personaId
-            , @Param("texto") String texto);
+            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" + ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and ((p.dni like CONCAT" + "('%', " + ":texto, '%')) or (p.nombre like CONCAT('%', :texto, '%')) or (p.apellido1 like CONCAT('%', " + ":texto, '%')) or (p.apellido2 like CONCAT('%', :texto, '%') or (d.pais like CONCAT('%', :texto, '%'))))")
+    List<Object[]> filtrarPersonasPorEmpresaPorTexto(@Param("id") Integer id, @Param("personaId") Integer personaId,
+                                                     @Param("texto") String texto);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where (p.id != " +
-            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" +
-            ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) order by p.fechaNacimiento")
+            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" + ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) order by p.fechaNacimiento")
     List<Object[]> filtrarPersonasPorEmpresaPorFechaNacimiento(@Param("id") Integer id,
                                                                @Param("personaId") Integer personaId);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where (p.id != " +
-            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" +
-            ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and (ep" +
-            ".tipoPersonaRelacionadaByIdTipo.tipo = :tipo)")
+            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" + ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and (ep" + ".tipoPersonaRelacionadaByIdTipo.tipo = :tipo)")
     List<Object[]> filtrarPersonasPorEmpresaPorTipo(@Param("id") Integer id, @Param("personaId") Integer personaId,
                                                     @Param("tipo") String tipo);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where (p.id != " +
-            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" +
-            ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and ((p.dni like CONCAT" +
-            "('%', :texto, '%')) or (p.nombre like CONCAT('%', :texto, '%')) or (p.apellido1 like CONCAT('%', " +
-            ":texto, '%')) or (p.apellido2 like CONCAT('%', :texto, '%')) or (d.pais like CONCAT('%', :texto, '%'))) " +
-            "order by p.fechaNacimiento")
+            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" + ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and ((p.dni like CONCAT" + "('%', :texto, '%')) or (p.nombre like CONCAT('%', :texto, '%')) or (p.apellido1 like CONCAT('%', " + ":texto, '%')) or (p.apellido2 like CONCAT('%', :texto, '%')) or (d.pais like CONCAT('%', :texto, '%'))) " + "order by p.fechaNacimiento")
     List<Object[]> filtrarPersonasPorEmpresaPorTextoFechaNacimiento(@Param("id") Integer id,
                                                                     @Param("personaId") Integer personaId, @Param(
                                                                             "texto") String texto);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where (p.id != " +
-            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa.id" +
-            " = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and ((p.dni like CONCAT('%', " +
-            ":texto, '%')) or (p.nombre like CONCAT('%', :texto, '%')) or (d.pais like CONCAT('%', :texto, '%'))) and" +
-            " (ep.tipoPersonaRelacionadaByIdTipo.tipo = :tipo)")
+            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" +
+            ".id" + " = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and ((p.dni like CONCAT" +
+            "('%', " + ":texto, '%')) or (p.nombre like CONCAT('%', :texto, '%')) or (d.pais like CONCAT('%', :texto," +
+            " '%'))) and" + " (ep.tipoPersonaRelacionadaByIdTipo.tipo = :tipo)")
     List<Object[]> filtrarPersonasPorEmpresaPorTextoTipo(@Param("id") Integer id,
-                                                             @Param("personaId") Integer personaId,
-                                                             @Param("texto") String texto,
-                                                             @Param("tipo") String tipo);
+                                                         @Param("personaId") Integer personaId,
+                                                         @Param("texto") String texto, @Param("tipo") String tipo);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where (p.id != " +
-            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa.id" +
-            " = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and (ep" +
+            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" +
+            ".id" + " = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and (ep" +
             ".tipoPersonaRelacionadaByIdTipo.tipo = :tipo) order by p.fechaNacimiento")
     List<Object[]> filtrarPersonasPorEmpresaPorFechaNacimientoTipo(@Param("id") Integer id,
-                                                                   @Param("personaId") Integer personaId, @Param("tipo") String tipo);
+                                                                   @Param("personaId") Integer personaId, @Param(
+                                                                           "tipo") String tipo);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where (p.id != " +
-            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa.id" +
-            " = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and ((p.dni like CONCAT('%', " +
-            ":texto, '%')) or (p.nombre like CONCAT('%', :texto, '%')) or (p.apellido1 like CONCAT('%', :texto, '%'))" +
-            " or (p.apellido2 like CONCAT('%', :texto, '%')) or (d.pais like CONCAT('%', :texto, '%'))) and (ep" +
-            ".tipoPersonaRelacionadaByIdTipo.tipo = :tipo) order by p.fechaNacimiento")
+            ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" +
+            ".id" + " = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and ((p.dni like CONCAT" +
+            "('%', " + ":texto, '%')) or (p.nombre like CONCAT('%', :texto, '%')) or (p.apellido1 like CONCAT('%', " +
+            ":texto, '%'))" + " or (p.apellido2 like CONCAT('%', :texto, '%')) or (d.pais like CONCAT('%', :texto, " +
+            "'%'))) and (ep" + ".tipoPersonaRelacionadaByIdTipo.tipo = :tipo) order by p.fechaNacimiento")
     List<Object[]> filtrarPersonasPorEmpresaPorTextoFechaNacimientoTipo(@Param("id") Integer id,
-                                                                        @Param("personaId") Integer personaId, @Param(
-                                                                                "texto") String texto,
+                                                                        @Param("personaId") Integer personaId,
+                                                                        @Param("texto") String texto,
                                                                         @Param("tipo") String tipo);
 }

@@ -19,25 +19,29 @@
 <a href="/asistencia/conversaciones">Volver</a>
 <%
     List<MensajeDTO> mensajes = (List<MensajeDTO>) request.getAttribute("mensajes");
-    if(mensajes != null && !mensajes.isEmpty()){
+    if (mensajes != null && !mensajes.isEmpty()) {
 %>
-<h1>Conversación con <%=mensajes.get(0).getEmisorNif()%></h1>
+<h1>Conversación con <%=mensajes.get(0).getEmisorNif()%>
+</h1>
 
 <table style="width: 100%; table-layout:fixed">
     <%
         for (MensajeDTO msj : mensajes) {
-            if(msj.getEmisor()!=27){
+            if (msj.getEmisor() != 27) {
     %>
     <tr>
-        <td style="word-wrap: break-word; border: black 1px solid"><b><%=msj.getEmisorNif()%>: </b><%=msj.getContenido()%></td>
+        <td style="word-wrap: break-word; border: black 1px solid"><b><%=msj.getEmisorNif()%>
+            : </b><%=msj.getContenido()%>
+        </td>
         <td></td>
     </tr>
     <%
-    }else{
+    } else {
     %>
     <tr>
         <td></td>
-        <td style="word-wrap: break-word; border: black 1px solid"><b>Tú: </b><%=msj.getContenido()%></td>
+        <td style="word-wrap: break-word; border: black 1px solid"><b>Tú: </b><%=msj.getContenido()%>
+        </td>
     </tr>
     <%
             }
@@ -59,7 +63,7 @@
     </form:form>
 </div>
 <%
-    }else{
+} else {
 %>
 <h1>No hay mensajes aún</h1>
 <%

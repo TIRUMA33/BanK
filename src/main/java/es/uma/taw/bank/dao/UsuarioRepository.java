@@ -1,5 +1,6 @@
 package es.uma.taw.bank.dao;
 //Autores Pablo Robles Mansilla 50%
+
 import es.uma.taw.bank.entity.UsuarioEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -59,7 +59,7 @@ public class TransaccionEntity implements DTO<TransaccionDTO> {
         return result;
     }
 
-    public TransaccionDTO toDTO(){
+    public TransaccionDTO toDTO() {
         TransaccionDTO dto = new TransaccionDTO();
         dto.setCantidad(this.cantidad);
         dto.setId(this.id);

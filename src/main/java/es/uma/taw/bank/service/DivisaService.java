@@ -1,5 +1,6 @@
 package es.uma.taw.bank.service;
 //Autores Alejandro Guerra 40% Óscar Fernández 40% Pablo Ruiz 20%
+
 import es.uma.taw.bank.dao.DivisaRepository;
 import es.uma.taw.bank.dto.DivisaDTO;
 import es.uma.taw.bank.entity.DivisaEntity;
@@ -27,12 +28,13 @@ public class DivisaService {
         else return null;
     }
 
-    public DivisaDTO findById(Integer id){
+    public DivisaDTO findById(Integer id) {
         DivisaEntity d = divisaRepository.findById(id).orElse(null);
-        if(d!=null)return d.toDTO();
+        if (d != null) return d.toDTO();
         else return null;
     }
-    public List<DivisaDTO> buscarSinMi(String idDivisa){
+
+    public List<DivisaDTO> buscarSinMi(String idDivisa) {
         List<DivisaEntity> divisas = divisaRepository.buscarSinMiPorNombre(idDivisa);
         return this.listaEntidadesADTO(divisas);
     }

@@ -29,7 +29,7 @@
         <tr>
             <th>Saldo disponible</th>
             <td>${cuenta.saldo}
-                    ${cuenta.divisaByDivisaId.nombre}</td>
+                ${cuenta.divisaByDivisaId.nombre}</td>
         </tr>
         <tr>
             <th>Divisa</th>
@@ -37,7 +37,8 @@
                 <%
                     for (int i = 0; i < divisas.size(); i++) {
                 %>
-                <option value="<%= divisas.get(i).getId() %>"><%= cambios.get(i) %></option>
+                <option value="<%= divisas.get(i).getId() %>"><%= cambios.get(i) %>
+                </option>
                 <%
                     }
                 %>

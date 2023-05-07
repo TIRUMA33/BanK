@@ -18,47 +18,63 @@
 
 <html>
 <head>
-  <title>Datos Cliente</title>
+    <title>Datos Cliente</title>
 </head>
 <body>
 <h1>Datos del cliente:</h1>
 <h2>Persona:</h2>
 <ul>
-  <li>Nombre: <%=empresa.getNombre()%></li>
-  <li>CIF: <%=empresa.getCif()%></li>
-  <li>Estado: <%=cliente.getEstadoClienteByEstadoClienteId().getTipo()%></li>
+    <li>Nombre: <%=empresa.getNombre()%>
+    </li>
+    <li>CIF: <%=empresa.getCif()%>
+    </li>
+    <li>Estado: <%=cliente.getEstadoClienteByEstadoClienteId().getTipo()%>
+    </li>
 </ul>
 <form:form action="/gestor/infoempresa/filtrar" method="post" modelAttribute="filtroempresa">
-  <input hidden="true" name="id" value="${clientes.id}">
-  Ordenar por: <br/>
-  Cantidad: <form:checkbox path="cantidad"/>
-  Buscar: <form:input path="cuentaFiltro"/>
-  <button>Filtrar</button>
+    <input hidden="true" name="id" value="${clientes.id}">
+    Ordenar por: <br/>
+    Cantidad: <form:checkbox path="cantidad"/>
+    Buscar: <form:input path="cuentaFiltro"/>
+    <button>Filtrar</button>
 </form:form>
 <h3>Movimientos:</h3>
-<%for (CuentaBancoEntity c:listacuentas) {%>
-<h3 style="display: inline">Cuenta: <%=c.getIbanCuenta()%>&nbsp; </h3> <h5  style="display: inline">(<%=c.getEstadoCuentaByEstadoCuentaId().getTipo()%>) &nbsp; <a href="/gestor/desactivarcuenta?id=<%=empresa.getId()%>"><%= (c.getEstadoCuentaByEstadoCuentaId().getId().equals(2) || c.getEstadoCuentaByEstadoCuentaId().getId().equals(5)) ? "DESBLOQUEAR" : "BLOQUEAR"%></a></h5>
+<%for (CuentaBancoEntity c : listacuentas) {%>
+<h3 style="display: inline">Cuenta: <%=c.getIbanCuenta()%>&nbsp; </h3> <h5 style="display: inline">
+    (<%=c.getEstadoCuentaByEstadoCuentaId().getTipo()%>) &nbsp; <a
+        href="/gestor/desactivarcuenta?id=<%=empresa.getId()%>"><%= (c.getEstadoCuentaByEstadoCuentaId().getId().equals(2) || c.getEstadoCuentaByEstadoCuentaId().getId().equals(5)) ? "DESBLOQUEAR" : "BLOQUEAR"%>
+</a></h5>
 <hr style="border: 0">
-      <table border="1">
-        <tr>
-          <th>Fecha Instrucción</th>
-          <th>Fecha Ejecución</th>
-          <th>Cantidad</th>
-          <th>Cuenta Destino</th>
-          <th>Tipo de Movimiento</th>
-        </tr>
-        <%for (TransaccionEntity trans: listatransa){
-          if(trans.getCuentaBancoByCuentaOrigen().getId() == c.getId() || trans.getCuentaBancoByCuentaDestino().getId() == c.getId()) {%>
-        <tr>
-          <td style="text-align: center"><%=trans.getFechaInstruccion().toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE)%></td>
-          <td style="text-align: center"><%=trans.getFechaEjecucion().toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE)%></td>
-          <td style="text-align: center"><%=trans.getCantidad()%></td>
-          <td style="text-align: center"><%=trans.getCuentaBancoByCuentaDestino().getIbanCuenta()%></td>
-          <td style="text-align: center"><%if(c.getId() == trans.getCuentaBancoByCuentaOrigen().getId()){%>⇒<%}else{%>⇐<%}%></td>
-        </tr>
-        <%}
-        }%>
-      </table><br>
+<table border="1">
+    <tr>
+        <th>Fecha Instrucción</th>
+        <th>Fecha Ejecución</th>
+        <th>Cantidad</th>
+        <th>Cuenta Destino</th>
+        <th>Tipo de Movimiento</th>
+    </tr>
+    <%
+        for (TransaccionEntity trans : listatransa) {
+            if (trans.getCuentaBancoByCuentaOrigen().getId() == c.getId() || trans.getCuentaBancoByCuentaDestino().getId() == c.getId()) {
+    %>
+    <tr>
+        <td style="text-align: center"><%=trans.getFechaInstruccion().toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE)%>
+        </td>
+        <td style="text-align: center"><%=trans.getFechaEjecucion().toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE)%>
+        </td>
+        <td style="text-align: center"><%=trans.getCantidad()%>
+        </td>
+        <td style="text-align: center"><%=trans.getCuentaBancoByCuentaDestino().getIbanCuenta()%>
+        </td>
+        <td style="text-align: center"><%if (c.getId() == trans.getCuentaBancoByCuentaOrigen().getId()) {%>⇒<%} else {%>
+            ⇐<%}%></td>
+    </tr>
+    <%
+            }
+        }
+    %>
+</table>
+<br>
 <%}%>
 </body>
 </html>

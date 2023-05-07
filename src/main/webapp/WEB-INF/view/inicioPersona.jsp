@@ -11,14 +11,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-  UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
-  CuentaBancoEntity cuenta = (CuentaBancoEntity) request.getAttribute("cuenta");
-  PersonaEntity persona = (PersonaEntity) request.getAttribute("persona");
+    UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+    CuentaBancoEntity cuenta = (CuentaBancoEntity) request.getAttribute("cuenta");
+    PersonaEntity persona = (PersonaEntity) request.getAttribute("persona");
 %>
 
 <html>
 <head>
-  <title>BanK</title>
+    <title>BanK</title>
 </head>
 <body>
 
@@ -30,14 +30,14 @@
     <a href="/persona/transferencia?id=<%= usuario.getId() %>">Realizar transferencia</a>
     <a href="/persona/cambioDivisa?id=<%= cuenta.getId() %>">Cambio de divisa</a>
     <a href="/persona/operaciones?id=<%= cuenta.getId() %>">Ver operaciones</a>
-     <% if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 1) { %>
-      <a href="/persona/solicitar?id=<%= cuenta.getId()%>">Solicitar bloqueo de cuenta</a>
-    <% } else if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 2){  %>
-      <a href="/persona/solicitar?id=<%= cuenta.getId()%>">Solicitar activacion de cuenta</a>
+    <% if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 1) { %>
+    <a href="/persona/solicitar?id=<%= cuenta.getId()%>">Solicitar bloqueo de cuenta</a>
+    <% } else if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 2) { %>
+    <a href="/persona/solicitar?id=<%= cuenta.getId()%>">Solicitar activacion de cuenta</a>
     <% } else {%>
-      Solicitud pendiente
+    Solicitud pendiente
     <%
-    }
+        }
     %>
     <a href="/asistencia/?id=<%= usuario.getId() %>">Asistencia</a>
     <a href="/cajero/listar?cliente=<%= usuario.getId() %>">Cajero</a>

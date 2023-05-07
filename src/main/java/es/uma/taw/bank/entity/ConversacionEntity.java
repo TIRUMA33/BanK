@@ -28,7 +28,8 @@ public class ConversacionEntity implements DTO<ConversacionDTO> {
     @JoinColumn(name = "EMISOR", referencedColumnName = "ID", nullable = false)
     private UsuarioEntity usuarioByEmisor;
     @ManyToOne
-    @JoinColumn(name = "RECEPTOR", referencedColumnName = "ID", nullable = false, columnDefinition = "integer default 27")
+    @JoinColumn(name = "RECEPTOR", referencedColumnName = "ID", nullable = false, columnDefinition = "integer " +
+            "default" + " 27")
     private UsuarioEntity usuarioByReceptor;
     @OneToMany(mappedBy = "conversacionByConversacion")
     private List<MensajeEntity> mensajesById;

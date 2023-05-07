@@ -1,5 +1,9 @@
 package es.uma.taw.bank.service;
 
+/**
+ * @author Óscar Fernández Díaz
+ */
+
 import es.uma.taw.bank.dao.ClienteRepository;
 import es.uma.taw.bank.dao.DireccionRepository;
 import es.uma.taw.bank.dto.DireccionDTO;
@@ -24,7 +28,7 @@ public class DireccionService {
         this.direccionRepository = direccionRepository;
     }
 
-    public void guardarDireccion(DireccionDTO dto, Integer clienteId, boolean valida){
+    public void guardarDireccion(DireccionDTO dto, Integer clienteId, boolean valida) {
         DireccionEntity direccion = new DireccionEntity();
 
         direccion.setCalle(dto.getCalle());
@@ -39,6 +43,7 @@ public class DireccionService {
 
         this.direccionRepository.save(direccion);
     }
+
     public DireccionDTO buscarPorCliente(Integer id) {
         return direccionRepository.findByClienteByClienteId_Id(id)
                 .map(DireccionEntity::toDTO)

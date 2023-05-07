@@ -53,7 +53,8 @@ public class DireccionEntity implements DTO<DireccionDTO> {
         if (id != null ? !id.equals(direccion.id) : direccion.id != null) return false;
         if (calle != null ? !calle.equals(direccion.calle) : direccion.calle != null) return false;
         if (numero != null ? !numero.equals(direccion.numero) : direccion.numero != null) return false;
-        if (plantaPuertaOficina != null ? !plantaPuertaOficina.equals(direccion.plantaPuertaOficina) : direccion.plantaPuertaOficina != null)
+        if (plantaPuertaOficina != null ? !plantaPuertaOficina.equals(direccion.plantaPuertaOficina) :
+                direccion.plantaPuertaOficina != null)
             return false;
         if (ciudad != null ? !ciudad.equals(direccion.ciudad) : direccion.ciudad != null) return false;
         if (region != null ? !region.equals(direccion.region) : direccion.region != null) return false;

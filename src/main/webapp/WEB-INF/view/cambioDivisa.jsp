@@ -21,15 +21,16 @@
 <form method="post" action="/cajero/cambiarA">
     <select name="moneda">
         <%
-            for(Cambio c: cambios){
+            for (Cambio c : cambios) {
         %>
-        <option value="<%= c.getMonedaDestino() %>"><%= c.getMonedaDestino() %></option>
+        <option value="<%= c.getMonedaDestino() %>"><%= c.getMonedaDestino() %>
+        </option>
         <%
             }
         %>
     </select>
-  <input hidden="true" value="${cuenta.id}" name="cuenta">
-  <button>Seleccionar esta divisa</button>
+    <input hidden="true" value="${cuenta.id}" name="cuenta">
+    <button>Seleccionar esta divisa</button>
 </form>
 </body>
 </html>

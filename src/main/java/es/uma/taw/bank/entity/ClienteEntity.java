@@ -2,7 +2,6 @@ package es.uma.taw.bank.entity;
 
 import es.uma.taw.bank.dto.ClienteDTO;
 import es.uma.taw.bank.dto.DTO;
-import es.uma.taw.bank.dto.TransaccionDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

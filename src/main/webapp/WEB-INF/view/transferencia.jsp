@@ -17,9 +17,10 @@
 <form:form method="post" modelAttribute="transaccion" action="/cajero/transferir">
     <form:hidden path="id"></form:hidden>
     <form:hidden path="cuentaOrigen"></form:hidden>
-  Destino:<form:select path="cuentaDestino" items="${cuentas}" itemValue="id" itemLabel="ibanCuenta"></form:select><br>
-  Cantidad:<form:input path="cantidad" size="20" maxlength="20" required="required"></form:input><br>
-  <form:button>Realizar</form:button>
+    Destino:<form:select path="cuentaDestino" items="${cuentas}" itemValue="id"
+                         itemLabel="ibanCuenta"></form:select><br>
+    Cantidad:<form:input path="cantidad" size="20" maxlength="20" required="required"></form:input><br>
+    <form:button>Realizar</form:button>
 
 </form:form>
 </body>

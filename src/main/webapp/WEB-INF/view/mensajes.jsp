@@ -17,10 +17,11 @@
 <jsp:include page="cabecera.jsp"/>
 <a href="/asistencia/conversaciones">Volver</a>
 <%
-  List<MensajeDTO> mensajes = (List<MensajeDTO>) request.getAttribute("todomensajes");
-  if(mensajes!=null && !mensajes.isEmpty()){
+    List<MensajeDTO> mensajes = (List<MensajeDTO>) request.getAttribute("todomensajes");
+    if (mensajes != null && !mensajes.isEmpty()) {
 %>
-<h1>Mensajes intercambiados con el usuario <%=mensajes.get(0).getEmisorNif()%></h1>
+<h1>Mensajes intercambiados con el usuario <%=mensajes.get(0).getEmisorNif()%>
+</h1>
 <table border="1">
     <tr>
         <th>Emisor</th>
@@ -29,33 +30,38 @@
     </tr>
     <%
         for (MensajeDTO mensaje : mensajes) {
-            if(mensaje.getEmisor()==27){
+            if (mensaje.getEmisor() == 27) {
     %>
     <tr>
         <td><b>Tú</b></td>
-        <td><%=mensaje.getContenido()%></td>
-        <td><%=mensaje.getFecha()%></td>
+        <td><%=mensaje.getContenido()%>
+        </td>
+        <td><%=mensaje.getFecha()%>
+        </td>
     </tr>
     <%
-        }else{
+    } else {
     %>
     <tr>
-        <td><b><%=mensaje.getEmisorNif()%></b></td>
-        <td><%=mensaje.getContenido()%></td>
-        <td><%=mensaje.getFecha()%></td>
+        <td><b><%=mensaje.getEmisorNif()%>
+        </b></td>
+        <td><%=mensaje.getContenido()%>
+        </td>
+        <td><%=mensaje.getFecha()%>
+        </td>
     </tr>
     <%
-        }
+            }
         }
     %>
 
 </table>
 <%
-  }else{
+} else {
 %>
 <h1>No hay mensajes intercambiados con el usuario</h1>
 <%
-  }
+    }
 %>
 </body>
 </html>

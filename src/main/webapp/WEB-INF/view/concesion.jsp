@@ -19,32 +19,47 @@
 </head>
 <body>
 <h1>Visto bueno de la cuenta</h1>
-        <%if(empresa != null && cliente.getId() == empresa.getId()){%>
-        <ul>
-            <li>Nombre: <%=empresa.getNombre()%></li>
-            <li>CIF: <%=empresa.getCif()%></li>
-        </ul>
-    <%}else{%>
-        <ul>
-            <li>Nombre: <%=persona.getNombre()%> <%=persona.getApellido1()%> <%=persona.getApellido2()%></li>
-            <li>DNI: <%=persona.getDni()%></li>
-            <li>Fecha Nacimiento: <%=persona.getFechaNacimiento()%></li>
-        </ul>
-    <%}%>
+<%if (empresa != null && cliente.getId() == empresa.getId()) {%>
+<ul>
+    <li>Nombre: <%=empresa.getNombre()%>
+    </li>
+    <li>CIF: <%=empresa.getCif()%>
+    </li>
+</ul>
+<%} else {%>
+<ul>
+    <li>Nombre: <%=persona.getNombre()%> <%=persona.getApellido1()%> <%=persona.getApellido2()%>
+    </li>
+    <li>DNI: <%=persona.getDni()%>
+    </li>
+    <li>Fecha Nacimiento: <%=persona.getFechaNacimiento()%>
+    </li>
+</ul>
+<%}%>
 
-<%for (DireccionEntity direccion: cliente.getDireccionsById()) {
-        if(cliente.getId() == direccion.getClienteByClienteId().getId()){%>
-        <ul>
-            <li>Calle: <%=direccion.getCalle()%>,<%=direccion.getNumero()%></li>
-            <li>Planta/Puerta: <%=direccion.getPlantaPuertaOficina()%></li>
-            <li>CP: <%=direccion.getCodigoPostal()%></li>
-            <li>Región: <%=direccion.getRegion()%></li>
-            <li>Ciudad: <%=direccion.getCiudad()%></li>
-            <li>País: <%=direccion.getPais()%></li>
-        </ul>
-        <%}
-    }%>
-    <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a><a href="/gestor/peticioncuenta?id=<%=cliente.getId()%>">Aceptar</a>
-    <a>&nbsp;&nbsp;&nbsp;&nbsp;</a><a href="/gestor/rechazocuenta">Rechazar</a>
+<%
+    for (DireccionEntity direccion : cliente.getDireccionsById()) {
+        if (cliente.getId() == direccion.getClienteByClienteId().getId()) {
+%>
+<ul>
+    <li>Calle: <%=direccion.getCalle()%>,<%=direccion.getNumero()%>
+    </li>
+    <li>Planta/Puerta: <%=direccion.getPlantaPuertaOficina()%>
+    </li>
+    <li>CP: <%=direccion.getCodigoPostal()%>
+    </li>
+    <li>Región: <%=direccion.getRegion()%>
+    </li>
+    <li>Ciudad: <%=direccion.getCiudad()%>
+    </li>
+    <li>País: <%=direccion.getPais()%>
+    </li>
+</ul>
+<%
+        }
+    }
+%>
+<a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a><a href="/gestor/peticioncuenta?id=<%=cliente.getId()%>">Aceptar</a>
+<a>&nbsp;&nbsp;&nbsp;&nbsp;</a><a href="/gestor/rechazocuenta">Rechazar</a>
 </body>
 </html>

@@ -1,4 +1,5 @@
 package es.uma.taw.bank.ui;
+
 //@author: David Castaños Benedicto
 public class FiltroCliente {
 
@@ -7,7 +8,7 @@ public class FiltroCliente {
 
     private String texto;
 
-    public FiltroCliente(){
+    public FiltroCliente() {
         nombre = false;
         estado = false;
         texto = "";

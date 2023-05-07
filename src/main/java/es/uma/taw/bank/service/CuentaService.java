@@ -1,5 +1,6 @@
 package es.uma.taw.bank.service;
 //Autores Alejandro Guerra 30% Óscar Fernández 50% Pablo Ruiz 20%
+
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.dto.CuentaDTO;
 import es.uma.taw.bank.entity.CuentaBancoEntity;
@@ -40,30 +41,32 @@ public class CuentaService {
         this.cuentaRepository.save(cuenta);
     }
 
-    public List<CuentaDTO> cuentasPorCliente(Integer idCliente){
+    public List<CuentaDTO> cuentasPorCliente(Integer idCliente) {
         List<CuentaBancoEntity> cuentas = cuentaRepository.buscarPorCliente(idCliente);
         return this.listaEntidadesADTO(cuentas);
     }
 
-    public List<CuentaDTO> cuentasSinMi(Integer idCuenta){
+    public List<CuentaDTO> cuentasSinMi(Integer idCuenta) {
         List<CuentaBancoEntity> cuentas = cuentaRepository.buscarSinMi(idCuenta);
         return this.listaEntidadesADTO(cuentas);
     }
-    public void sumarSaldo(Integer idCuenta, Double cantidad){
+
+    public void sumarSaldo(Integer idCuenta, Double cantidad) {
         CuentaBancoEntity c = this.cuentaRepository.findById(idCuenta).orElse(null);
-        c.setSaldo(c.getSaldo()+cantidad);
+        c.setSaldo(c.getSaldo() + cantidad);
         cuentaRepository.save(c);
     }
-    public void pedirDesbloqueo(Integer idCuenta){
+
+    public void pedirDesbloqueo(Integer idCuenta) {
         CuentaBancoEntity c = this.cuentaRepository.findById(idCuenta).orElse(null);
         EstadoCuentaEntity pendienteDesbloqueo = estadoCuentaRepository.findById(5).orElse(null);
         c.setEstadoCuentaByEstadoCuentaId(pendienteDesbloqueo);
         cuentaRepository.save(c);
     }
 
-    public CuentaDTO buscarCuenta(Integer id){
+    public CuentaDTO buscarCuenta(Integer id) {
         CuentaBancoEntity cuenta = cuentaRepository.findById(id).orElse(null);
-        if(cuenta!=null)return cuenta.toDTO();
+        if (cuenta != null) return cuenta.toDTO();
         else return null;
     }
 
@@ -74,7 +77,7 @@ public class CuentaService {
         return this.listaEntidadesADTO(operaciones);
     }
 
-    protected List<CuentaDTO> listaEntidadesADTO (List<CuentaBancoEntity> lista) {
+    protected List<CuentaDTO> listaEntidadesADTO(List<CuentaBancoEntity> lista) {
         ArrayList dtos = new ArrayList<CuentaDTO>();
 
         lista.forEach((final CuentaBancoEntity cuenta) -> dtos.add(cuenta.toDTO()));

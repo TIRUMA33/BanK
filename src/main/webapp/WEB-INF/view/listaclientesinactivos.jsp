@@ -43,23 +43,30 @@
                     for (PersonaEntity persona : listaPersonas) {
                 %>
                 <%
-                    String estado="";
-                    for (ClienteEntity c:listaclientes) {
-                        if(c.getId() == persona.getId()){
+                    String estado = "";
+                    for (ClienteEntity c : listaclientes) {
+                        if (c.getId() == persona.getId()) {
                             estado = c.getEstadoClienteByEstadoClienteId().getTipo();%>
                 <tr>
-                    <td><%=persona.getId()%></td>
-                    <td><%=persona.getNombre()%> <%=persona.getApellido1()%> <%=persona.getApellido2()%></td>
-                    <td><%=persona.getDni()%></td>
-                    <td><%=persona.getFechaNacimiento().toString()%></td>
-                    <td><%=estado%></td>
+                    <td><%=persona.getId()%>
+                    </td>
+                    <td><%=persona.getNombre()%> <%=persona.getApellido1()%> <%=persona.getApellido2()%>
+                    </td>
+                    <td><%=persona.getDni()%>
+                    </td>
+                    <td><%=persona.getFechaNacimiento().toString()%>
+                    </td>
+                    <td><%=estado%>
+                    </td>
                     <td><a href="/gestor/infopersona?id=<%=persona.getId()%>">Info Avanzada</a></td>
-                    <td><a href="/gestor/desactivarcliente?id=<%=persona.getId()%>"><%= (c.getEstadoClienteByEstadoClienteId().getId().equals(2)) ? "ACTIVAR" : "DESACTIVAR"%></a></td>
+                    <td>
+                        <a href="/gestor/desactivarcliente?id=<%=persona.getId()%>"><%= (c.getEstadoClienteByEstadoClienteId().getId().equals(2)) ? "ACTIVAR" : "DESACTIVAR"%>
+                        </a></td>
                 </tr>
                 <%
+                            }
                         }
                     }
-                }
                 %>
             </table>
         </td>
@@ -81,24 +88,30 @@
 
 
                 <%
-                    String estado="";
-                    for (ClienteEntity c:listaclientes) {
-                        if(c.getId() == empresas.getId()){
+                    String estado = "";
+                    for (ClienteEntity c : listaclientes) {
+                        if (c.getId() == empresas.getId()) {
                             estado = c.getEstadoClienteByEstadoClienteId().getTipo();%>
                 <tr>
-                    <td><%=empresas.getId()%></td>
-                    <td><%=empresas.getNombre()%></td>
-                    <td><%=empresas.getCif()%></td>
-                    <td><%=estado%></td>
+                    <td><%=empresas.getId()%>
+                    </td>
+                    <td><%=empresas.getNombre()%>
+                    </td>
+                    <td><%=empresas.getCif()%>
+                    </td>
+                    <td><%=estado%>
+                    </td>
                     <td><a href="/gestor/infoempresa?id=<%=empresas.getId()%>">Info Avanzada</a></td>
-                    <td><a href="/gestor/desactivarcliente?id=<%=empresas.getId()%>"><%= (c.getEstadoClienteByEstadoClienteId().getId().equals(2)) ? "ACTIVAR" : "DESACTIVAR"%></a></td>
+                    <td>
+                        <a href="/gestor/desactivarcliente?id=<%=empresas.getId()%>"><%= (c.getEstadoClienteByEstadoClienteId().getId().equals(2)) ? "ACTIVAR" : "DESACTIVAR"%>
+                        </a></td>
                 </tr>
                 <%
                             }
                         }
                     }
                 %>
-        </table>
+            </table>
 </table>
 </body>
 </html>

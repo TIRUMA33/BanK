@@ -1,5 +1,6 @@
 package es.uma.taw.bank.service;
-//Pablo Ruiz Galianez 10%
+//Pablo Ruiz Galianez 10% Óscar Fernández 90%
+
 import es.uma.taw.bank.dao.TipoUsuarioRepository;
 import es.uma.taw.bank.dao.UsuarioRepository;
 import es.uma.taw.bank.dto.UsuarioDTO;
@@ -25,7 +26,7 @@ public class UsuarioService {
                 .orElse(null);
     }
 
-    public void guardarUsuario(UsuarioDTO dto, Integer id, String ncif, Integer tipo){
+    public void guardarUsuario(UsuarioDTO dto, Integer id, String ncif, Integer tipo) {
         UsuarioEntity usuario = new UsuarioEntity();
 
         usuario.setId(id);

@@ -1,4 +1,5 @@
 package es.uma.taw.bank.ui;
+
 //Autor Alejandro Guerra
 public class Cambio {
     private String monedaDestino;
@@ -9,9 +10,9 @@ public class Cambio {
         this.equivalencia = null;
     }
 
-    public Cambio(String monedaDestino, Double equivalencia){
-        this.monedaDestino=monedaDestino;
-        this.equivalencia=equivalencia;
+    public Cambio(String monedaDestino, Double equivalencia) {
+        this.monedaDestino = monedaDestino;
+        this.equivalencia = equivalencia;
     }
 
     public String getMonedaDestino() {
