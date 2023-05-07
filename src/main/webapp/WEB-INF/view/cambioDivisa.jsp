@@ -1,7 +1,7 @@
 <%@ page import="es.uma.taw.bank.ui.Cambio" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
-  User: aleja
+  User: Alejandro Guerra
   Date: 23/04/2023
   Time: 12:55
   To change this template use File | Settings | File Templates.

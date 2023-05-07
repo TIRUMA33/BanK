@@ -1,5 +1,5 @@
 package es.uma.taw.bank.service;
-
+//Autores Óscar Fernández 50% Alejandro Guerra 50%
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.dto.CuentaDTO;
 import es.uma.taw.bank.entity.CuentaBancoEntity;

@@ -1,5 +1,5 @@
 package es.uma.taw.bank.dto;
-
+//Autores Óscar Fernández 50% Alejandro Guerra 50%
 import lombok.Getter;
 import lombok.Setter;
 

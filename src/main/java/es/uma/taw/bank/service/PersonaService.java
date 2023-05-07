@@ -1,5 +1,5 @@
 package es.uma.taw.bank.service;
-
+//Autores Óscar Fernández 50% Alejandro Guerra 40% Pablo Ruiz 10%
 import es.uma.taw.bank.dao.PersonaRepository;
 import es.uma.taw.bank.dto.ClienteDTO;
 import es.uma.taw.bank.dto.PersonaDTO;

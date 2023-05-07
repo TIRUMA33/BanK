@@ -1,5 +1,5 @@
 package es.uma.taw.bank.dto;
-
+//Autor Óscar Fernández
 import lombok.Getter;
 import lombok.Setter;
 

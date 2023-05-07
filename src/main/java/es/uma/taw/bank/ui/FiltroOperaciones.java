@@ -1,5 +1,5 @@
 package es.uma.taw.bank.ui;
-
+//Autor Alejandro Guerra
 import java.util.Date;
 
 public class    FiltroOperaciones {
