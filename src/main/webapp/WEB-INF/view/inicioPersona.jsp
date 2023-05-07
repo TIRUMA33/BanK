@@ -26,7 +26,7 @@
 <form action="/persona/editar" method="post">
 
     <a href="/persona/editar?id=<%= usuario.getId() %>">Modificar datos Personales</a>
-    <a href="/persona/transferencia?id=<%= usuario.getId() %>">Realizar transferencia</a>
+    <a href="/persona/transferencia?id=<%= cuenta.getId() %>">Realizar transferencia</a>
     <a href="/persona/cambioDivisa?id=<%= cuenta.getId() %>">Cambio de divisa</a>
     <a href="/persona/operaciones?id=<%= cuenta.getId() %>">Ver operaciones</a>
      <% if (cuenta.getEstado() == 1) { %>
@@ -34,7 +34,7 @@
     <% } else if (cuenta.getEstado() == 2){  %>
       <a href="/persona/solicitar?id=<%= cuenta.getId()%>">Solicitar activacion de cuenta</a>
     <% } else {%>
-      Solicitud pendiente
+      Solicitud pendiente de aprobacion
     <%
     }
     %>

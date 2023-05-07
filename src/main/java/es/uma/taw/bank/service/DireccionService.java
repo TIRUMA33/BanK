@@ -27,6 +27,7 @@ public class DireccionService {
     public void guardarDireccion(DireccionDTO dto, Integer clienteId, boolean valida){
         DireccionEntity direccion = new DireccionEntity();
 
+        direccion.setId(dto.getId());
         direccion.setCalle(dto.getCalle());
         direccion.setNumero(dto.getNumero());
         direccion.setPlantaPuertaOficina(dto.getPlantaPuertaOficina());
@@ -47,5 +48,12 @@ public class DireccionService {
 
     public void borrarDireccionPorCliente(Integer id) {
         this.direccionRepository.deleteByClienteByClienteId_Id(id);
+    }
+
+
+    public DireccionDTO buscarPorId(Integer id) {
+        return direccionRepository.findById(id)
+                .map(DireccionEntity::toDTO)
+                .orElse(null);
     }
 }

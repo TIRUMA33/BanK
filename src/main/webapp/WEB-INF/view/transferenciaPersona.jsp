@@ -15,17 +15,16 @@
 <h1>Nueva transferencia</h1>
 <form:form action="/persona/transferencia/realizar" modelAttribute="transaccion"
            method="post">
-    <form:hidden path="id"/>
     <form:hidden path="cuentaOrigen"/>
     <table>
         <tr>
             <th>Cuenta origen</th>
-            <td>${transaccion.cuentaBancoByCuentaOrigen.ibanCuenta}</td>
+            <td>${transaccion.cuentaOrigenIbanCuenta}</td>
         </tr>
         <tr>
             <th>Saldo disponible</th>
-            <td>${transaccion.cuentaBancoByCuentaOrigen.saldo}
-                    ${transaccion.cuentaBancoByCuentaOrigen.divisaByDivisaId.nombre}</td>
+            <td>${transaccion.cuentaOrigenSaldo}
+                    ${transaccion.divisa}</td>
         </tr>
         <tr>
             <th>Cuenta destino</th>
@@ -34,7 +33,7 @@
         </tr>
         <tr>
             <th>Importe</th>
-            <td><form:input required="required" path="cantidad"/> ${transaccion.cuentaBancoByCuentaOrigen.divisaByDivisaId.nombre}</td>
+            <td><form:input required="required" path="cantidad"/> ${transaccion.divisa}</td>
         </tr>
     </table>
     <form:button>Realizar</form:button>

@@ -132,4 +132,16 @@ public class PersonaService {
     public void borrarPersona(Integer id) {
         this.personaRepository.deleteById(id);
     }
+
+
+    public PersonaDTO ultimaPersona() {
+        PersonaEntity persona = personaRepository.ultimaPersona();
+        if (persona != null) {
+            return persona.toDTO();
+        } else {
+            return null;
+        }
+    }
 }
+
+

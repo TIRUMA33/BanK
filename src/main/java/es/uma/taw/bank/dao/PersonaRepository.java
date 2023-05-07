@@ -88,4 +88,7 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Integer>
                                                                         @Param("personaId") Integer personaId, @Param(
                                                                                 "texto") String texto,
                                                                         @Param("tipo") String tipo);
+
+    @Query("select c from PersonaEntity c order by c.id desc LIMIT 1")
+    PersonaEntity ultimaPersona();
 }
