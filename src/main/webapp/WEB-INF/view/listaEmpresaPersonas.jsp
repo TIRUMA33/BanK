@@ -1,5 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="es.uma.taw.bank.entity.PersonaEntity" %>
+<%@ page import="es.uma.taw.bank.dto.PersonaDTO" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: oscfd
@@ -29,7 +29,7 @@
         </tr>
         <%
             for (Object[] p : personas) {
-                PersonaEntity persona = (PersonaEntity) p[0];
+                PersonaDTO persona = (PersonaDTO) p[0];
                 String tipo = (String) p[1];
         %>
         <tr>
