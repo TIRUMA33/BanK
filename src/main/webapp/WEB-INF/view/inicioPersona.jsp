@@ -2,7 +2,7 @@
 <%@ page import="es.uma.taw.bank.dto.CuentaDTO" %>
 <%@ page import="es.uma.taw.bank.dto.PersonaDTO" %><%--
   Created by IntelliJ IDEA.
-  User: pablo
+  User: pablo ruiz galianez
   Date: 02/05/2023
   Time: 21:57
   To change this template use File | Settings | File Templates.
