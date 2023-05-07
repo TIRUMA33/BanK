@@ -16,6 +16,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+//@author: David Castaños Benedicto
+
 @Controller
 @RequestMapping("/gestor")
 public class GestorController {
