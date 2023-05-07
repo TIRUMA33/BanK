@@ -148,7 +148,7 @@ public class EmpresaController {
                                    @ModelAttribute("registroEmpresa") RegistroEmpresa edicionEmpresa) {
         RegistroEmpresa registroEmpresa = recuperarInfoEmpresa(id);
 
-        this.empresaService.guardarEmpresa(edicionEmpresa.getEmpresa());
+        this.empresaService.guardarEmpresa(edicionEmpresa.getEmpresa(), id);
         this.direccionService.guardarDireccion(edicionEmpresa.getDireccion(), edicionEmpresa.getValida());
         this.usuarioService.guardarUsuario(edicionEmpresa.getUsuario(), edicionEmpresa.getEmpresa().getCif(),
                 registroEmpresa.getRcontrasena());
@@ -186,8 +186,10 @@ public class EmpresaController {
         RegistroEmpresaPersona registroEmpresaPersona = recuperarInfoEmpresaPersona(personaId);
 
         this.direccionService.guardarDireccion(edicionEmpresaPersona.getDireccion(), edicionEmpresaPersona.getValida());
-        this.empresaPersonaService.guardarEmpresaPersona(registroEmpresaPersona.getEmpresaPersona());
-        this.personaService.guardarPersona(edicionEmpresaPersona.getPersona());
+        this.empresaPersonaService.guardarEmpresaPersona(registroEmpresaPersona.getEmpresaPersona(),
+                registroEmpresaPersona.getEmpresaPersona().getEmpresa(),
+                registroEmpresaPersona.getEmpresaPersona().getPersona());
+        this.personaService.guardarPersona(edicionEmpresaPersona.getPersona(), edicionEmpresaPersona.getPersona().getId());
         this.usuarioService.guardarUsuario(edicionEmpresaPersona.getUsuario(),
                 registroEmpresaPersona.getEmpresaPersona().getEmpresaCif(),
                 registroEmpresaPersona.getRcontrasena());
@@ -234,7 +236,8 @@ public class EmpresaController {
             "filtro") FiltroEmpresaPersona filtro, Model model) {
         EmpresaClienteDTO empresaCliente = this.empresaClienteService.buscarTipoPorPersona(seleccionadoId);
 
-        this.empresaClienteService.guardarEmpresaCliente(empresaCliente);
+        this.empresaClienteService.guardarEmpresaCliente(empresaCliente, empresaCliente.getTipoClienteRelacionado(),
+                empresaCliente.getEmpresa(), empresaCliente.getPersona());
 
         model.addAttribute("empresaId", id);
         model.addAttribute("personaId", personaId);

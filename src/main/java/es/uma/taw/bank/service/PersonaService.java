@@ -58,8 +58,8 @@ public class PersonaService {
         } else if (filtro.getTexto().isBlank() && !filtro.getFechaNacimiento()) {
             personas = this.personaRepository.filtrarPersonasPorEmpresaPorTipo(empresaId, personaId, filtro.getTipo());
         } else if (filtro.getTipo().isBlank()) {
-            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTextoFechaNacimiento(empresaId,
-                    personaId, filtro.getTexto());
+            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTextoFechaNacimiento(empresaId, personaId,
+                    filtro.getTexto());
         } else if (!filtro.getFechaNacimiento()) {
             personas = this.personaRepository.filtrarPersonasPorEmpresaPorTextoTipo(empresaId, personaId,
                     filtro.getTexto(), filtro.getTipo());
@@ -74,10 +74,10 @@ public class PersonaService {
         return this.listaArrayObjetosADTO(personas);
     }
 
-    public void guardarPersona(PersonaDTO dto) {
-        PersonaEntity persona;
-        persona = new PersonaEntity();
-        persona.setId(dto.getId());
+    public void guardarPersona(PersonaDTO dto, Integer id) {
+        PersonaEntity persona = new PersonaEntity();
+
+        persona.setId(id);
         persona.setNombre(dto.getNombre());
         persona.setDni(dto.getDni());
         persona.setApellido1(dto.getApellido1());

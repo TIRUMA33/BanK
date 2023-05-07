@@ -1,7 +1,5 @@
 package es.uma.taw.bank.controller;
 
-import es.uma.taw.bank.DataGenerator;
-import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.dto.*;
 import es.uma.taw.bank.service.*;
 import es.uma.taw.bank.ui.RegistroEmpresa;
@@ -14,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Controller
@@ -77,22 +74,12 @@ public class RegistroController {
         this.tipoPersonaRelacionadaService = tipoPersonaRelacionadaService;
     }
 
-    @Autowired
-    public void setTipoUsuarioService(TipoUsuarioService tipoUsuarioService) {
-        this.tipoUsuarioService = tipoUsuarioService;
-    }
-
 
     private void guardadoComun(ClienteDTO cliente, DireccionDTO direccion, boolean valida) {
-        cliente.setFechaInicio(new Timestamp(System.currentTimeMillis()));
-        cliente.setEstadoCliente(5);
         clienteService.guardarCliente(cliente);
 
-        direccion.setValida((byte) (valida ? 1 : 0));
-        direccion.setCliente(cliente.getId());
-        direccionService.guardarDireccion(direccion);
+        direccionService.guardarDireccion(direccion, cliente, valida);
     }
-*/
 
     @GetMapping("/")
     public String doRegistro() {
@@ -124,13 +111,9 @@ public class RegistroController {
         if (registroEmpresa.getRcontrasena().equals(usuario.getContrasena())) {
             guardadoComun(cliente, direccion, registroEmpresa.getValida());
 
-            empresa.setId(cliente.getId());
-            this.empresaService.guardarEmpresa(empresa);
+            this.empresaService.guardarEmpresa(empresa, cliente.getId());
 
-            usuario.setId(cliente.getId());
-            usuario.setNif(empresa.getCif());
-            usuario.setTipoUsuario(2);
-            this.usuarioService.guardarUsuario(usuario);
+            this.usuarioService.guardarUsuario(usuario, cliente.getId(), empresa.getCif(), 2);
 
             urlTo = "redirect:/registro/empresa/" + empresa.getId() + "/persona";
         } else {
@@ -174,10 +157,12 @@ public class RegistroController {
         RegistroEmpresaPersona registroEmpresaPersona = new RegistroEmpresaPersona();
         List<TipoPersonaRelacionadaDTO> tipoPersonaRelacionada = this.tipoPersonaRelacionadaService.listarTipoPersonaRelacionada();
         List<Object[]> personas = this.personaService.buscarPersonasPorEmpresa(id);
+
         model.addAttribute("registroEmpresaPersona", registroEmpresaPersona);
         model.addAttribute("tipoPersonasRelacionadas", tipoPersonaRelacionada);
         model.addAttribute("personas", personas);
         model.addAttribute("empresaId", id);
+
         return "registroEmpresaPersona";
     }
 
@@ -196,22 +181,13 @@ public class RegistroController {
         if (registroEmpresaPersona.getRcontrasena().equals(usuario.getContrasena())) {
             guardadoComun(cliente, direccion, registroEmpresaPersona.getValida());
 
-            persona.setId(cliente.getId());
-            this.personaService.guardarPersona(persona);
+            this.personaService.guardarPersona(persona, cliente.getId());
 
-            usuario.setId(cliente.getId());
-            usuario.setNif(empresa != null ? empresa.getCif() : null);
-            usuario.setTipoUsuario(2);
-            this.usuarioService.guardarUsuario(usuario);
+            this.usuarioService.guardarUsuario(usuario, cliente.getId(), empresa.getCif(), 2);
 
-            empresaCliente.setTipoClienteRelacionado(1);
-            empresaCliente.setEmpresa(empresa.getId());
-            empresaCliente.setPersona(persona.getId());
-            this.empresaClienteService.guardarEmpresaCliente(empresaCliente);
+            this.empresaClienteService.guardarEmpresaCliente(empresaCliente, 1, empresa.getId(), persona.getId());
 
-            empresaPersona.setEmpresa(empresa.getId());
-            empresaPersona.setPersona(persona.getId());
-            this.empresaPersonaService.guardarEmpresaPersona(empresaPersona);
+            this.empresaPersonaService.guardarEmpresaPersona(empresaPersona, empresa.getId(), persona.getId());
         } else {
             urlTo = "contrasenaNoCoincide";
         }

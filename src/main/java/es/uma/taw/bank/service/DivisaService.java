@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class DivisaService {
@@ -17,7 +16,9 @@ public class DivisaService {
     protected DivisaRepository divisaRepository;
 
     public DivisaDTO buscarDivisa(Integer id) {
-        return Objects.requireNonNull(this.divisaRepository.findById(id).orElse(null)).toDTO();
+        return divisaRepository.findById(id)
+                .map(DivisaEntity::toDTO)
+                .orElse(null);
     }
 
     public DivisaDTO buscarDivisaPorNombre(String nombre) {

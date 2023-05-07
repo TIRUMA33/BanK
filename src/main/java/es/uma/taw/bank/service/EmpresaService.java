@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class EmpresaService {
@@ -33,12 +32,15 @@ public class EmpresaService {
     }
 
     public EmpresaDTO buscarEmpresaPorCif(String cif) {
-        return Objects.requireNonNull(this.empresaRepository.findByCif(cif).orElse(null)).toDTO();
+        return empresaRepository.findByCif(cif)
+                .map(EmpresaEntity::toDTO)
+                .orElse(null);
     }
 
-    public void guardarEmpresa(EmpresaDTO dto) {
+    public void guardarEmpresa(EmpresaDTO dto, Integer id) {
         EmpresaEntity empresa = new EmpresaEntity();
 
+        empresa.setId(id);
         empresa.setCif(dto.getCif());
         empresa.setNombre(dto.getNombre());
 

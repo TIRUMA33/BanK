@@ -1,19 +1,22 @@
 package es.uma.taw.bank.service;
 
 import es.uma.taw.bank.dao.EmpresaPersonaRepository;
+import es.uma.taw.bank.dao.EmpresaRepository;
+import es.uma.taw.bank.dao.PersonaRepository;
 import es.uma.taw.bank.dao.TipoPersonaRelacionadaRepository;
 import es.uma.taw.bank.dto.EmpresaPersonaDTO;
 import es.uma.taw.bank.entity.EmpresaPersonaEntity;
-import es.uma.taw.bank.entity.TipoPersonaRelacionadaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class EmpresaPersonaService {
 
     private EmpresaPersonaRepository empresaPersonaRepository;
+
+    private EmpresaRepository empresaRepository;
+
+    private PersonaRepository personaRepository;
 
     private TipoPersonaRelacionadaRepository tipoPersonaRelacionadaRepository;
 
@@ -23,20 +26,30 @@ public class EmpresaPersonaService {
     }
 
     @Autowired
+    public void setEmpresaRepository(EmpresaRepository empresaRepository) {
+        this.empresaRepository = empresaRepository;
+    }
+
+    @Autowired
+    public void setPersonaRepository(PersonaRepository personaRepository) {
+        this.personaRepository = personaRepository;
+    }
+
+    @Autowired
     public void setTipoPersonaRelacionadaRepository(TipoPersonaRelacionadaRepository tipoPersonaRelacionadaRepository) {
         this.tipoPersonaRelacionadaRepository = tipoPersonaRelacionadaRepository;
     }
 
     public EmpresaPersonaDTO buscarPorPersona(Integer id) {
-        return Objects.requireNonNull(this.empresaPersonaRepository.findByPersonaByIdPersona_Id(id).orElse(null)).toDTO();
+        return empresaPersonaRepository.findByPersonaByIdPersona_Id(id).map(EmpresaPersonaEntity::toDTO).orElse(null);
     }
 
-    public void guardarEmpresaPersona(EmpresaPersonaDTO dto) {
+    public void guardarEmpresaPersona(EmpresaPersonaDTO dto, Integer empresaId, Integer personaId) {
         EmpresaPersonaEntity empresaPersona = new EmpresaPersonaEntity();
 
-        TipoPersonaRelacionadaEntity tipoPersonaRelacionada =
-                this.tipoPersonaRelacionadaRepository.findById(dto.getTipoPersonaRelacionada()).orElse(null);
-        empresaPersona.setTipoPersonaRelacionadaByIdTipo(tipoPersonaRelacionada);
+        empresaPersona.setTipoPersonaRelacionadaByIdTipo(this.tipoPersonaRelacionadaRepository.findById(dto.getTipoPersonaRelacionada()).orElse(null));
+        empresaPersona.setEmpresaByIdEmpresa(this.empresaRepository.findById(empresaId).orElse(null));
+        empresaPersona.setPersonaByIdPersona(this.personaRepository.findById(personaId).orElse(null));
 
         this.empresaPersonaRepository.save(empresaPersona);
     }

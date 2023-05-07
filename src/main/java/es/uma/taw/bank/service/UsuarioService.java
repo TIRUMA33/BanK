@@ -7,8 +7,6 @@ import es.uma.taw.bank.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class UsuarioService {
     private UsuarioRepository usuarioRepository;
@@ -22,16 +20,19 @@ public class UsuarioService {
     }
 
     public UsuarioDTO buscarUsuario(Integer id) {
-        return Objects.requireNonNull(this.usuarioRepository.findById(id).orElse(null)).toDTO();
+        return usuarioRepository.findById(id)
+                .map(UsuarioEntity::toDTO)
+                .orElse(null);
     }
 
-    public void guardarUsuario(UsuarioDTO dto){
-        UsuarioEntity usuario;
-        usuario = new UsuarioEntity();
-        usuario.setNif(dto.getNif());
+    public void guardarUsuario(UsuarioDTO dto, Integer id, String ncif, Integer tipo){
+        UsuarioEntity usuario = new UsuarioEntity();
+
+        usuario.setId(id);
+        usuario.setNif(ncif);
         usuario.setContrasena(dto.getContrasena());
-        usuario.setId(dto.getId());
-        usuario.setTipoUsuarioByTipoUsuario(tipoUsuarioRepository.findById(dto.getTipoUsuario()).orElse(null));
+        usuario.setTipoUsuarioByTipoUsuario(tipoUsuarioRepository.findById(tipo).orElse(null));
+
         this.usuarioRepository.save(usuario);
     }
 

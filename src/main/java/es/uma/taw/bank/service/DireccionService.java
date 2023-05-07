@@ -1,38 +1,48 @@
 package es.uma.taw.bank.service;
 
+import es.uma.taw.bank.dao.ClienteRepository;
 import es.uma.taw.bank.dao.DireccionRepository;
+import es.uma.taw.bank.dto.ClienteDTO;
 import es.uma.taw.bank.dto.DireccionDTO;
 import es.uma.taw.bank.entity.DireccionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class DireccionService {
 
+    private ClienteRepository clienteRepository;
+
     private DireccionRepository direccionRepository;
+
+    @Autowired
+    public void setClienteRepository(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
+    }
 
     @Autowired
     public void setDireccionRepository(DireccionRepository direccionRepository) {
         this.direccionRepository = direccionRepository;
     }
 
-    public void guardarDireccion(DireccionDTO dto){
-        DireccionEntity direccion;
-        direccion=new DireccionEntity();
-        direccion.setId(dto.getId());
-        direccion.setCalle(dto.getCalle());
-        direccion.setCiudad(dto.getCiudad());
-        direccion.setCodigoPostal(dto.getCodigoPostal());
-        direccion.setNumero(dto.getNumero());
-        direccion.setRegion(dto.getRegion());
-        direccion.setPlantaPuertaOficina(dto.getPlantaPuertaOficina());
-        direccion.setValida(dto.getValida());
+    public void guardarDireccion(DireccionDTO dtoDireccion, ClienteDTO dtoCliente, boolean valida){
+        DireccionEntity direccion = new DireccionEntity();
+
+        direccion.setCalle(dtoDireccion.getCalle());
+        direccion.setCiudad(dtoDireccion.getCiudad());
+        direccion.setCodigoPostal(dtoDireccion.getCodigoPostal());
+        direccion.setNumero(dtoDireccion.getNumero());
+        direccion.setRegion(dtoDireccion.getRegion());
+        direccion.setPlantaPuertaOficina(dtoDireccion.getPlantaPuertaOficina());
+        direccion.setValida((byte) (valida ? 1 : 0));
+        direccion.setClienteByClienteId(this.clienteRepository.findById(dtoCliente.getId()).orElse(null));
+
         this.direccionRepository.save(direccion);
     }
     public DireccionDTO buscarPorCliente(Integer id) {
-        return Objects.requireNonNull(this.direccionRepository.findByClienteByClienteId_Id(id).orElse(null)).toDTO();
+        return direccionRepository.findByClienteByClienteId_Id(id)
+                .map(DireccionEntity::toDTO)
+                .orElse(null);
     }
 
     public void guardarDireccion(DireccionDTO dto, boolean valida) {
