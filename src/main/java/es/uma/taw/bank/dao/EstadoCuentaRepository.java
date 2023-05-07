@@ -1,5 +1,5 @@
 package es.uma.taw.bank.dao;
-
+//pablo ruiz galianez
 import es.uma.taw.bank.entity.EstadoCuentaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

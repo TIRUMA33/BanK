@@ -1,5 +1,5 @@
 package es.uma.taw.bank.service;
-
+//Pablo Ruiz Galianez 20%
 import es.uma.taw.bank.dao.DivisaRepository;
 import es.uma.taw.bank.dto.DivisaDTO;
 import es.uma.taw.bank.entity.DivisaEntity;
