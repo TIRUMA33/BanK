@@ -2,7 +2,6 @@ package es.uma.taw.bank.service;
 
 import es.uma.taw.bank.dao.ClienteRepository;
 import es.uma.taw.bank.dao.DireccionRepository;
-import es.uma.taw.bank.dto.ClienteDTO;
 import es.uma.taw.bank.dto.DireccionDTO;
 import es.uma.taw.bank.entity.DireccionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,6 @@ public class DireccionService {
     public void guardarDireccion(DireccionDTO dto, Integer clienteId, boolean valida){
         DireccionEntity direccion = new DireccionEntity();
 
-        direccion.setId(dto.getId());
         direccion.setCalle(dto.getCalle());
         direccion.setNumero(dto.getNumero());
         direccion.setPlantaPuertaOficina(dto.getPlantaPuertaOficina());

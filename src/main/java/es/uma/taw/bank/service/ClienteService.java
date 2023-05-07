@@ -26,10 +26,18 @@ public class ClienteService {
         }
     }
 
+    public ClienteDTO ultimoCliente() {
+        ClienteEntity cliente = clienteRepository.ultimoCliente();
+        if (cliente != null) {
+            return cliente.toDTO();
+        } else {
+            return null;
+        }
+    }
+
     public void guardarCliente(ClienteDTO dto) {
         ClienteEntity cliente = new ClienteEntity();
 
-        cliente.setId(dto.getId());
         cliente.setFechaInicio(new Timestamp(System.currentTimeMillis()));
         cliente.setEstadoClienteByEstadoClienteId(estadoClienteRepository.findById(5).orElse(null));
 

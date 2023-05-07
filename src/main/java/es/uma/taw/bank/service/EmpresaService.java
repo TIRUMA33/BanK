@@ -37,6 +37,15 @@ public class EmpresaService {
                 .orElse(null);
     }
 
+    public EmpresaDTO ultimaEmpresa() {
+        EmpresaEntity empresa = empresaRepository.ultimaEmpresa();
+        if (empresa != null) {
+            return empresa.toDTO();
+        } else {
+            return null;
+        }
+    }
+
     public void guardarEmpresa(EmpresaDTO dto, Integer id) {
         EmpresaEntity empresa = new EmpresaEntity();
 

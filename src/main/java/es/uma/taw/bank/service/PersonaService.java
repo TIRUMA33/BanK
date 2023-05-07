@@ -74,7 +74,20 @@ public class PersonaService {
         return this.listaArrayObjetosADTO(personas);
     }
 
-    public void guardarPersona(PersonaDTO dto, Integer id) {
+    public void guardarPersona(PersonaDTO dto) {
+        PersonaEntity persona = new PersonaEntity();
+
+        persona.setId(dto.getId());
+        persona.setNombre(dto.getNombre());
+        persona.setDni(dto.getDni());
+        persona.setApellido1(dto.getApellido1());
+        persona.setApellido2(dto.getApellido2());
+        persona.setFechaNacimiento(dto.getFechaNacimiento());
+
+        this.personaRepository.save(persona);
+    }
+
+    public void guardarPersonaId(PersonaDTO dto, Integer id) {
         PersonaEntity persona = new PersonaEntity();
 
         persona.setId(id);

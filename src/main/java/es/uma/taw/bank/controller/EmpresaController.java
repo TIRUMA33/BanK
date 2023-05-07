@@ -191,7 +191,7 @@ public class EmpresaController {
         this.empresaPersonaService.guardarEmpresaPersona(registroEmpresaPersona.getEmpresaPersona(),
                 registroEmpresaPersona.getEmpresaPersona().getEmpresa(),
                 registroEmpresaPersona.getEmpresaPersona().getPersona());
-        this.personaService.guardarPersona(edicionEmpresaPersona.getPersona(), edicionEmpresaPersona.getPersona().getId());
+        this.personaService.guardarPersona(edicionEmpresaPersona.getPersona());
         this.usuarioService.guardarUsuario(edicionEmpresaPersona.getUsuario(),
                 registroEmpresaPersona.getEmpresaPersona().getEmpresaCif(),
                 registroEmpresaPersona.getRcontrasena());

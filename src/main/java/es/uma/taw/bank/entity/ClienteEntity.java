@@ -53,6 +53,7 @@ public class ClienteEntity implements DTO<ClienteDTO> {
     @Override
     public ClienteDTO toDTO() {
         ClienteDTO dto = new ClienteDTO();
+
         dto.setId(id);
         dto.setFechaInicio(fechaInicio);
 

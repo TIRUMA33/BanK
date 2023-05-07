@@ -77,7 +77,7 @@ public class RegistroController {
     private void guardadoComun(ClienteDTO cliente, DireccionDTO direccion, boolean valida) {
         clienteService.guardarCliente(cliente);
 
-        direccionService.guardarDireccion(direccion, cliente.getId(), valida);
+        direccionService.guardarDireccion(direccion, this.clienteService.ultimoCliente().getId(), valida);
     }
 
     @GetMapping("/")
@@ -110,11 +110,14 @@ public class RegistroController {
         if (registroEmpresa.getRcontrasena().equals(usuario.getContrasena())) {
             guardadoComun(cliente, direccion, registroEmpresa.getValida());
 
-            this.empresaService.guardarEmpresa(empresa, cliente.getId());
+            ClienteDTO c = this.clienteService.ultimoCliente();
+            EmpresaDTO e = this.empresaService.ultimaEmpresa();
 
-            this.usuarioService.guardarUsuario(usuario, cliente.getId(), empresa.getCif(), 2);
+            this.empresaService.guardarEmpresa(empresa, c.getId());
 
-            urlTo = "redirect:/registro/empresa/" + empresa.getId() + "/persona";
+            this.usuarioService.guardarUsuario(usuario, c.getId(), empresa.getCif(), 2);
+
+            urlTo = "redirect:/registro/empresa/" + e.getId() + "/persona";
         } else {
             urlTo = "contrasenaNoCoincide";
         }
@@ -180,7 +183,7 @@ public class RegistroController {
         if (registroEmpresaPersona.getRcontrasena().equals(usuario.getContrasena())) {
             guardadoComun(cliente, direccion, registroEmpresaPersona.getValida());
 
-            this.personaService.guardarPersona(persona, cliente.getId());
+            this.personaService.guardarPersonaId(persona, cliente.getId());
 
             this.usuarioService.guardarUsuario(usuario, cliente.getId(), empresa.getCif(), 2);
 

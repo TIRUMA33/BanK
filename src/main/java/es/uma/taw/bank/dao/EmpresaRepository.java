@@ -10,4 +10,7 @@ import java.util.Optional;
 public interface EmpresaRepository extends JpaRepository<EmpresaEntity, Integer> {
     @Query
     Optional<EmpresaEntity> findByCif(@Param("cif") String cif);
+
+    @Query("select e from EmpresaEntity e order by e.id desc LIMIT 1")
+    EmpresaEntity ultimaEmpresa();
 }
