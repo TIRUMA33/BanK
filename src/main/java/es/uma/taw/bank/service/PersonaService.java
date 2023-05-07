@@ -30,7 +30,15 @@ public class PersonaService {
     }
 
     public List<Object[]> buscarPersonasDistintasPorEmpresa(Integer empresaId, Integer personaId) {
-        return this.personaRepository.distintasPersonasPorEmpresa(empresaId, personaId);
+        List<Object[]> personas = this.personaRepository.distintasPersonasPorEmpresa(empresaId, personaId);
+
+        return this.listaArrayObjetosADTO(personas);
+    }
+
+    public List<Object[]> buscarPersonasPorEmpresa(Integer id) {
+        List<Object[]> personas = this.personaRepository.personasPorEmpresa(id);
+
+        return this.listaArrayObjetosADTO(personas);
     }
 
     public List<PersonaDTO> listarPersonas() {
@@ -106,5 +114,9 @@ public class PersonaService {
         });
 
         return dtos;
+    }
+
+    public void borrarPersona(Integer id) {
+        this.personaRepository.deleteById(id);
     }
 }

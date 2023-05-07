@@ -4,7 +4,9 @@ import es.uma.taw.bank.dao.TipoUsuarioRepository;
 import es.uma.taw.bank.dto.TipoUsuarioDTO;
 import es.uma.taw.bank.entity.TipoUsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TipoUsuarioService {
     @Autowired
     protected TipoUsuarioRepository tipoUsuarioRepository;

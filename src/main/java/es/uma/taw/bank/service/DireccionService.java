@@ -49,4 +49,8 @@ public class DireccionService {
 
         this.direccionRepository.save(direccion);
     }
+
+    public void borrarDireccionPorCliente(Integer id) {
+        this.direccionRepository.deleteByClienteByClienteId_Id(id);
+    }
 }

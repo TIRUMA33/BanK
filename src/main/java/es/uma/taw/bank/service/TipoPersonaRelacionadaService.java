@@ -19,6 +19,12 @@ public class TipoPersonaRelacionadaService {
         this.tipoPersonaRelacionadaRepository = tipoPersonaRelacionadaRepository;
     }
 
+    public List<TipoPersonaRelacionadaDTO> listarTipoPersonaRelacionada() {
+        List<TipoPersonaRelacionadaEntity> tipoPersonaRelacionadaList = this.tipoPersonaRelacionadaRepository.findAll();
+
+        return this.listaEntidadesADTO(tipoPersonaRelacionadaList);
+    }
+
     public List<TipoPersonaRelacionadaDTO> listarTipoPersonasRelacionada() {
         List<TipoPersonaRelacionadaEntity> tipoPersonaRelacionadaList = this.tipoPersonaRelacionadaRepository.findAll();
         return this.listaEntidadesADTO(tipoPersonaRelacionadaList);

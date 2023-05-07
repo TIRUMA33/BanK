@@ -34,4 +34,8 @@ public class ClienteService {
         cliente.setFechaInicio(dto.getFechaInicio());
         cliente.setEstadoClienteByEstadoClienteId(estadoClienteRepository.findById(dto.getEstadoCliente()).orElse(null));
     }
+
+    public void borrarCliente(Integer id) {
+        this.clienteRepository.deleteById(id);
+    }
 }

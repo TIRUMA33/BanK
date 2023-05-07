@@ -15,7 +15,7 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Integer>
 
     @Query("select p, ep.tipoPersonaRelacionadaByIdTipo.tipo from PersonaEntity p, EmpresaPersonaEntity ep where p = "
             + "ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id")
-    List<Object[]> personasPorEmpresa(@Param("id") String id);
+    List<Object[]> personasPorEmpresa(@Param("id") Integer id);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where p.id != " +
