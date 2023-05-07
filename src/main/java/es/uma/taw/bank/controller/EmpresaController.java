@@ -113,28 +113,28 @@ public class EmpresaController {
     }
 
     @GetMapping("/{id}")
-    public String doEmpresa(@PathVariable("id") String id, Model model, HttpSession session) {
+    public String doEmpresa(@PathVariable("id") Integer id, Model model, HttpSession session) {
         String urlTo = "inicioEmpresa";
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
 
         if (usuario == null) {
             urlTo = "iniciarSesion";
         } else {
-            model.addAttribute("empresa", this.empresaRepository.findById(Integer.parseInt(id)).orElse(null));
+            model.addAttribute("empresa", this.empresaRepository.findById(id).orElse(null));
         }
 
         return urlTo;
     }
 
     @GetMapping("/{id}/persona")
-    public String doEmpresaPersona(@PathVariable("id") String id, Model model, HttpSession session) {
+    public String doEmpresaPersona(@PathVariable("id") Integer id, Model model, HttpSession session) {
         String urlTo = "inicioEmpresaPersona";
         UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
 
         if (usuario == null) {
             urlTo = "iniciarSesion";
         } else {
-            model.addAttribute("empresa", this.empresaRepository.findById(Integer.parseInt(id)).orElse(null));
+            model.addAttribute("empresa", this.empresaRepository.findById(id).orElse(null));
         }
 
         return urlTo;
@@ -152,15 +152,15 @@ public class EmpresaController {
     }
 
     @GetMapping("/{id}/editar")
-    public String doEditarEmpresa(@PathVariable("id") String id, Model model) {
-        model.addAttribute("registroEmpresa", recuperarInfoEmpresa(Integer.parseInt(id)));
+    public String doEditarEmpresa(@PathVariable("id") Integer id, Model model) {
+        model.addAttribute("registroEmpresa", recuperarInfoEmpresa(id));
         return "editarEmpresa";
     }
 
     @PostMapping("/{id}/guardar")
-    public String doGuardarEmpresa(@PathVariable("id") String id,
+    public String doGuardarEmpresa(@PathVariable("id") Integer id,
                                    @ModelAttribute("registroEmpresa") RegistroEmpresa edicionEmpresa) {
-        RegistroEmpresa registroEmpresa = recuperarInfoEmpresa(Integer.parseInt(id));
+        RegistroEmpresa registroEmpresa = recuperarInfoEmpresa(id);
         EmpresaEntity empresa = registroEmpresa.getEmpresa();
         EmpresaEntity empresaForm = edicionEmpresa.getEmpresa();
         DireccionEntity direccion = registroEmpresa.getDireccion();
@@ -190,7 +190,7 @@ public class EmpresaController {
         }
         this.usuarioRepository.save(usuario);
 
-        return "redirect:/empresa/".concat(id).concat("/persona");
+        return "redirect:/empresa/".concat(String.valueOf(id)).concat("/persona");
     }
 
     private RegistroEmpresaPersona recuperarInfoEmpresaPersona(int id) {
@@ -206,20 +206,20 @@ public class EmpresaController {
     }
 
     @GetMapping("/{id}/persona/{personaId}/editar")
-    public String doEditarEmpresaPersona(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
+    public String doEditarEmpresaPersona(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
                                          Model model) {
         List<TipoPersonaRelacionadaEntity> tipoPersonaRelacionada = this.tipoPersonaRelacionadaRepository.findAll();
 
-        model.addAttribute("registroEmpresaPersona", recuperarInfoEmpresaPersona(Integer.parseInt(personaId)));
+        model.addAttribute("registroEmpresaPersona", recuperarInfoEmpresaPersona(personaId));
         model.addAttribute("tipoPersonasRelacionadas", tipoPersonaRelacionada);
 
         return "editarEmpresaPersona";
     }
 
     @PostMapping("/{id}/persona/{personaId}/guardar")
-    public String doGuardarEmpresaPersona(@PathVariable("id") String id, @PathVariable String personaId,
+    public String doGuardarEmpresaPersona(@PathVariable("id") Integer id, @PathVariable Integer personaId,
                                           @ModelAttribute("registroEmpresaPersona") RegistroEmpresaPersona edicionEmpresaPersona) {
-        RegistroEmpresaPersona registroEmpresaPersona = recuperarInfoEmpresaPersona(Integer.parseInt(personaId));
+        RegistroEmpresaPersona registroEmpresaPersona = recuperarInfoEmpresaPersona(personaId);
         DireccionEntity direccion = registroEmpresaPersona.getDireccion();
         DireccionEntity direccionForm = edicionEmpresaPersona.getDireccion();
         EmpresaPersonaEntity empresaPersona = registroEmpresaPersona.getEmpresaPersona();
@@ -257,10 +257,10 @@ public class EmpresaController {
         }
         this.usuarioRepository.save(usuario);
 
-        return "redirect:/empresa/".concat(id).concat("/persona");
+        return "redirect:/empresa/".concat(String.valueOf(id)).concat("/persona");
     }
 
-    private String procesarFiltrado(String empresaId, String personaId, FiltroEmpresaPersona filtro, Model model) {
+    private String procesarFiltrado(Integer empresaId, Integer personaId, FiltroEmpresaPersona filtro, Model model) {
         List<Object[]> personas;
         String urlTo = "listadoEmpresaPersonas";
 
@@ -298,20 +298,20 @@ public class EmpresaController {
     }
 
     @GetMapping("{id}/persona/{personaId}/listar")
-    public String doListarEmpresaPersonas(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
+    public String doListarEmpresaPersonas(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
                                           Model model) {
         return this.procesarFiltrado(id, personaId, null, model);
     }
 
     @PostMapping("{id}/persona/{personaId}/filtrar")
-    public String doFiltrarEmpresaPersona(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
+    public String doFiltrarEmpresaPersona(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
                                           @ModelAttribute("filtro") FiltroEmpresaPersona filtro, Model model) {
         return this.procesarFiltrado(id, personaId, filtro, model);
     }
 
     @GetMapping("{id}/persona/{personaId}/permiso/{seleccionadoId}")
-    public String doPermisoEmpresaPersona(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
-                                          @PathVariable("seleccionadoId") String seleccionadoId, @ModelAttribute(
+    public String doPermisoEmpresaPersona(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
+                                          @PathVariable("seleccionadoId") Integer seleccionadoId, @ModelAttribute(
             "filtro") FiltroEmpresaPersona filtro, Model model) {
         EmpresaClienteEntity empresaCliente = this.empresaClienteRepository.buscarTipoPorPersona(seleccionadoId);
 
@@ -330,10 +330,10 @@ public class EmpresaController {
     }
 
     @GetMapping("{id}/persona/{personaId}/transferencia")
-    public String doTransferenciaEmpresa(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
+    public String doTransferenciaEmpresa(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
                                          Model model) {
         TransaccionEntity transaccion = new TransaccionEntity();
-        transaccion.setCuentaBancoByCuentaOrigen(this.cuentaRepository.buscarPorCliente(Integer.parseInt(id)).get(0));
+        transaccion.setCuentaBancoByCuentaOrigen(this.cuentaRepository.buscarPorCliente(id).get(0));
         List<CuentaBancoEntity> cuentas =
                 this.cuentaRepository.buscarSinMi(transaccion.getCuentaBancoByCuentaOrigen().getId());
 
@@ -346,8 +346,8 @@ public class EmpresaController {
     }
 
     @PostMapping("{id}/persona/{personaId}/transferencia/realizar")
-    public String doRealizarTransferenciaEmpresa(@PathVariable("id") String id,
-                                                 @PathVariable("personaId") String personaId, @ModelAttribute(
+    public String doRealizarTransferenciaEmpresa(@PathVariable("id") Integer id,
+                                                 @PathVariable("personaId") Integer personaId, @ModelAttribute(
             "transaccion") TransaccionEntity transaccion) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         transaccion.setFechaEjecucion(timestamp);
@@ -363,7 +363,7 @@ public class EmpresaController {
 
             origen.setSaldo(origen.getSaldo() - transaccion.getCantidad());
             destino.setSaldo(destino.getSaldo() + transaccion.getCantidad());
-            operacion.setPersonaByPersonaId(this.personaRepository.findById(Integer.parseInt(personaId)).orElse(null));
+            operacion.setPersonaByPersonaId(this.personaRepository.findById(personaId).orElse(null));
             operacion.setTransaccionByTransaccionId(transaccion);
 
             this.transaccionRepository.save(transaccion);
@@ -372,12 +372,12 @@ public class EmpresaController {
             this.operacionRepository.save(operacion);
         }
 
-        return "redirect:/empresa/".concat(id).concat("/persona");
+        return "redirect:/empresa/".concat(String.valueOf(id)).concat("/persona");
     }
 
     @GetMapping("{id}/cuentas")
-    public String doCuentas(@PathVariable("id") String id, Model model) {
-        List<CuentaBancoEntity> cuentas = this.cuentaRepository.buscarPorCliente(Integer.parseInt(id));
+    public String doCuentas(@PathVariable("id") Integer id, Model model) {
+        List<CuentaBancoEntity> cuentas = this.cuentaRepository.buscarPorCliente(id);
 
         model.addAttribute("cuentas", cuentas);
 
@@ -385,10 +385,10 @@ public class EmpresaController {
     }
 
     @GetMapping("{id}/cuenta/{cuentaId}/permiso/{seleccionadoId}")
-    public String doPermisoCuentas(@PathVariable("id") String id, @PathVariable("cuentaId") String cuentaId,
-                                   @PathVariable("seleccionadoId") String seleccionadoId,
+    public String doPermisoCuentas(@PathVariable("id") Integer id, @PathVariable("cuentaId") Integer cuentaId,
+                                   @PathVariable("seleccionadoId") Integer seleccionadoId,
                                    @ModelAttribute("filtro") FiltroEmpresaPersona filtro, Model model) {
-        CuentaBancoEntity cuentaBanco = this.cuentaRepository.findById(Integer.parseInt(seleccionadoId)).orElse(null);
+        CuentaBancoEntity cuentaBanco = this.cuentaRepository.findById(seleccionadoId).orElse(null);
 
         if (cuentaBanco.getEstadoCuentaByEstadoCuentaId().getTipo().equals("Activa")) {
             cuentaBanco.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(4).orElse(null));
@@ -401,7 +401,7 @@ public class EmpresaController {
         model.addAttribute("empresaId", id);
         model.addAttribute("cuentaId", cuentaId);
 
-        return "redirect:/empresa/".concat(id).concat("/cuentas");
+        return "redirect:/empresa/".concat(String.valueOf(id)).concat("/cuentas");
     }
 
     private String procesarFiltradoOperaciones(Integer empresaId, FiltroOperacionesEmpresa filtro, Model model) {
@@ -439,7 +439,7 @@ public class EmpresaController {
 
         model.addAttribute("operaciones", operaciones);
         model.addAttribute("filtro", filtro);
-        model.addAttribute("cuentas", this.operacionRepository.listarTodasCuentasTransaccion(cuentas));
+        model.addAttribute("cuentas", this.cuentaRepository.listarTodasCuentasTransaccion(cuentas));
         model.addAttribute("empresas", empresas);
         model.addAttribute("personas", personas);
 
@@ -458,8 +458,8 @@ public class EmpresaController {
     }
 
     @GetMapping("{id}/cuenta/cambioDivisa")
-    public String doCambioDivisa(@PathVariable("id") String id, Model model) {
-        CuentaBancoEntity cuenta = this.cuentaRepository.buscarPorCliente(Integer.parseInt(id)).get(0);
+    public String doCambioDivisa(@PathVariable("id") Integer id, Model model) {
+        CuentaBancoEntity cuenta = this.cuentaRepository.buscarPorCliente(id).get(0);
         List<DivisaEntity> divisas = this.divisaRepository.buscarSinMi(cuenta.getDivisaByDivisaId().getId());
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         List<String> cambios =
@@ -474,16 +474,16 @@ public class EmpresaController {
     }
 
     @PostMapping("{id}/cuenta/{cuentaId}/cambioDivisa/realizar")
-    public String doCambioDivisaRealizar(@PathVariable("id") String id, @PathVariable("cuentaId") String cuentaId,
+    public String doCambioDivisaRealizar(@PathVariable("id") Integer id, @PathVariable("cuentaId") Integer cuentaId,
                                          @ModelAttribute("divisaSelect") Integer divisaId) {
         DivisaEntity divisa = this.divisaRepository.findById(divisaId).orElse(null);
-        CuentaBancoEntity cuenta = this.cuentaRepository.findById(Integer.parseInt(cuentaId)).orElse(null);
+        CuentaBancoEntity cuenta = this.cuentaRepository.findById(cuentaId).orElse(null);
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
         cuenta.setSaldo(Double.parseDouble(decimalFormat.format((cuenta.getDivisaByDivisaId().getEquivalencia() * cuenta.getSaldo()) / divisa.getEquivalencia()).replace(",", ".")));
         cuenta.setDivisaByDivisaId(divisa);
         this.cuentaRepository.save(cuenta);
 
-        return "redirect:/empresa/".concat(id).concat("/persona");
+        return "redirect:/empresa/".concat(String.valueOf(id)).concat("/persona");
     }
 }
