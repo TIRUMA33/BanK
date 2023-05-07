@@ -58,7 +58,9 @@ public class IniciarSesionController {
                 urlTo = "redirect:/empresa/" + usuario.getId();
             } else if (usuario.getTipoUsuarioByTipoUsuario().getId().equals(2)) {
                 urlTo = "redirect:/empresa/" + Objects.requireNonNull(this.empresaRepository.findByCif(usuario.getNif()).orElse(null)).getId() + "/persona";
-            } else {
+            } else if(usuario.getTipoUsuarioByTipoUsuario().getId().equals(3)) {
+                urlTo = "redirect:/asistencia/conversaciones";
+            }else{
                 urlTo = "redirect:/persona/";
             }
         }

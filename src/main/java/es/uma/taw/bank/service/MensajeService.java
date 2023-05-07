@@ -1,11 +1,10 @@
 package es.uma.taw.bank.service;
-
+//Autor Pablo Robles Mansilla
 import es.uma.taw.bank.dao.ConversacionRepository;
 import es.uma.taw.bank.dao.MensajeRepository;
 import es.uma.taw.bank.dao.UsuarioRepository;
 import es.uma.taw.bank.dto.ConversacionDTO;
 import es.uma.taw.bank.dto.MensajeDTO;
-import es.uma.taw.bank.dto.UsuarioDTO;
 import es.uma.taw.bank.entity.ConversacionEntity;
 import es.uma.taw.bank.entity.MensajeEntity;
 import es.uma.taw.bank.entity.UsuarioEntity;

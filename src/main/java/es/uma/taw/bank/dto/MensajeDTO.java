@@ -1,5 +1,5 @@
 package es.uma.taw.bank.dto;
-//Autor Óscar Fernández
+//Autores Óscar Fernández 40% Pablo Robles Mansilla 60%
 import lombok.Getter;
 import lombok.Setter;
 
