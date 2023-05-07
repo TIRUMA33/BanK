@@ -210,7 +210,7 @@ public class RegistroController {
     }
 
     @GetMapping("/empresa/{id}/persona")
-    public String doRegistroEmpresaPersona(@PathVariable("id") String id, Model model) {
+    public String doRegistroEmpresaPersona(@PathVariable("id") Integer id, Model model) {
         RegistroEmpresaPersona registroEmpresaPersona = new RegistroEmpresaPersona();
         List<TipoPersonaRelacionadaEntity> tipoPersonaRelacionada = this.tipoPersonaRelacionadaRepository.findAll();
         List<Object[]> personas = this.personaRepository.personasPorEmpresa(id);
@@ -222,7 +222,7 @@ public class RegistroController {
     }
 
     @PostMapping("/empresa/{id}/persona/anadir")
-    public String doRegistrarEmpresaPersona(@PathVariable("id") String id,
+    public String doRegistrarEmpresaPersona(@PathVariable("id") Integer id,
                                             @ModelAttribute("empresaPersona") RegistroEmpresaPersona registroEmpresaPersona) {
         String urlTo = "redirect:/registro/empresa/" + id + "/persona";
         ClienteEntity cliente = registroEmpresaPersona.getCliente();
@@ -231,7 +231,7 @@ public class RegistroController {
         UsuarioEntity usuario = registroEmpresaPersona.getUsuario();
         EmpresaPersonaEntity empresaPersona = registroEmpresaPersona.getEmpresaPersona();
         EmpresaClienteEntity empresaCliente = registroEmpresaPersona.getEmpresaCliente();
-        EmpresaEntity empresa = this.empresaRepository.findById(Integer.parseInt(id)).orElse(null);
+        EmpresaEntity empresa = this.empresaRepository.findById(id).orElse(null);
 
         if (registroEmpresaPersona.getRcontrasena().equals(usuario.getContrasena())) {
             guardadoComun(cliente, direccion, registroEmpresaPersona.getValida());
@@ -261,7 +261,7 @@ public class RegistroController {
 
     @Transactional
     @PostMapping("/empresa/{id}/persona/borrar")
-    public String doBorrarEmpresaPersona(@PathVariable("id") String id, HttpServletRequest request) {
+    public String doBorrarEmpresaPersona(@PathVariable("id") Integer id, HttpServletRequest request) {
         for (String idPersona : request.getParameterValues("personaId")) {
             int personaId = Integer.parseInt(idPersona);
             this.empresaPersonaRepository.deleteByPersonaByIdPersona_Id(personaId);
@@ -271,6 +271,6 @@ public class RegistroController {
             this.clienteRepository.deleteById(personaId);
         }
 
-        return "redirect:/registro/empresa/".concat(id).concat("/persona");
+        return "redirect:/registro/empresa/".concat(String.valueOf(id)).concat("/persona");
     }
 }
