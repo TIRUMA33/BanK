@@ -4,11 +4,7 @@ import es.uma.taw.bank.dao.PersonaRepository;
 import es.uma.taw.bank.dto.PersonaDTO;
 import es.uma.taw.bank.entity.PersonaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class PersonaService {
@@ -17,11 +13,6 @@ public class PersonaService {
 
     public PersonaDTO buscarPersona(Integer id){
         PersonaEntity persona = personaRepository.findById(id).orElse(null);
-        if(persona!=null)return persona.toDTO();
-        else return null;
-    }
-    public PersonaDTO buscarPersonaPorDni(String dni){
-        PersonaEntity persona = personaRepository.findByDni(dni).orElse(null);
         if(persona!=null)return persona.toDTO();
         else return null;
     }
@@ -38,6 +29,4 @@ public class PersonaService {
 
         this.personaRepository.save(persona);
     }
-
-
 }
