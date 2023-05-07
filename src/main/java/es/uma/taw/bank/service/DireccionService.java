@@ -34,4 +34,19 @@ public class DireccionService {
     public DireccionDTO buscarPorCliente(Integer id) {
         return Objects.requireNonNull(this.direccionRepository.findByClienteByClienteId_Id(id).orElse(null)).toDTO();
     }
+
+    public void guardarDireccion(DireccionDTO dto, boolean valida) {
+        DireccionEntity direccion = new DireccionEntity();
+
+        direccion.setCalle(dto.getCalle());
+        direccion.setNumero(dto.getNumero());
+        direccion.setPlantaPuertaOficina(dto.getPlantaPuertaOficina());
+        direccion.setCiudad(dto.getCiudad());
+        direccion.setRegion(dto.getRegion());
+        direccion.setCodigoPostal(dto.getCodigoPostal());
+        direccion.setPais(dto.getPais());
+        direccion.setValida((byte) (valida ? 1 : 0));
+
+        this.direccionRepository.save(direccion);
+    }
 }

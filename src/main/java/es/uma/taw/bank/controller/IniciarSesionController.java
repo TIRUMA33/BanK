@@ -17,12 +17,11 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/iniciarSesion")
 public class IniciarSesionController {
-    @Autowired
+
     private EmpresaService empresaService;
-    @Autowired
+
     private UsuarioService usuarioService;
 
-/*
     @Autowired
     public void setEmpresaService(EmpresaService empresaService) {
         this.empresaService = empresaService;
@@ -32,7 +31,6 @@ public class IniciarSesionController {
     public void setUsuarioService(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
-*/
 
     @GetMapping("/")
     public String doIniciarSesion() {
@@ -50,13 +48,13 @@ public class IniciarSesionController {
             urlTo = "iniciarSesion";
         } else {
             session.setAttribute("usuario", usuario);
-            if (usuario.getTipoUsuarioByTipoUsuario().getId().equals(3)){
+            if (usuario.getTipoUsuario().equals(3)) {
                 urlTo = "redirect:/asistencia/conversaciones";
-            }/*else if (this.empresaService.buscarEmpresa(usuario.getId())!=null) { //he puesto un null en vez de ispresent porque no funcionaba
+            } else if (this.empresaService.buscarEmpresa(usuario.getId()) != null) {
                 urlTo = "redirect:/empresa/" + usuario.getId();
-            } else if (usuario.getTipoUsuarioByTipoUsuario().getId().equals(2)) {
+            } else if (usuario.getTipoUsuario().equals(2)) {
                 urlTo = "redirect:/empresa/" + Objects.requireNonNull(this.empresaService.buscarEmpresaPorCif(usuario.getNif())).getId() + "/persona";
-            }*/ else {
+            } else {
                 urlTo = "redirect:/persona/";
             }
         }

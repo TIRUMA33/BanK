@@ -1,7 +1,7 @@
 package es.uma.taw.bank.controller;
 
-import es.uma.taw.bank.dao.*;
-import es.uma.taw.bank.entity.*;
+import es.uma.taw.bank.dto.*;
+import es.uma.taw.bank.service.*;
 import es.uma.taw.bank.ui.FiltroEmpresaPersona;
 import es.uma.taw.bank.ui.FiltroOperacionesEmpresa;
 import es.uma.taw.bank.ui.RegistroEmpresa;
@@ -21,120 +21,106 @@ import java.util.stream.Collectors;
 @RequestMapping("/empresa")
 public class EmpresaController {
 
-    private CuentaRepository cuentaRepository;
+    private CuentaService cuentaService;
 
-    private DireccionRepository direccionRepository;
+    private DireccionService direccionService;
 
-    private DivisaRepository divisaRepository;
+    private DivisaService divisaService;
 
-    private EmpresaClienteRepository empresaClienteRepository;
+    private EmpresaClienteService empresaClienteService;
 
-    private EmpresaPersonaRepository empresaPersonaRepository;
+    private EmpresaPersonaService empresaPersonaService;
 
-    private EmpresaRepository empresaRepository;
+    private EmpresaService empresaService;
 
-    private EstadoCuentaRepository estadoCuentaRepository;
+    private OperacionService operacionService;
 
-    private OperacionRepository operacionRepository;
+    private PersonaService personaService;
 
-    private PersonaRepository personaRepository;
+    private TipoPersonaRelacionadaService tipoPersonaRelacionadaService;
 
-    private TipoClienteRelacionadoRepository tipoClienteRelacionadoRepository;
+    private TransaccionService transaccionService;
 
-    private TipoPersonaRelacionadaRepository tipoPersonaRelacionadaRepository;
-
-    private TransaccionRepository transaccionRepository;
-
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     @Autowired
-    public void setCuentaRepository(CuentaRepository cuentaRepository) {
-        this.cuentaRepository = cuentaRepository;
+    public void setCuentaService(CuentaService cuentaService) {
+        this.cuentaService = cuentaService;
     }
 
     @Autowired
-    public void setDireccionRepository(DireccionRepository direccionRepository) {
-        this.direccionRepository = direccionRepository;
+    public void setDireccionService(DireccionService direccionService) {
+        this.direccionService = direccionService;
     }
 
     @Autowired
-    public void setDivisaRepository(DivisaRepository divisaRepository) {
-        this.divisaRepository = divisaRepository;
+    public void setDivisaService(DivisaService divisaService) {
+        this.divisaService = divisaService;
     }
 
     @Autowired
-    public void setEmpresaClienteRepository(EmpresaClienteRepository empresaClienteRepository) {
-        this.empresaClienteRepository = empresaClienteRepository;
+    public void setEmpresaClienteService(EmpresaClienteService empresaClienteService) {
+        this.empresaClienteService = empresaClienteService;
     }
 
     @Autowired
-    public void setEmpresaPersonaRepository(EmpresaPersonaRepository empresaPersonaRepository) {
-        this.empresaPersonaRepository = empresaPersonaRepository;
+    public void setEmpresaPersonaService(EmpresaPersonaService empresaPersonaService) {
+        this.empresaPersonaService = empresaPersonaService;
     }
 
     @Autowired
-    public void setEmpresaRepository(EmpresaRepository empresaRepository) {
-        this.empresaRepository = empresaRepository;
+    public void setEmpresaService(EmpresaService empresaService) {
+        this.empresaService = empresaService;
     }
 
     @Autowired
-    public void setEstadoCuentaRepository(EstadoCuentaRepository estadoCuentaRepository) {
-        this.estadoCuentaRepository = estadoCuentaRepository;
+    public void setOperacionService(OperacionService operacionService) {
+        this.operacionService = operacionService;
     }
 
     @Autowired
-    public void setOperacionRepository(OperacionRepository operacionRepository) {
-        this.operacionRepository = operacionRepository;
+    public void setPersonaService(PersonaService personaService) {
+        this.personaService = personaService;
     }
 
     @Autowired
-    public void setPersonaRepository(PersonaRepository personaRepository) {
-        this.personaRepository = personaRepository;
+    public void setTipoPersonaRelacionadaService(TipoPersonaRelacionadaService tipoPersonaRelacionadaService) {
+        this.tipoPersonaRelacionadaService = tipoPersonaRelacionadaService;
     }
 
     @Autowired
-    public void setTipoClienteRelacionadoRepository(TipoClienteRelacionadoRepository tipoClienteRelacionadoRepository) {
-        this.tipoClienteRelacionadoRepository = tipoClienteRelacionadoRepository;
+    public void setTransaccionService(TransaccionService transaccionService) {
+        this.transaccionService = transaccionService;
     }
 
     @Autowired
-    public void setTipoPersonaRelacionadaRepository(TipoPersonaRelacionadaRepository tipoPersonaRelacionadaRepository) {
-        this.tipoPersonaRelacionadaRepository = tipoPersonaRelacionadaRepository;
-    }
-
-    @Autowired
-    public void setTransaccionRepository(TransaccionRepository transaccionRepository) {
-        this.transaccionRepository = transaccionRepository;
-    }
-
-    @Autowired
-    public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    public void setUsuarioService(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
     }
 
     @GetMapping("/{id}")
-    public String doEmpresa(@PathVariable("id") String id, Model model, HttpSession session) {
+    public String doEmpresa(@PathVariable("id") Integer id, Model model, HttpSession session) {
         String urlTo = "inicioEmpresa";
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
 
         if (usuario == null) {
             urlTo = "iniciarSesion";
         } else {
-            model.addAttribute("empresa", this.empresaRepository.findById(Integer.parseInt(id)).orElse(null));
+            model.addAttribute("empresa", this.empresaService.buscarEmpresa(id));
         }
 
         return urlTo;
     }
 
     @GetMapping("/{id}/persona")
-    public String doEmpresaPersona(@PathVariable("id") String id, Model model, HttpSession session) {
+    public String doEmpresaPersona(@PathVariable("id") Integer id, Model model, HttpSession session) {
         String urlTo = "inicioEmpresaPersona";
-        UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
 
         if (usuario == null) {
             urlTo = "iniciarSesion";
         } else {
-            model.addAttribute("empresa", this.empresaRepository.findById(Integer.parseInt(id)).orElse(null));
+            model.addAttribute("empresa", this.empresaService.buscarEmpresa(id));
         }
 
         return urlTo;
@@ -143,152 +129,85 @@ public class EmpresaController {
     private RegistroEmpresa recuperarInfoEmpresa(int id) {
         RegistroEmpresa registroEmpresa = new RegistroEmpresa();
 
-        registroEmpresa.setDireccion(this.direccionRepository.findByClienteByClienteId_Id(id).orElse(null));
-        registroEmpresa.setUsuario(this.usuarioRepository.findById(id).orElse(null));
+        registroEmpresa.setDireccion(this.direccionService.buscarPorCliente(id));
+        registroEmpresa.setUsuario(this.usuarioService.buscarUsuario(id));
         registroEmpresa.setValida(registroEmpresa.getDireccion().getValida() != 0);
-        registroEmpresa.setEmpresa(this.empresaRepository.findById(id).orElse(null));
+        registroEmpresa.setEmpresa(this.empresaService.buscarEmpresa(id));
 
         return registroEmpresa;
     }
 
     @GetMapping("/{id}/editar")
-    public String doEditarEmpresa(@PathVariable("id") String id, Model model) {
-        model.addAttribute("registroEmpresa", recuperarInfoEmpresa(Integer.parseInt(id)));
+    public String doEditarEmpresa(@PathVariable("id") Integer id, Model model) {
+        model.addAttribute("registroEmpresa", recuperarInfoEmpresa(id));
         return "editarEmpresa";
     }
 
     @PostMapping("/{id}/guardar")
-    public String doGuardarEmpresa(@PathVariable("id") String id,
+    public String doGuardarEmpresa(@PathVariable("id") Integer id,
                                    @ModelAttribute("registroEmpresa") RegistroEmpresa edicionEmpresa) {
-        RegistroEmpresa registroEmpresa = recuperarInfoEmpresa(Integer.parseInt(id));
-        EmpresaEntity empresa = registroEmpresa.getEmpresa();
-        EmpresaEntity empresaForm = edicionEmpresa.getEmpresa();
-        DireccionEntity direccion = registroEmpresa.getDireccion();
-        DireccionEntity direccionForm = edicionEmpresa.getDireccion();
-        UsuarioEntity usuario = registroEmpresa.getUsuario();
-        UsuarioEntity usuarioForm = edicionEmpresa.getUsuario();
+        RegistroEmpresa registroEmpresa = recuperarInfoEmpresa(id);
 
-        empresa.setCif(empresaForm.getCif());
-        empresa.setNombre(empresaForm.getNombre());
-        this.empresaRepository.save(empresa);
+        this.empresaService.guardarEmpresa(edicionEmpresa.getEmpresa());
+        this.direccionService.guardarDireccion(edicionEmpresa.getDireccion(), edicionEmpresa.getValida());
+        this.usuarioService.guardarUsuario(edicionEmpresa.getUsuario(), edicionEmpresa.getEmpresa().getCif(),
+                registroEmpresa.getRcontrasena());
 
-        direccion.setCalle(direccionForm.getCalle());
-        direccion.setNumero(direccionForm.getNumero());
-        direccion.setPlantaPuertaOficina(direccionForm.getPlantaPuertaOficina());
-        direccion.setCiudad(direccionForm.getCiudad());
-        direccion.setRegion(direccionForm.getRegion());
-        direccion.setCodigoPostal(direccionForm.getCodigoPostal());
-        direccion.setPais(direccionForm.getPais());
-        direccion.setValida((byte) (edicionEmpresa.getValida() ? 1 : 0));
-        this.direccionRepository.save(direccion);
-
-        usuario.setNif(empresaForm.getCif());
-        if (!(usuarioForm.getContrasena().isBlank() || registroEmpresa.getRcontrasena().isBlank())) {
-            if (usuarioForm.getContrasena().equals(registroEmpresa.getRcontrasena())) {
-                usuario.setContrasena(usuarioForm.getContrasena());
-            }
-        }
-        this.usuarioRepository.save(usuario);
-
-        return "redirect:/empresa/".concat(id).concat("/persona");
+        return "redirect:/empresa/".concat(String.valueOf(id)).concat("/persona");
     }
 
     private RegistroEmpresaPersona recuperarInfoEmpresaPersona(int id) {
         RegistroEmpresaPersona registroEmpresaPersona = new RegistroEmpresaPersona();
 
-        registroEmpresaPersona.setDireccion(this.direccionRepository.findByClienteByClienteId_Id(id).orElse(null));
-        registroEmpresaPersona.setEmpresaPersona(this.empresaPersonaRepository.findByPersonaByIdPersona_Id(id).orElse(null));
-        registroEmpresaPersona.setPersona(this.personaRepository.findById(id).orElse(null));
-        registroEmpresaPersona.setUsuario(this.usuarioRepository.findById(id).orElse(null));
+        registroEmpresaPersona.setDireccion(this.direccionService.buscarPorCliente(id));
+        registroEmpresaPersona.setEmpresaPersona(this.empresaPersonaService.buscarPorPersona(id));
+        registroEmpresaPersona.setPersona(this.personaService.buscarPersona(id));
+        registroEmpresaPersona.setUsuario(this.usuarioService.buscarUsuario(id));
         registroEmpresaPersona.setValida(registroEmpresaPersona.getDireccion().getValida() != 0);
 
         return registroEmpresaPersona;
     }
 
     @GetMapping("/{id}/persona/{personaId}/editar")
-    public String doEditarEmpresaPersona(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
+    public String doEditarEmpresaPersona(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
                                          Model model) {
-        List<TipoPersonaRelacionadaEntity> tipoPersonaRelacionada = this.tipoPersonaRelacionadaRepository.findAll();
+        List<TipoPersonaRelacionadaDTO> tipoPersonaRelacionada =
+                this.tipoPersonaRelacionadaService.listarTipoPersonasRelacionada();
 
-        model.addAttribute("registroEmpresaPersona", recuperarInfoEmpresaPersona(Integer.parseInt(personaId)));
+        model.addAttribute("registroEmpresaPersona", recuperarInfoEmpresaPersona(personaId));
         model.addAttribute("tipoPersonasRelacionadas", tipoPersonaRelacionada);
 
         return "editarEmpresaPersona";
     }
 
     @PostMapping("/{id}/persona/{personaId}/guardar")
-    public String doGuardarEmpresaPersona(@PathVariable("id") String id, @PathVariable String personaId,
+    public String doGuardarEmpresaPersona(@PathVariable("id") Integer id, @PathVariable Integer personaId,
                                           @ModelAttribute("registroEmpresaPersona") RegistroEmpresaPersona edicionEmpresaPersona) {
-        RegistroEmpresaPersona registroEmpresaPersona = recuperarInfoEmpresaPersona(Integer.parseInt(personaId));
-        DireccionEntity direccion = registroEmpresaPersona.getDireccion();
-        DireccionEntity direccionForm = edicionEmpresaPersona.getDireccion();
-        EmpresaPersonaEntity empresaPersona = registroEmpresaPersona.getEmpresaPersona();
-        EmpresaPersonaEntity empresaPersonaForm = edicionEmpresaPersona.getEmpresaPersona();
-        PersonaEntity persona = registroEmpresaPersona.getPersona();
-        PersonaEntity personaForm = edicionEmpresaPersona.getPersona();
-        UsuarioEntity usuario = registroEmpresaPersona.getUsuario();
-        UsuarioEntity usuarioForm = edicionEmpresaPersona.getUsuario();
+        RegistroEmpresaPersona registroEmpresaPersona = recuperarInfoEmpresaPersona(personaId);
 
-        direccion.setCalle(direccionForm.getCalle());
-        direccion.setNumero(direccionForm.getNumero());
-        direccion.setPlantaPuertaOficina(direccionForm.getPlantaPuertaOficina());
-        direccion.setCiudad(direccionForm.getCiudad());
-        direccion.setRegion(direccionForm.getRegion());
-        direccion.setCodigoPostal(direccionForm.getCodigoPostal());
-        direccion.setPais(direccionForm.getPais());
-        direccion.setValida((byte) (edicionEmpresaPersona.getValida() ? 1 : 0));
-        this.direccionRepository.save(direccion);
+        this.direccionService.guardarDireccion(edicionEmpresaPersona.getDireccion(), edicionEmpresaPersona.getValida());
+        this.empresaPersonaService.guardarEmpresaPersona(registroEmpresaPersona.getEmpresaPersona());
+        this.personaService.guardarPersona(edicionEmpresaPersona.getPersona());
+        this.usuarioService.guardarUsuario(edicionEmpresaPersona.getUsuario(),
+                registroEmpresaPersona.getEmpresaPersona().getEmpresaCif(),
+                registroEmpresaPersona.getRcontrasena());
 
-        empresaPersona.setTipoPersonaRelacionadaByIdTipo(empresaPersonaForm.getTipoPersonaRelacionadaByIdTipo());
-        this.empresaPersonaRepository.save(empresaPersona);
-
-        persona.setDni(personaForm.getDni());
-        persona.setNombre(personaForm.getNombre());
-        persona.setApellido1(personaForm.getApellido1());
-        persona.setApellido2(personaForm.getApellido2());
-        persona.setFechaNacimiento(personaForm.getFechaNacimiento());
-        this.personaRepository.save(persona);
-
-        usuario.setNif(registroEmpresaPersona.getEmpresaPersona().getEmpresaByIdEmpresa().getCif());
-        if (!(usuarioForm.getContrasena().isBlank() || registroEmpresaPersona.getRcontrasena().isBlank())) {
-            if (usuarioForm.getContrasena().equals(registroEmpresaPersona.getRcontrasena())) {
-                usuario.setContrasena(usuarioForm.getContrasena());
-            }
-        }
-        this.usuarioRepository.save(usuario);
-
-        return "redirect:/empresa/".concat(id).concat("/persona");
+        return "redirect:/empresa/".concat(String.valueOf(id)).concat("/persona");
     }
 
-    private String procesarFiltrado(String empresaId, String personaId, FiltroEmpresaPersona filtro, Model model) {
+    private String procesarFiltrado(Integer empresaId, Integer personaId, FiltroEmpresaPersona filtro, Model model) {
         List<Object[]> personas;
         String urlTo = "listadoEmpresaPersonas";
 
         if (filtro == null) {
-            personas = this.personaRepository.distintasPersonasPorEmpresa(empresaId, personaId);
+            personas = this.personaService.buscarPersonasDistintasPorEmpresa(empresaId, personaId);
             filtro = new FiltroEmpresaPersona();
-        } else if (!filtro.getFechaNacimiento() && filtro.getTipo().isBlank()) {
-            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTexto(empresaId, personaId,
-                    filtro.getTexto());
-        } else if (filtro.getTexto().isBlank() && filtro.getTipo().isBlank()) {
-            personas = this.personaRepository.filtrarPersonasPorEmpresaPorFechaNacimiento(empresaId, personaId);
-        } else if (filtro.getTexto().isBlank() && !filtro.getFechaNacimiento()) {
-            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTipo(empresaId, personaId, filtro.getTipo());
-        } else if (filtro.getTipo().isBlank()) {
-            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTextoFechaNacimiento(empresaId,
-                    personaId, filtro.getTexto());
-        } else if (!filtro.getFechaNacimiento()) {
-            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTextoTipo(empresaId, personaId,
-                    filtro.getTexto(), filtro.getTipo());
-        } else if (filtro.getTexto().isBlank()) {
-            personas = this.personaRepository.filtrarPersonasPorEmpresaPorFechaNacimientoTipo(empresaId, personaId,
-                    filtro.getTipo());
         } else {
-            personas = this.personaRepository.filtrarPersonasPorEmpresaPorTextoFechaNacimientoTipo(empresaId,
-                    personaId, filtro.getTexto(), filtro.getTipo());
+            personas = this.personaService.filtrar(empresaId, personaId, filtro);
         }
 
-        List<TipoPersonaRelacionadaEntity> tipoPersonaRelacionada = this.tipoPersonaRelacionadaRepository.findAll();
+        List<TipoPersonaRelacionadaDTO> tipoPersonaRelacionada =
+                this.tipoPersonaRelacionadaService.listarTipoPersonasRelacionada();
 
         model.addAttribute("personas", personas);
         model.addAttribute("filtro", filtro);
@@ -298,30 +217,24 @@ public class EmpresaController {
     }
 
     @GetMapping("{id}/persona/{personaId}/listar")
-    public String doListarEmpresaPersonas(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
+    public String doListarEmpresaPersonas(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
                                           Model model) {
         return this.procesarFiltrado(id, personaId, null, model);
     }
 
     @PostMapping("{id}/persona/{personaId}/filtrar")
-    public String doFiltrarEmpresaPersona(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
+    public String doFiltrarEmpresaPersona(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
                                           @ModelAttribute("filtro") FiltroEmpresaPersona filtro, Model model) {
         return this.procesarFiltrado(id, personaId, filtro, model);
     }
 
     @GetMapping("{id}/persona/{personaId}/permiso/{seleccionadoId}")
-    public String doPermisoEmpresaPersona(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
-                                          @PathVariable("seleccionadoId") String seleccionadoId, @ModelAttribute(
+    public String doPermisoEmpresaPersona(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
+                                          @PathVariable("seleccionadoId") Integer seleccionadoId, @ModelAttribute(
             "filtro") FiltroEmpresaPersona filtro, Model model) {
-        EmpresaClienteEntity empresaCliente = this.empresaClienteRepository.buscarTipoPorPersona(seleccionadoId);
+        EmpresaClienteDTO empresaCliente = this.empresaClienteService.buscarTipoPorPersona(seleccionadoId);
 
-        if (empresaCliente.getTipoClienteRelacionadoByIdTipo().getId() == 1) {
-            empresaCliente.setTipoClienteRelacionadoByIdTipo(this.tipoClienteRelacionadoRepository.findById(2).orElse(null));
-        } else {
-            empresaCliente.setTipoClienteRelacionadoByIdTipo(this.tipoClienteRelacionadoRepository.findById(1).orElse(null));
-        }
-
-        this.empresaClienteRepository.save(empresaCliente);
+        this.empresaClienteService.guardarEmpresaCliente(empresaCliente);
 
         model.addAttribute("empresaId", id);
         model.addAttribute("personaId", personaId);
@@ -330,12 +243,12 @@ public class EmpresaController {
     }
 
     @GetMapping("{id}/persona/{personaId}/transferencia")
-    public String doTransferenciaEmpresa(@PathVariable("id") String id, @PathVariable("personaId") String personaId,
+    public String doTransferenciaEmpresa(@PathVariable("id") Integer id, @PathVariable("personaId") Integer personaId,
                                          Model model) {
-        TransaccionEntity transaccion = new TransaccionEntity();
-        transaccion.setCuentaBancoByCuentaOrigen(this.cuentaRepository.buscarPorCliente(Integer.parseInt(id)).get(0));
-        List<CuentaBancoEntity> cuentas =
-                this.cuentaRepository.buscarSinMi(transaccion.getCuentaBancoByCuentaOrigen().getId());
+        TransaccionDTO transaccion = new TransaccionDTO();
+        transaccion.setCuentaOrigen(this.cuentaService.cuentasPorCliente(id).get(0).getId());
+        List<CuentaDTO> cuentas =
+                this.cuentaService.cuentasSinMi(transaccion.getCuentaOrigen());
 
         model.addAttribute("cuentas", cuentas);
         model.addAttribute("transaccion", transaccion);
@@ -346,38 +259,38 @@ public class EmpresaController {
     }
 
     @PostMapping("{id}/persona/{personaId}/transferencia/realizar")
-    public String doRealizarTransferenciaEmpresa(@PathVariable("id") String id,
-                                                 @PathVariable("personaId") String personaId, @ModelAttribute(
-            "transaccion") TransaccionEntity transaccion) {
+    public String doRealizarTransferenciaEmpresa(@PathVariable("id") Integer id,
+                                                 @PathVariable("personaId") Integer personaId, @ModelAttribute(
+            "transaccion") TransaccionDTO transaccion) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         transaccion.setFechaEjecucion(timestamp);
         transaccion.setFechaInstruccion(timestamp);
 
-        CuentaBancoEntity origen =
-                this.cuentaRepository.findById(transaccion.getCuentaBancoByCuentaOrigen().getId()).orElse(null);
-        CuentaBancoEntity destino =
-                this.cuentaRepository.findById(transaccion.getCuentaBancoByCuentaDestino().getId()).orElse(null);
+        CuentaDTO origen =
+                this.cuentaService.buscarCuenta(transaccion.getCuentaOrigen());
+        CuentaDTO destino =
+                this.cuentaService.buscarCuenta(transaccion.getCuentaDestino());
 
         if (origen != null && destino != null) {
-            OperacionEntity operacion = new OperacionEntity();
+            OperacionDTO operacion = new OperacionDTO();
 
             origen.setSaldo(origen.getSaldo() - transaccion.getCantidad());
             destino.setSaldo(destino.getSaldo() + transaccion.getCantidad());
-            operacion.setPersonaByPersonaId(this.personaRepository.findById(Integer.parseInt(personaId)).orElse(null));
-            operacion.setTransaccionByTransaccionId(transaccion);
+            operacion.setPersona(this.personaService.buscarPersona(personaId).getId());
+            operacion.setTransaccion(transaccion.getId());
 
-            this.transaccionRepository.save(transaccion);
-            this.cuentaRepository.save(origen);
-            this.cuentaRepository.save(destino);
-            this.operacionRepository.save(operacion);
+            this.transaccionService.guardarTransaccion(transaccion);
+            this.cuentaService.guardarCuenta(origen);
+            this.cuentaService.guardarCuenta(destino);
+            this.operacionService.guardarOperacion(operacion);
         }
 
-        return "redirect:/empresa/".concat(id).concat("/persona");
+        return "redirect:/empresa/".concat(String.valueOf(id)).concat("/persona");
     }
 
     @GetMapping("{id}/cuentas")
-    public String doCuentas(@PathVariable("id") String id, Model model) {
-        List<CuentaBancoEntity> cuentas = this.cuentaRepository.buscarPorCliente(Integer.parseInt(id));
+    public String doCuentas(@PathVariable("id") Integer id, Model model) {
+        List<CuentaDTO> cuentas = this.cuentaService.cuentasPorCliente(id);
 
         model.addAttribute("cuentas", cuentas);
 
@@ -385,52 +298,36 @@ public class EmpresaController {
     }
 
     @GetMapping("{id}/cuenta/{cuentaId}/permiso/{seleccionadoId}")
-    public String doPermisoCuentas(@PathVariable("id") String id, @PathVariable("cuentaId") String cuentaId,
-                                   @PathVariable("seleccionadoId") String seleccionadoId,
+    public String doPermisoCuentas(@PathVariable("id") Integer id, @PathVariable("cuentaId") Integer cuentaId,
+                                   @PathVariable("seleccionadoId") Integer seleccionadoId,
                                    @ModelAttribute("filtro") FiltroEmpresaPersona filtro, Model model) {
-        CuentaBancoEntity cuentaBanco = this.cuentaRepository.findById(Integer.parseInt(seleccionadoId)).orElse(null);
+        CuentaDTO cuentaBanco = this.cuentaService.buscarCuenta(seleccionadoId);
 
-        if (cuentaBanco.getEstadoCuentaByEstadoCuentaId().getTipo().equals("Activa")) {
-            cuentaBanco.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(4).orElse(null));
-        } else if (cuentaBanco.getEstadoCuentaByEstadoCuentaId().getTipo().equals("Bloqueada")) {
-            cuentaBanco.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(5).orElse(null));
+        if (cuentaBanco.getEstado().equals(1)) {
+            cuentaBanco.setEstado(4);
+        } else if (cuentaBanco.getEstado().equals(2)) {
+            cuentaBanco.setEstado(5);
         }
 
-        this.cuentaRepository.save(cuentaBanco);
+        this.cuentaService.guardarCuenta(cuentaBanco);
 
         model.addAttribute("empresaId", id);
         model.addAttribute("cuentaId", cuentaId);
 
-        return "redirect:/empresa/".concat(id).concat("/cuentas");
+        return "redirect:/empresa/".concat(String.valueOf(id)).concat("/cuentas");
     }
 
     private String procesarFiltradoOperaciones(Integer empresaId, FiltroOperacionesEmpresa filtro, Model model) {
-        List<CuentaBancoEntity> cuentas = this.cuentaRepository.buscarPorCliente(empresaId);
-        List<OperacionEntity> ops = null;
-        List<OperacionEntity> operaciones = this.operacionRepository.buscarPorCuentasYEmpresa(cuentas, empresaId);
-        List<EmpresaEntity> empresas = this.empresaRepository.findAll();
-        List<PersonaEntity> personas = this.personaRepository.findAll();
+        List<OperacionDTO> ops = null;
+        List<OperacionDTO> operaciones = this.operacionService.buscarOperacionesPorCuentasYEmpresa(empresaId);
+        List<EmpresaDTO> empresas = this.empresaService.listarEmpresas();
+        List<PersonaDTO> personas = this.personaService.listarPersonas();
         String urlTo = "listadoOperacionesEmpresa";
 
         if (filtro == null) {
             filtro = new FiltroOperacionesEmpresa();
-        } else if (!filtro.getCantidad() && !filtro.getFechaEjecucion()) {
-            ops =
-                    this.operacionRepository.buscarPorCuenta(filtro.getCuenta());
-        } else if (filtro.getCuenta().isBlank() && !filtro.getFechaEjecucion()) {
-            ops = this.operacionRepository.ordenarPorCantidad();
-        } else if (filtro.getCuenta().isBlank() && !filtro.getCantidad()) {
-            ops = this.operacionRepository.ordenarPorFechaEjecucion();
-        } else if (filtro.getCuenta().isBlank()) {
-            ops = this.operacionRepository.ordenarPorCantidadYFechaEjecucion();
-        } else if (!filtro.getCantidad()) {
-            ops = this.operacionRepository.buscarPorCuentaYOrdenarPorFechaEjecucion(filtro.getCuenta());
-        } else if (!filtro.getFechaEjecucion()) {
-            ops =
-                    this.operacionRepository.buscarPorCuentaYOrdenarPorCantidad(filtro.getCuenta());
         } else {
-            ops =
-                    this.operacionRepository.buscarPorCuentaYOrdenarPorCantidadYFechaEjecucion(filtro.getCuenta());
+            ops = this.operacionService.filtrar(filtro);
         }
 
         if (ops != null) {
@@ -439,7 +336,7 @@ public class EmpresaController {
 
         model.addAttribute("operaciones", operaciones);
         model.addAttribute("filtro", filtro);
-        model.addAttribute("cuentas", this.operacionRepository.listarTodasCuentasTransaccion(cuentas));
+        model.addAttribute("cuentas", this.cuentaService.listarTodasCuentasTransaccion(empresaId));
         model.addAttribute("empresas", empresas);
         model.addAttribute("personas", personas);
 
@@ -458,12 +355,12 @@ public class EmpresaController {
     }
 
     @GetMapping("{id}/cuenta/cambioDivisa")
-    public String doCambioDivisa(@PathVariable("id") String id, Model model) {
-        CuentaBancoEntity cuenta = this.cuentaRepository.buscarPorCliente(Integer.parseInt(id)).get(0);
-        List<DivisaEntity> divisas = this.divisaRepository.buscarSinMi(cuenta.getDivisaByDivisaId().getId());
+    public String doCambioDivisa(@PathVariable("id") Integer id, Model model) {
+        CuentaDTO cuenta = this.cuentaService.cuentasPorCliente(id).get(0);
+        List<DivisaDTO> divisas = this.divisaService.listarDivisasSinMi(cuenta.getDivisa());
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         List<String> cambios =
-                divisas.stream().map(d -> decimalFormat.format(cuenta.getSaldo() * cuenta.getDivisaByDivisaId().getEquivalencia() / d.getEquivalencia()) + " " + d.getNombre()).collect(Collectors.toList());
+                divisas.stream().map(d -> decimalFormat.format(cuenta.getSaldo() * cuenta.getDivisaEquivalencia() / d.getEquivalencia()) + " " + d.getNombre()).collect(Collectors.toList());
 
         model.addAttribute("cuenta", cuenta);
         model.addAttribute("divisas", divisas);
@@ -474,16 +371,16 @@ public class EmpresaController {
     }
 
     @PostMapping("{id}/cuenta/{cuentaId}/cambioDivisa/realizar")
-    public String doCambioDivisaRealizar(@PathVariable("id") String id, @PathVariable("cuentaId") String cuentaId,
+    public String doCambioDivisaRealizar(@PathVariable("id") Integer id, @PathVariable("cuentaId") Integer cuentaId,
                                          @ModelAttribute("divisaSelect") Integer divisaId) {
-        DivisaEntity divisa = this.divisaRepository.findById(divisaId).orElse(null);
-        CuentaBancoEntity cuenta = this.cuentaRepository.findById(Integer.parseInt(cuentaId)).orElse(null);
+        DivisaDTO divisa = this.divisaService.buscarDivisa(divisaId);
+        CuentaDTO cuenta = this.cuentaService.buscarCuenta(cuentaId);
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
-        cuenta.setSaldo(Double.parseDouble(decimalFormat.format((cuenta.getDivisaByDivisaId().getEquivalencia() * cuenta.getSaldo()) / divisa.getEquivalencia()).replace(",", ".")));
-        cuenta.setDivisaByDivisaId(divisa);
-        this.cuentaRepository.save(cuenta);
+        cuenta.setSaldo(Double.parseDouble(decimalFormat.format((cuenta.getDivisaEquivalencia() * cuenta.getSaldo()) / divisa.getEquivalencia()).replace(",", ".")));
+        cuenta.setDivisa(divisa.getId());
+        this.cuentaService.guardarCuenta(cuenta);
 
-        return "redirect:/empresa/".concat(id).concat("/persona");
+        return "redirect:/empresa/".concat(String.valueOf(id)).concat("/persona");
     }
 }

@@ -1,4 +1,5 @@
-  <%@ page import="es.uma.taw.bank.entity.UsuarioEntity" %><%--
+  <%@ page import="es.uma.taw.bank.dto.UsuarioDTO" %>
+  <%--
   Created by IntelliJ IDEA.
   User: oscfd
   Date: 24/04/2023
@@ -8,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <%
-    UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
+    UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
 %>
 
 <html>

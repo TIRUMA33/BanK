@@ -1,5 +1,7 @@
 package es.uma.taw.bank.entity;
 
+import es.uma.taw.bank.dto.DTO;
+import es.uma.taw.bank.dto.EstadoCuentaDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +12,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "ESTADO_CUENTA", schema = "taw", catalog = "")
-public class EstadoCuentaEntity {
+public class EstadoCuentaEntity implements DTO<EstadoCuentaDTO> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
@@ -39,5 +41,15 @@ public class EstadoCuentaEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (tipo != null ? tipo.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public EstadoCuentaDTO toDTO() {
+        EstadoCuentaDTO dto = new EstadoCuentaDTO();
+
+        dto.setId(this.id);
+        dto.setTipo(this.tipo);
+
+        return dto;
     }
 }

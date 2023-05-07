@@ -21,7 +21,7 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Integer>
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where p.id != " +
             ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" +
             ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id")
-    List<Object[]> distintasPersonasPorEmpresa(@Param("id") String id, @Param("personaId") String personaId);
+    List<Object[]> distintasPersonasPorEmpresa(@Param("id") Integer id, @Param("personaId") Integer personaId);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where (p.id != " +
@@ -29,22 +29,22 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Integer>
             ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and ((p.dni like CONCAT" +
             "('%', " + ":texto, '%')) or (p.nombre like CONCAT('%', :texto, '%')) or (p.apellido1 like CONCAT('%', " +
             ":texto, '%')) or (p.apellido2 like CONCAT('%', :texto, '%') or (d.pais like CONCAT('%', :texto, '%'))))")
-    List<Object[]> filtrarPersonasPorEmpresaPorTexto(@Param("id") String id, @Param("personaId") String personaId
+    List<Object[]> filtrarPersonasPorEmpresaPorTexto(@Param("id") Integer id, @Param("personaId") Integer personaId
             , @Param("texto") String texto);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where (p.id != " +
             ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" +
             ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) order by p.fechaNacimiento")
-    List<Object[]> filtrarPersonasPorEmpresaPorFechaNacimiento(@Param("id") String id,
-                                                               @Param("personaId") String personaId);
+    List<Object[]> filtrarPersonasPorEmpresaPorFechaNacimiento(@Param("id") Integer id,
+                                                               @Param("personaId") Integer personaId);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where (p.id != " +
             ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa" +
             ".id = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and (ep" +
             ".tipoPersonaRelacionadaByIdTipo.tipo = :tipo)")
-    List<Object[]> filtrarPersonasPorEmpresaPorTipo(@Param("id") String id, @Param("personaId") String personaId,
+    List<Object[]> filtrarPersonasPorEmpresaPorTipo(@Param("id") Integer id, @Param("personaId") Integer personaId,
                                                     @Param("tipo") String tipo);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
@@ -54,8 +54,8 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Integer>
             "('%', :texto, '%')) or (p.nombre like CONCAT('%', :texto, '%')) or (p.apellido1 like CONCAT('%', " +
             ":texto, '%')) or (p.apellido2 like CONCAT('%', :texto, '%')) or (d.pais like CONCAT('%', :texto, '%'))) " +
             "order by p.fechaNacimiento")
-    List<Object[]> filtrarPersonasPorEmpresaPorTextoFechaNacimiento(@Param("id") String id,
-                                                                    @Param("personaId") String personaId, @Param(
+    List<Object[]> filtrarPersonasPorEmpresaPorTextoFechaNacimiento(@Param("id") Integer id,
+                                                                    @Param("personaId") Integer personaId, @Param(
                                                                             "texto") String texto);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
@@ -64,8 +64,8 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Integer>
             " = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and ((p.dni like CONCAT('%', " +
             ":texto, '%')) or (p.nombre like CONCAT('%', :texto, '%')) or (d.pais like CONCAT('%', :texto, '%'))) and" +
             " (ep.tipoPersonaRelacionadaByIdTipo.tipo = :tipo)")
-    List<Object[]> filtrarPersonasPorEmpresaPorTextoTipo(@Param("id") String id,
-                                                             @Param("personaId") String personaId,
+    List<Object[]> filtrarPersonasPorEmpresaPorTextoTipo(@Param("id") Integer id,
+                                                             @Param("personaId") Integer personaId,
                                                              @Param("texto") String texto,
                                                              @Param("tipo") String tipo);
 
@@ -74,8 +74,8 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Integer>
             ":personaId and p.id = d.clienteByClienteId.id and p = ec.personaByIdPersona and ec.empresaByIdEmpresa.id" +
             " = :id and p = ep.personaByIdPersona and ep.empresaByIdEmpresa.id = :id) and (ep" +
             ".tipoPersonaRelacionadaByIdTipo.tipo = :tipo) order by p.fechaNacimiento")
-    List<Object[]> filtrarPersonasPorEmpresaPorFechaNacimientoTipo(@Param("id") String id,
-                                                                   @Param("personaId") String personaId, @Param("tipo") String tipo);
+    List<Object[]> filtrarPersonasPorEmpresaPorFechaNacimientoTipo(@Param("id") Integer id,
+                                                                   @Param("personaId") Integer personaId, @Param("tipo") String tipo);
 
     @Query("select p, d, ec.tipoClienteRelacionadoByIdTipo.tipo, ep.tipoPersonaRelacionadaByIdTipo.tipo from " +
             "PersonaEntity p, DireccionEntity d, EmpresaClienteEntity ec, EmpresaPersonaEntity ep where (p.id != " +
@@ -84,8 +84,8 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Integer>
             ":texto, '%')) or (p.nombre like CONCAT('%', :texto, '%')) or (p.apellido1 like CONCAT('%', :texto, '%'))" +
             " or (p.apellido2 like CONCAT('%', :texto, '%')) or (d.pais like CONCAT('%', :texto, '%'))) and (ep" +
             ".tipoPersonaRelacionadaByIdTipo.tipo = :tipo) order by p.fechaNacimiento")
-    List<Object[]> filtrarPersonasPorEmpresaPorTextoFechaNacimientoTipo(@Param("id") String id,
-                                                                        @Param("personaId") String personaId, @Param(
+    List<Object[]> filtrarPersonasPorEmpresaPorTextoFechaNacimientoTipo(@Param("id") Integer id,
+                                                                        @Param("personaId") Integer personaId, @Param(
                                                                                 "texto") String texto,
                                                                         @Param("tipo") String tipo);
 }

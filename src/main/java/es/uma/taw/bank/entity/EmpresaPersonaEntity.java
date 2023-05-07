@@ -1,5 +1,7 @@
 package es.uma.taw.bank.entity;
 
+import es.uma.taw.bank.dto.DTO;
+import es.uma.taw.bank.dto.EmpresaPersonaDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "EMPRESA_PERSONA", schema = "taw", catalog = "")
-public class EmpresaPersonaEntity {
+public class EmpresaPersonaEntity implements DTO<EmpresaPersonaDTO> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
@@ -38,5 +40,14 @@ public class EmpresaPersonaEntity {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public EmpresaPersonaDTO toDTO() {
+        EmpresaPersonaDTO dto = new EmpresaPersonaDTO();
+
+        dto.setId(this.id);
+
+        return dto;
     }
 }

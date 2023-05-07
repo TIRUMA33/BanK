@@ -1,6 +1,5 @@
 package es.uma.taw.bank.entity;
 
-import es.uma.taw.bank.dto.ClienteDTO;
 import es.uma.taw.bank.dto.DTO;
 import es.uma.taw.bank.dto.PersonaDTO;
 import jakarta.persistence.*;
@@ -49,7 +48,8 @@ public class PersonaEntity implements DTO<PersonaDTO> {
         if (nombre != null ? !nombre.equals(persona.nombre) : persona.nombre != null) return false;
         if (apellido1 != null ? !apellido1.equals(persona.apellido1) : persona.apellido1 != null) return false;
         if (apellido2 != null ? !apellido2.equals(persona.apellido2) : persona.apellido2 != null) return false;
-        if (fechaNacimiento != null ? !fechaNacimiento.equals(persona.fechaNacimiento) : persona.fechaNacimiento != null)
+        if (fechaNacimiento != null ? !fechaNacimiento.equals(persona.fechaNacimiento) :
+                persona.fechaNacimiento != null)
             return false;
         if (dni != null ? !dni.equals(persona.dni) : persona.dni != null) return false;
 
@@ -70,6 +70,7 @@ public class PersonaEntity implements DTO<PersonaDTO> {
     @Override
     public PersonaDTO toDTO() {
         PersonaDTO dto = new PersonaDTO();
+
         dto.setId(id);
         dto.setDni(dni);
         dto.setApellido1(apellido1);

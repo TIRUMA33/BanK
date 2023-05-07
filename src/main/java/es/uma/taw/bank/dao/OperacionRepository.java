@@ -15,10 +15,6 @@ public interface OperacionRepository extends JpaRepository<OperacionEntity, Inte
     List<OperacionEntity> buscarPorCuentasYEmpresa(@Param("cuentas") List<CuentaBancoEntity> cuentas,
                                                    @Param("id") Integer id);
 
-    @Query("select c from CuentaBancoEntity c, OperacionEntity o, TransaccionEntity t where o" +
-            ".transaccionByTransaccionId = t and c = t.cuentaBancoByCuentaDestino and c not in :cuentas")
-    List<CuentaBancoEntity> listarTodasCuentasTransaccion(@Param("cuentas") List<CuentaBancoEntity> cuentas);
-
     @Query("select o from OperacionEntity o, TransaccionEntity t where o.transaccionByTransaccionId = t and t" +
             ".cuentaBancoByCuentaDestino.ibanCuenta like concat('%', :iban, '%')")
     List<OperacionEntity> buscarPorCuenta(@Param("iban") String iban);

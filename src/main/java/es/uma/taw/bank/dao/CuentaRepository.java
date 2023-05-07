@@ -13,4 +13,8 @@ public interface CuentaRepository extends JpaRepository<CuentaBancoEntity, Integ
 
     @Query("select c from CuentaBancoEntity c where c.id!=:cuentaId")
     public List<CuentaBancoEntity> buscarSinMi(@Param("cuentaId") Integer cuentaId);
+
+    @Query("select c from CuentaBancoEntity c, OperacionEntity o, TransaccionEntity t where o" +
+            ".transaccionByTransaccionId = t and c = t.cuentaBancoByCuentaDestino and c not in :cuentas")
+    List<CuentaBancoEntity> listarTodasCuentasTransaccion(@Param("cuentas") List<CuentaBancoEntity> cuentas);
 }

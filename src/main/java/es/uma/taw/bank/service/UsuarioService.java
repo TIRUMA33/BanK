@@ -20,17 +20,32 @@ public class UsuarioService {
     public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
+
+    public UsuarioDTO buscarUsuario(Integer id) {
+        return Objects.requireNonNull(this.usuarioRepository.findById(id).orElse(null)).toDTO();
+    }
+
     public void guardarUsuario(UsuarioDTO dto){
         UsuarioEntity usuario;
         usuario = new UsuarioEntity();
         usuario.setNif(dto.getNif());
         usuario.setContrasena(dto.getContrasena());
         usuario.setId(dto.getId());
-        usuario.setTipoUsuarioByTipoUsuario(tipoUsuarioRepository.findById(dto.getTipoUsuarioByTipoUsuario().getId()).orElse(null));
+        usuario.setTipoUsuarioByTipoUsuario(tipoUsuarioRepository.findById(dto.getTipoUsuario()).orElse(null));
         this.usuarioRepository.save(usuario);
     }
-    public UsuarioDTO buscarUsuario(Integer id) {
-        return Objects.requireNonNull(this.usuarioRepository.findById(id).orElse(null)).toDTO();
+
+    public void guardarUsuario(UsuarioDTO dto, String nif, String rContrasena) {
+        UsuarioEntity usuario = new UsuarioEntity();
+
+        usuario.setNif(nif);
+        if (!(dto.getContrasena().isBlank() || rContrasena.isBlank())) {
+            if (dto.getContrasena().equals(rContrasena)) {
+                usuario.setContrasena(dto.getContrasena());
+            }
+        }
+
+        this.usuarioRepository.save(usuario);
     }
 
     public UsuarioDTO autenticar(String nif, String contrasena) {

@@ -61,6 +61,7 @@ public class UsuarioEntity implements DTO<UsuarioDTO> {
         dto.setId(this.id);
         dto.setNif(this.nif);
         dto.setContrasena(this.contrasena);
+        dto.setTipoUsuario(this.tipoUsuarioByTipoUsuario.getId());
 
         return dto;
     }

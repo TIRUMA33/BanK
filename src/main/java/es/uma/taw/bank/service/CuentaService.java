@@ -67,6 +67,13 @@ public class CuentaService {
         else return null;
     }
 
+    public List<CuentaDTO> listarTodasCuentasTransaccion(Integer empresaId) {
+        List<CuentaBancoEntity> cuentas = this.cuentaRepository.buscarPorCliente(empresaId);
+        List<CuentaBancoEntity> operaciones = this.cuentaRepository.listarTodasCuentasTransaccion(cuentas);
+
+        return this.listaEntidadesADTO(operaciones);
+    }
+
     protected List<CuentaDTO> listaEntidadesADTO (List<CuentaBancoEntity> lista) {
         ArrayList dtos = new ArrayList<CuentaDTO>();
 
@@ -75,5 +82,11 @@ public class CuentaService {
         return dtos;
     }
 
+    public void guardarCuenta(CuentaDTO dto) {
+        CuentaBancoEntity cuentaBanco = new CuentaBancoEntity();
 
+        cuentaBanco.setSaldo(dto.getSaldo());
+
+        this.cuentaRepository.save(cuentaBanco);
+    }
 }

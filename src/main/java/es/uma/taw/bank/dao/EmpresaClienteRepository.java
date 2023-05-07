@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface EmpresaClienteRepository extends JpaRepository<EmpresaClienteEntity, Integer> {
     @Query("select ec from EmpresaClienteEntity ec where ec.personaByIdPersona.id = :id")
-    EmpresaClienteEntity buscarTipoPorPersona(@Param("id") String id);
+    EmpresaClienteEntity buscarTipoPorPersona(@Param("id") Integer id);
 }
