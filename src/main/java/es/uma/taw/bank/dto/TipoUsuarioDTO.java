@@ -1,30 +1,15 @@
 package es.uma.taw.bank.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
-/**
- * A DTO for the {@link es.uma.taw.bank.entity.TipoUsuarioEntity} entity
- */
-@Data
+@Getter
+@Setter
 public class TipoUsuarioDTO implements Serializable {
-    private int id;
+    private Integer id;
     private String tipo;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
+    private List<UsuarioDTO> usuarios;
 }

@@ -12,8 +12,9 @@ public class UsuarioDTO implements Serializable {
     private Integer id;
     private String nif;
     private String contrasena;
-    private List<ConversacionDTO> conversacionsById;
-    private List<ConversacionDTO> conversacionsById_0;
-    private List<MensajeDTO> mensajesById;
-    private TipoUsuarioDTO tipoUsuarioByTipoUsuario;
+    private List<ConversacionDTO> conversacionesEmisor;
+    private List<ConversacionDTO> conversacionesReceptor;
+    private List<MensajeDTO> mensajes;
+    private Integer tipoUsuario;
+    private String tipoUsuarioTipo;
 }

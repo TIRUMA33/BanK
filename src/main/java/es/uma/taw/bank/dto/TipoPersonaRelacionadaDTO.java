@@ -8,9 +8,8 @@ import java.util.List;
 
 @Getter
 @Setter
-public class DivisaDTO implements Serializable {
+public class TipoPersonaRelacionadaDTO implements Serializable {
     private Integer id;
-    private String nombre;
-    private Double equivalencia;
-    private List<CuentaDTO> cuentasBancos;
+    private String tipo;
+    private List<Integer> empresaPersonas;
 }

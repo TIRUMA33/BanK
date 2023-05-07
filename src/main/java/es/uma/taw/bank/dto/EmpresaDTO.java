@@ -12,7 +12,6 @@ public class EmpresaDTO implements Serializable {
     private Integer id;
     private String nombre;
     private String cif;
-    private List<EmpresaPersonaDTO> empresaPersonasById;
-    private List<EmpresaClienteDTO> empresaClientesById;
-
+    private List<Integer> empresaPersonas;
+    private List<Integer> empresaClientes;
 }

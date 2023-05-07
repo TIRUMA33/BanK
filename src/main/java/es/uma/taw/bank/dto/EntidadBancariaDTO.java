@@ -1,24 +1,15 @@
 package es.uma.taw.bank.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
-public class EntidadBancariaDTO implements Serializable{
-    Integer id;
+import java.util.List;
 
-    String nombre;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+@Getter
+@Setter
+public class EntidadBancariaDTO implements Serializable {
+    private Integer id;
+    private String nombre;
+    private List<CuentaDTO> cuentasBanco;
 }
