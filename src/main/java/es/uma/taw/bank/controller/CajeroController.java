@@ -55,7 +55,7 @@ public class CajeroController {
     }
     @PostMapping("/editar")
     public String editar(Model model, @ModelAttribute("persona") PersonaDTO persona){
-        personaService.guardarPersona(persona, persona.getId());
+        personaService.guardarPersona(persona);
         return "redirect:/cajero/listar?cliente="+persona.getId();
     }
     @GetMapping("/transferencia")

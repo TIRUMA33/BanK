@@ -136,13 +136,11 @@ public class RegistroController {
         if (registroPersona.getRcontrasena().equals(usuario.getContrasena())) {
             guardadoComun(cliente, direccion, registroPersona.getValida());
 
-            persona.setId(cliente.getId());
-            personaService.guardarPersona(persona, persona.getId());
+            ClienteDTO c = this.clienteService.ultimoCliente();
+            PersonaDTO p = this.personaService.ultimaPersona();
 
-            usuario.setId(cliente.getId());
-            usuario.setNif(persona.getDni());
-            usuario.setTipoUsuario(1);
-            this.usuarioService.guardarUsuario(usuario, usuario.getId(), usuario.getNif(), usuario.getTipoUsuario());
+            this.personaService.guardarPersona(persona, c.getId());
+            this.usuarioService.guardarUsuario(usuario, usuario.getId(), usuario.getNif(), 1);
 
             urlTo = "redirect:/persona/";
         } else {

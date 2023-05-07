@@ -1,7 +1,9 @@
 package es.uma.taw.bank.service;
 
 import es.uma.taw.bank.dao.PersonaRepository;
+import es.uma.taw.bank.dto.ClienteDTO;
 import es.uma.taw.bank.dto.PersonaDTO;
+import es.uma.taw.bank.entity.ClienteEntity;
 import es.uma.taw.bank.entity.DireccionEntity;
 import es.uma.taw.bank.entity.PersonaEntity;
 import es.uma.taw.bank.ui.FiltroEmpresaPersona;
@@ -131,5 +133,14 @@ public class PersonaService {
 
     public void borrarPersona(Integer id) {
         this.personaRepository.deleteById(id);
+    }
+
+    public PersonaDTO ultimaPersona() {
+        PersonaEntity persona = personaRepository.ultimaPersona();
+        if (persona != null) {
+            return persona.toDTO();
+        } else {
+            return null;
+        }
     }
 }

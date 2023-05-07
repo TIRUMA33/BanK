@@ -1,5 +1,6 @@
 package es.uma.taw.bank.dao;
 
+import es.uma.taw.bank.entity.ClienteEntity;
 import es.uma.taw.bank.entity.PersonaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -88,4 +89,7 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Integer>
                                                                         @Param("personaId") Integer personaId, @Param(
                                                                                 "texto") String texto,
                                                                         @Param("tipo") String tipo);
+
+    @Query("select c from PersonaEntity c order by c.id desc LIMIT 1")
+    PersonaEntity ultimaPersona();
 }
