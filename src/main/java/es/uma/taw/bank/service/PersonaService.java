@@ -87,7 +87,7 @@ public class PersonaService {
         this.personaRepository.save(persona);
     }
 
-    public void guardarPersonaId(PersonaDTO dto, Integer id) {
+    public void guardarPersona(PersonaDTO dto, Integer id) {
         PersonaEntity persona = new PersonaEntity();
 
         persona.setId(id);

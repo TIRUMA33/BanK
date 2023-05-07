@@ -183,7 +183,7 @@ public class RegistroController {
         if (registroEmpresaPersona.getRcontrasena().equals(usuario.getContrasena())) {
             guardadoComun(cliente, direccion, registroEmpresaPersona.getValida());
 
-            this.personaService.guardarPersonaId(persona, cliente.getId());
+            this.personaService.guardarPersona(persona, cliente.getId());
 
             this.usuarioService.guardarUsuario(usuario, cliente.getId(), empresa.getCif(), 2);
 
