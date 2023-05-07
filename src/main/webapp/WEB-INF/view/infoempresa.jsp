@@ -6,6 +6,7 @@
   Date: 23/04/2023
   Time: 19:26
   To change this template use File | Settings | File Templates.
+  @author: David Castaños Benedicto
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%EmpresaEntity empresa = (EmpresaEntity) request.getAttribute("empresa");%>

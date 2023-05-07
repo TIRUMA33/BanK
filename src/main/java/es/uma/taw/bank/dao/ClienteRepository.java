@@ -1,11 +1,13 @@
 package es.uma.taw.bank.dao;
-
 import es.uma.taw.bank.entity.ClienteEntity;
 import es.uma.taw.bank.entity.EmpresaEntity;
 import es.uma.taw.bank.entity.PersonaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+//Hecho por David Castaños 50% y Oscar Fernadez 50%
+
 
 import java.util.List;
 
