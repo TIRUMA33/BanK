@@ -6,7 +6,7 @@
 <%@ page import="es.uma.taw.bank.dto.ClienteDTO" %>
 <%@ page import="es.uma.taw.bank.dto.PersonaDTO" %><%--
   Created by IntelliJ IDEA.
-  User: aleja
+  User: Alejandro Guerra
   Date: 20/04/2023
   Time: 12:39
   To change this template use File | Settings | File Templates.
