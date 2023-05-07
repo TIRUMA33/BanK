@@ -1,5 +1,5 @@
 package es.uma.taw.bank.dao;
-//pablo 33%
+//Autores Alejandro Guerra 33% Óscar Fernández 33% Pablo Ruiz 33%
 import es.uma.taw.bank.entity.DivisaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

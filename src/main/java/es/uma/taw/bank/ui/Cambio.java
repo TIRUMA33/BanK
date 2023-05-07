@@ -1,5 +1,5 @@
 package es.uma.taw.bank.ui;
-
+//Autor Alejandro Guerra
 public class Cambio {
     private String monedaDestino;
     private Double equivalencia;

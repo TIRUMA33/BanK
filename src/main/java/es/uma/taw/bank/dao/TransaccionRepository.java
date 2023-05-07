@@ -1,5 +1,5 @@
 package es.uma.taw.bank.dao;
-//alejandro 33% david 33% pablo 33%
+//Autores Alejandro Guerra 33% David Castaños 33% Pablo Ruiz 33%
 import es.uma.taw.bank.entity.CuentaBancoEntity;
 import es.uma.taw.bank.entity.TransaccionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -40,6 +40,7 @@
     }
     %>
     <a href="/asistencia/?id=<%= usuario.getId() %>">Asistencia</a>
+    <a href="/cajero/listar?cliente=<%= usuario.getId() %>">Cajero</a>
 
 </form>
 </body>

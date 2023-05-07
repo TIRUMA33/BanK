@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.uma.taw.bank.entity.MensajeEntity" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="es.uma.taw.bank.dto.MensajeDTO" %><%--
   Created by IntelliJ IDEA.
   User: probl
   Date: 05/05/2023
@@ -17,13 +18,13 @@
 <a href="/persona/">Volver</a>
 <h1>Conversación con el asistente</h1>
 <%
-   List<MensajeEntity> mensajes = (List<MensajeEntity>) request.getAttribute("mensajes");
+   List<MensajeDTO> mensajes = (List<MensajeDTO>) request.getAttribute("mensajes");
 %>
 
 <table style="width: 100%; table-layout:fixed">
     <%
-        for (MensajeEntity msj : mensajes) {
-            if(msj.getUsuarioByEmisor().getId()!=27){
+        for (MensajeDTO msj : mensajes) {
+            if(msj.getEmisor()!=27){
     %>
     <tr>
         <td></td>
@@ -46,8 +47,12 @@
     <form:form action="/asistencia/enviar" method="post" modelAttribute="mensaje">
         <form:hidden path="id"/>
         Escriba su mensaje:<br/> <form:textarea path="contenido" size="500" maxlength="500" rows="10" cols="50"/> <br/>
-        <form:hidden path="conversacionByConversacion"/>
-        <form:hidden path="usuarioByEmisor"/>
+        <form:hidden path="conversacion"/>
+        <form:hidden path="conversacionFechaCreacion"/>
+        <form:hidden path="conversacionTerminada"/>
+        <form:hidden path="emisor"/>
+        <form:hidden path="emisorContrasena"/>
+        <form:hidden path="emisorNif"/>
         <input type="submit" value="Enviar">
     </form:form>
     <a href="/asistencia/cerrar?id=${conversacion.id}">Cerrar</a>

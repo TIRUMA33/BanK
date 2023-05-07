@@ -1,5 +1,7 @@
 package es.uma.taw.bank.entity;
 
+import es.uma.taw.bank.dto.DTO;
+import es.uma.taw.bank.dto.MensajeDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +12,7 @@ import java.sql.Timestamp;
 @Setter
 @Entity
 @Table(name = "MENSAJE", schema = "taw", catalog = "")
-public class MensajeEntity {
+public class MensajeEntity implements DTO<MensajeDTO> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID", nullable = false)
@@ -48,5 +50,20 @@ public class MensajeEntity {
         result = 31 * result + (contenido != null ? contenido.hashCode() : 0);
         result = 31 * result + (fecha != null ? fecha.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public MensajeDTO toDTO() {
+        MensajeDTO dto = new MensajeDTO();
+        dto.setId(this.id);
+        dto.setContenido(this.contenido);
+        dto.setFecha(this.fecha);
+        dto.setEmisor(this.usuarioByEmisor.getId());
+        dto.setEmisorNif(this.usuarioByEmisor.getNif());
+        dto.setEmisorContrasena(this.usuarioByEmisor.getContrasena());
+        dto.setConversacion(this.conversacionByConversacion.getId());
+        dto.setConversacionFechaCreacion(this.conversacionByConversacion.getFechaCreacion());
+        dto.setConversacionTerminada(this.conversacionByConversacion.getTerminada());
+        return dto;
     }
 }

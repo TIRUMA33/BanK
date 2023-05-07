@@ -1,5 +1,5 @@
 package es.uma.taw.bank.service;
-//Pablo Ruiz Galianez 10%
+//Autores Alejandro Guerra 30% Óscar Fernández 50% Pablo Ruiz 20%
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.dto.CuentaDTO;
 import es.uma.taw.bank.entity.CuentaBancoEntity;
