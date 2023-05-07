@@ -4,6 +4,7 @@ import es.uma.taw.bank.dao.CuentaRepository;
 import es.uma.taw.bank.dao.TransaccionRepository;
 import es.uma.taw.bank.dto.CuentaDTO;
 import es.uma.taw.bank.dto.TransaccionDTO;
+import es.uma.taw.bank.entity.CuentaBancoEntity;
 import es.uma.taw.bank.entity.DivisaEntity;
 import es.uma.taw.bank.entity.TransaccionEntity;
 import es.uma.taw.bank.ui.FiltroOperaciones;
@@ -28,7 +29,11 @@ public class TransaccionService {
 
     public TransaccionDTO iniciarTransaccion(Integer idCuentaOrigen){
         TransaccionDTO dto = new TransaccionDTO();
+        CuentaBancoEntity cuenta = this.cuentaRepository.findById(idCuentaOrigen).orElse(null);
         dto.setCuentaOrigen(idCuentaOrigen);
+        dto.setCuentaOrigenIbanCuenta(cuenta.getIbanCuenta());
+        dto.setCuentaOrigenSaldo(cuenta.getSaldo());
+        dto.setDivisa(cuenta.getDivisaByDivisaId().getNombre());
         return dto;
     }
 

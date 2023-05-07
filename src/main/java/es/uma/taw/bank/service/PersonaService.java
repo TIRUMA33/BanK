@@ -1,9 +1,7 @@
 package es.uma.taw.bank.service;
 //Autores Óscar Fernández 50% Alejandro Guerra 40% Pablo Ruiz 10%
 import es.uma.taw.bank.dao.PersonaRepository;
-import es.uma.taw.bank.dto.ClienteDTO;
 import es.uma.taw.bank.dto.PersonaDTO;
-import es.uma.taw.bank.entity.ClienteEntity;
 import es.uma.taw.bank.entity.DireccionEntity;
 import es.uma.taw.bank.entity.PersonaEntity;
 import es.uma.taw.bank.ui.FiltroEmpresaPersona;
@@ -135,6 +133,7 @@ public class PersonaService {
         this.personaRepository.deleteById(id);
     }
 
+
     public PersonaDTO ultimaPersona() {
         PersonaEntity persona = personaRepository.ultimaPersona();
         if (persona != null) {
@@ -144,3 +143,5 @@ public class PersonaService {
         }
     }
 }
+
+

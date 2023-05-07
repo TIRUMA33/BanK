@@ -55,7 +55,7 @@ public class CajeroController {
     }
     @PostMapping("/editar")
     public String editar(Model model, @ModelAttribute("persona") PersonaDTO persona){
-        personaService.guardarPersona(persona);
+        personaService.guardarPersona(persona, persona.getId());
         return "redirect:/cajero/listar?cliente="+persona.getId();
     }
     @GetMapping("/transferencia")
@@ -70,11 +70,8 @@ public class CajeroController {
     @PostMapping("/transferir")
     public String transferir(Model model, @ModelAttribute("transaccion") TransaccionDTO transaccion){
         transaccionService.guardarTransaccion(transaccion);
-        CuentaDTO origen = cuentaService.buscarCuenta(transaccion.getCuentaOrigen());
-        CuentaDTO destino = cuentaService.buscarCuenta(transaccion.getCuentaDestino());
-        Double equivalencia = origen.getDivisaEquivalencia()/destino.getDivisaEquivalencia();
         cuentaService.sumarSaldo(transaccion.getCuentaOrigen(), -(transaccion.getCantidad()));
-        cuentaService.sumarSaldo(transaccion.getCuentaDestino(), transaccion.getCantidad()*equivalencia);
+        cuentaService.sumarSaldo(transaccion.getCuentaDestino(), transaccion.getCantidad());
         return "redirect:/cajero/cuenta?cuenta="+transaccion.getCuentaOrigen();
     }
 

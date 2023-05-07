@@ -1,7 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
-  User: pablo
+  User: pablo ruiz galianez
   Date: 03/05/2023
   Time: 12:45
   To change this template use File | Settings | File Templates.
@@ -55,10 +55,12 @@
             <td></td>
         </tr>
         <tr>
+            <td><form:hidden path="direccion.id" /> </td>
             <td><form:label path="direccion.ciudad">Ciudad (*)</form:label></td>
             <td><form:input path="direccion.ciudad" required="required" size="45" maxlength="45"/></td>
             <td><form:label path="direccion.region">Región</form:label></td>
             <td><form:input path="direccion.region" size="45" maxlength="45"/></td>
+            <td><form:hidden path="direccion.cliente" /></td>
         </tr>
         <tr>
             <td><form:label path="direccion.pais">País (*)</form:label></td>

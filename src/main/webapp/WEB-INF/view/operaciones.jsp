@@ -21,7 +21,6 @@
 <body>
 <a href="/cajero/cuenta?cuenta=${idCuenta}">Volver</a>
 <h1>Lista de operaciones de la cuenta ${iban}</h1>
-<p>Las cantidades se muestran en la divisa de la cuenta de destino </p>
 <p>Ordenar por:</p>
 <form:form method="post" modelAttribute="filtro" action="/cajero/operaciones/filtrar">
     <input hidden="true" value="<%= request.getAttribute("idCuenta") %>" name="cuenta">
@@ -47,7 +46,7 @@
     <tr>
         <td><%= t.getFechaInstruccion().toString() %></td>
         <td><%= t.getFechaEjecucion().toString() %></td>
-        <td><%= t.getCantidad() %> <%= t.getDivisaDestino()%></td>
+        <td><%= t.getCantidad() %></td>
         <td><%= t.getCuentaOrigenIbanCuenta() %><% if(t.getCuentaOrigen()==(Integer)request.getAttribute("idCuenta")) {%>(Tú) <% } %> </td>
         <td><%= t.getCuentaDestinoIbanCuenta() %><% if(t.getCuentaDestino()==(Integer)request.getAttribute("idCuenta")) {%>(Tú) <% }%> </td>
     </tr>

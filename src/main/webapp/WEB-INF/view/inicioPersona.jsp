@@ -2,7 +2,7 @@
 <%@ page import="es.uma.taw.bank.dto.CuentaDTO" %>
 <%@ page import="es.uma.taw.bank.dto.PersonaDTO" %><%--
   Created by IntelliJ IDEA.
-  User: pablo
+  User: pablo ruiz galianez
   Date: 02/05/2023
   Time: 21:57
   To change this template use File | Settings | File Templates.
@@ -26,7 +26,7 @@
 <form action="/persona/editar" method="post">
 
     <a href="/persona/editar?id=<%= usuario.getId() %>">Modificar datos Personales</a>
-    <a href="/persona/transferencia?id=<%= usuario.getId() %>">Realizar transferencia</a>
+    <a href="/persona/transferencia?id=<%= cuenta.getId() %>">Realizar transferencia</a>
     <a href="/persona/cambioDivisa?id=<%= cuenta.getId() %>">Cambio de divisa</a>
     <a href="/persona/operaciones?id=<%= cuenta.getId() %>">Ver operaciones</a>
      <% if (cuenta.getEstado() == 1) { %>
@@ -34,7 +34,7 @@
     <% } else if (cuenta.getEstado() == 2){  %>
       <a href="/persona/solicitar?id=<%= cuenta.getId()%>">Solicitar activacion de cuenta</a>
     <% } else {%>
-      Solicitud pendiente
+      Solicitud pendiente de aprobacion
     <%
     }
     %>

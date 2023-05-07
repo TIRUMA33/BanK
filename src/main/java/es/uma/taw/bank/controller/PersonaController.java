@@ -1,5 +1,5 @@
 package es.uma.taw.bank.controller;
-
+//@author Pablo Ruiz Galianez
 import es.uma.taw.bank.dto.*;
 import es.uma.taw.bank.service.*;
 import es.uma.taw.bank.ui.FiltroOperacionesPersona;
@@ -36,6 +36,7 @@ public class PersonaController {
 
     @Autowired
     DivisaService divisaService;
+
 
     @GetMapping("/")
     public String doPersona(Model model, HttpSession session){
@@ -95,9 +96,8 @@ public class PersonaController {
         direccionActualizada.setCodigoPostal(direccionForm.getCodigoPostal());
         direccionActualizada.setPais(direccionForm.getPais());
         direccionActualizada.setValida((byte) (edicionPersona.getValida() ? 1 : 0));
-        direccionActualizada.setCliente(direccionForm.getCliente());
+        direccionActualizada.setCliente(usuarioActualizado.getId());
         direccionActualizada.setRegion(direccionForm.getRegion());
-        direccionActualizada.setId(direccionForm.getId());
         direccionService.guardarDireccion(direccionActualizada, direccionActualizada.getCliente(),  direccionActualizada.getValida()!=0);
 
         usuarioActualizado.setNif(personaForm.getDni());
@@ -111,11 +111,10 @@ public class PersonaController {
     }
 
     @GetMapping("/transferencia")
-    public String doTransferencia(@RequestParam("id") Integer idpersona, Model model){
+    public String doTransferencia(@RequestParam("id") Integer idcuenta, Model model){
 
-        TransaccionDTO transaccion = new TransaccionDTO();
-        transaccion.setCuentaOrigen(this.cuentaService.buscarCuenta(idpersona).getId());
-        List<CuentaDTO> cuentas = this.cuentaService.cuentasSinMi(transaccion.getCuentaOrigen());
+        TransaccionDTO transaccion = transaccionService.iniciarTransaccion(idcuenta);
+        List<CuentaDTO> cuentas = this.cuentaService.cuentasSinMi(idcuenta);
 
         model.addAttribute("cuentas", cuentas);
         model.addAttribute("transaccion", transaccion);

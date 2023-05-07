@@ -140,7 +140,7 @@ public class RegistroController {
             PersonaDTO p = this.personaService.ultimaPersona();
 
             this.personaService.guardarPersona(persona, c.getId());
-            this.usuarioService.guardarUsuario(usuario, usuario.getId(), usuario.getNif(), 1);
+            this.usuarioService.guardarUsuario(usuario, c.getId(), persona.getDni(), 1);
 
             urlTo = "redirect:/persona/";
         } else {

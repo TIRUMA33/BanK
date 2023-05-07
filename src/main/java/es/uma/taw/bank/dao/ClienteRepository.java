@@ -36,4 +36,5 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer>
 
     @Query("select c from ClienteEntity c order by c.id desc LIMIT 1")
     ClienteEntity ultimoCliente();
+
 }
