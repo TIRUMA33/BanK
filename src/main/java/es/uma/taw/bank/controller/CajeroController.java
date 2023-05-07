@@ -110,6 +110,7 @@ public class CajeroController {
         model.addAttribute("cuentas",cuentas);
         model.addAttribute("idCuenta",idCuenta);
         model.addAttribute("operaciones",operaciones);
+        model.addAttribute("iban",cuentaService.buscarCuenta(idCuenta).getIbanCuenta());
         return "operaciones";
     }
     @GetMapping("/cambioDivisa")

@@ -46,6 +46,7 @@
             <td><a href="/empresa/${empresa.id}/editar">Empresa</a></td>
         </tr>
     </table>
+    <a href="/cajero/listar?cliente=<%= usuario.getId() %>">Cajero</a>
 </form>
 </body>
 </html>

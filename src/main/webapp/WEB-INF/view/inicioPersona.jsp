@@ -39,6 +39,7 @@
     }
     %>
     <a href="/asistencia/?id=<%= usuario.getId() %>">Asistencia</a>
+    <a href="/cajero/listar?cliente=<%= persona.getId() %>">Cajero</a>
 
 </form>
 </body>
