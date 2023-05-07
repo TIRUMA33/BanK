@@ -1,13 +1,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="es.uma.taw.bank.dto.OperacionDTO" %>
+<%@ page import="es.uma.taw.bank.entity.OperacionEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.hibernate.id.IncrementGenerator" %>
-<%@ page import="es.uma.taw.bank.dto.TransaccionDTO" %>
+<%@ page import="es.uma.taw.bank.entity.TransaccionEntity" %>
 <%@ page import="es.uma.taw.bank.ui.FiltroOperacionesPersona" %>
 <%@ page import="javax.swing.text.StyledEditorKit" %>
-<%@ page import="es.uma.taw.bank.dto.TransaccionDTO" %>
-<%@ page import="es.uma.taw.bank.service.OperacionService" %>
-<%@ page import="es.uma.taw.bank.service.TransaccionService" %>
 <%--
   Created by IntelliJ IDEA.
   User: pablo
@@ -17,17 +14,15 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-  List<TransaccionDTO> operaciones = (List<TransaccionDTO>) request.getAttribute("operaciones");
+  List<TransaccionEntity> operaciones = (List<TransaccionEntity>) request.getAttribute("operaciones");
   Integer cuentaid = (Integer) request.getAttribute("cuentaid");
   FiltroOperacionesPersona f= (FiltroOperacionesPersona) request.getAttribute("filtro");
-  TransaccionService transaccionService;
 %>
 <html>
 <head>
     <title>BanK</title>
 </head>
 <body>
-<a href="/persona/">Volver</a>
 <%
   if (operaciones.isEmpty()) {
 %>
@@ -56,14 +51,14 @@
     <th>Fecha de ejecución</th>
   </tr>
   <%
-    for (TransaccionDTO operacion : operaciones) {
+    for (TransaccionEntity operacion : operaciones) {
   %>
   <tr>
-    <td><%= operacion.getCuentaOrigenIbanCuenta() %>
+    <td><%= operacion.getCuentaBancoByCuentaOrigen().getIbanCuenta() %>
     </td>
-    <td><%= operacion.getCuentaDestinoIbanCuenta() %>
+    <td><%= operacion.getCuentaBancoByCuentaDestino().getIbanCuenta() %>
     </td>
-    <td><%= operacion.getCantidad() %> <%= operacion.getDivisa() %>
+    <td><%= operacion.getCantidad() %> <%= operacion.getCuentaBancoByCuentaOrigen().getDivisaByDivisaId().getNombre() %>
     </td>
     <td><%= operacion.getFechaInstruccion() %>
     </td>

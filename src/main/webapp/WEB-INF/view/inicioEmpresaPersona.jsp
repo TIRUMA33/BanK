@@ -1,5 +1,4 @@
-  <%@ page import="es.uma.taw.bank.dto.UsuarioDTO" %>
-  <%--
+  <%@ page import="es.uma.taw.bank.entity.UsuarioEntity" %><%--
   Created by IntelliJ IDEA.
   User: oscfd
   Date: 24/04/2023
@@ -9,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <%
-    UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+    UsuarioEntity usuario = (UsuarioEntity) session.getAttribute("usuario");
 %>
 
 <html>
@@ -47,7 +46,6 @@
             <td><a href="/empresa/${empresa.id}/editar">Empresa</a></td>
         </tr>
     </table>
-    <a href="/cajero/listar?cliente=<%= usuario.getId() %>">Cajero</a>
 </form>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.bank.dto.PersonaDTO" %>
-<%@ page import="es.uma.taw.bank.dto.DireccionDTO" %><%--
+<%@ page import="es.uma.taw.bank.entity.PersonaEntity" %>
+<%@ page import="es.uma.taw.bank.entity.DireccionEntity" %><%--
   Created by IntelliJ IDEA.
   User: oscfd
   Date: 26/04/2023
@@ -43,8 +43,8 @@
     </tr>
     <%
         for (Object[] p : personas) {
-            PersonaDTO persona = (PersonaDTO) p[0];
-            DireccionDTO direccion = (DireccionDTO) p[1];
+            PersonaEntity persona = (PersonaEntity) p[0];
+            DireccionEntity direccion = (DireccionEntity) p[1];
             String tipoClienteRelacionado = (String) p[2];
             String tipoPersonaRelacionada = (String) p[3];
     %>

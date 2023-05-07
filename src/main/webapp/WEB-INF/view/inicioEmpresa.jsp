@@ -16,6 +16,7 @@
 
 <form action="/empresa/${empresa.id}" method="post">
     <h1>Bienvenidos de nuevo, ${empresa.nombre}</h1>
+    <h2>Operaciones</h2>
     <h2>Gestión de acceso</h2>
     <a href="/registro/empresa/${empresa.id}/persona">Personas autorizadas</a>
 </form>

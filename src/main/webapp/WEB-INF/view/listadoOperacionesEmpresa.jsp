@@ -1,9 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="es.uma.taw.bank.dto.OperacionDTO" %>
+<%@ page import="es.uma.taw.bank.entity.OperacionEntity" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.bank.dto.EmpresaDTO" %>
-<%@ page import="es.uma.taw.bank.dto.PersonaDTO" %>
-<%--
+<%@ page import="es.uma.taw.bank.entity.EmpresaEntity" %>
+<%@ page import="es.uma.taw.bank.entity.PersonaEntity" %><%--
   Created by IntelliJ IDEA.
   User: oscfd
   Date: 02/05/2023
@@ -12,9 +11,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
-    List<OperacionDTO> operaciones = (List<OperacionDTO>) request.getAttribute("operaciones");
-    List<EmpresaDTO> empresas = (List<EmpresaDTO>) request.getAttribute("empresas");
-    List<PersonaDTO> personas = (List<PersonaDTO>) request.getAttribute("personas");
+    List<OperacionEntity> operaciones = (List<OperacionEntity>) request.getAttribute("operaciones");
+    List<EmpresaEntity> empresas = (List<EmpresaEntity>) request.getAttribute("empresas");
+    List<PersonaEntity> personas = (List<PersonaEntity>) request.getAttribute("personas");
 %>
 <html>
 <head>
@@ -42,25 +41,25 @@
 <table border="1">
     <tr>
         <th>Ordenante</th>
-        <%--<th>Cuenta origen</th>--%>
-        <%--<th>Beneficiario</th>--%>
-        <%--<th>Cuenta destino</th>--%>
+        <th>Cuenta origen</th>
+        <th>Beneficiario</th>
+        <th>Cuenta destino</th>
         <th>Cantidad</th>
         <th>Fecha de instrucción</th>
         <th>Fecha de ejecución</th>
     </tr>
     <%
-        for (OperacionDTO operacion : operaciones) {
+        for (OperacionEntity operacion : operaciones) {
     %>
     <tr>
-        <td><%= operacion.getPersonaNombre() %> <%= operacion.getPersonaApellido1()
-        %> <%= operacion.getPersonaApellido2() %>
+        <td><%= operacion.getPersonaByPersonaId().getNombre() %> <%= operacion.getPersonaByPersonaId().getApellido1()
+        %> <%= operacion.getPersonaByPersonaId().getApellido2() %>
         </td>
-        <%--<td><%= operacion.getTransaccionByTransaccionId().getCuentaBancoByCuentaOrigen().getIbanCuenta() %>
+        <td><%= operacion.getTransaccionByTransaccionId().getCuentaBancoByCuentaOrigen().getIbanCuenta() %>
         </td>
         <td>
             <%
-                for (EmpresaDTO empresa : empresas) {
+                for (EmpresaEntity empresa : empresas) {
                     if
                     (empresa.getId().equals(operacion.getTransaccionByTransaccionId().getCuentaBancoByCuentaDestino().getClienteByTitularId().getId())) {
             %>
@@ -68,7 +67,7 @@
             <%
                     }
                 }
-                for (PersonaDTO persona : personas) {
+                for (PersonaEntity persona : personas) {
                     if
                     (persona.getId().equals(operacion.getTransaccionByTransaccionId().getCuentaBancoByCuentaDestino().getClienteByTitularId().getId())) {
             %>
@@ -79,13 +78,13 @@
             %>
         </td>
         <td><%= operacion.getTransaccionByTransaccionId().getCuentaBancoByCuentaDestino().getIbanCuenta() %>
-        </td>--%>
-        <td><%= operacion.getTransaccionCantidad() %> <%--<%=
-        operacion.getTransaccionByTransaccionId().getCuentaBancoByCuentaOrigen().getDivisaByDivisaId().getNombre() %>--%>
         </td>
-        <td><%= operacion.getTransaccionFechaInstruccion() %>
+        <td><%= operacion.getTransaccionByTransaccionId().getCantidad() %> <%=
+        operacion.getTransaccionByTransaccionId().getCuentaBancoByCuentaOrigen().getDivisaByDivisaId().getNombre() %>
         </td>
-        <td><%= operacion.getTransaccionFechaEjecucion() %>
+        <td><%= operacion.getTransaccionByTransaccionId().getFechaInstruccion() %>
+        </td>
+        <td><%= operacion.getTransaccionByTransaccionId().getFechaEjecucion() %>
         </td>
     </tr>
     <%

@@ -1,6 +1,6 @@
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.bank.dto.DivisaDTO" %>
-<%@ page import="es.uma.taw.bank.dto.CuentaDTO" %>
+<%@ page import="es.uma.taw.bank.entity.DivisaEntity" %>
+<%@ page import="es.uma.taw.bank.entity.CuentaBancoEntity" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
@@ -11,9 +11,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    List<DivisaDTO> divisas = (List<DivisaDTO>) request.getAttribute("divisas");
+    List<DivisaEntity> divisas = (List<DivisaEntity>) request.getAttribute("divisas");
     List<String> cambios = (List<String>) request.getAttribute("cambios");
-    CuentaDTO cuenta = (CuentaDTO) request.getAttribute("cuenta");
+    CuentaBancoEntity cuenta = (CuentaBancoEntity) request.getAttribute("cuenta");
 %>
 <html>
 <head>
