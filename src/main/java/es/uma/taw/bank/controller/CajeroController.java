@@ -70,8 +70,12 @@ public class CajeroController {
     @PostMapping("/transferir")
     public String transferir(Model model, @ModelAttribute("transaccion") TransaccionDTO transaccion){
         transaccionService.guardarTransaccion(transaccion);
+        CuentaDTO origen = cuentaService.buscarCuenta(transaccion.getCuentaOrigen());
+        CuentaDTO destino = cuentaService.buscarCuenta(transaccion.getCuentaDestino());
+        Double equivalencia = origen.getDivisaEquivalencia()/destino.getDivisaEquivalencia();
         cuentaService.sumarSaldo(transaccion.getCuentaOrigen(), -(transaccion.getCantidad()));
         cuentaService.sumarSaldo(transaccion.getCuentaDestino(), transaccion.getCantidad());
+        cuentaService.sumarSaldo(transaccion.getCuentaDestino(), transaccion.getCantidad()*equivalencia);
         return "redirect:/cajero/cuenta?cuenta="+transaccion.getCuentaOrigen();
     }
 

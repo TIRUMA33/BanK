@@ -1,5 +1,9 @@
 package es.uma.taw.bank.ui;
 
+/**
+ * @author Óscar Fernández Díaz
+ */
+
 import es.uma.taw.bank.entity.*;
 import lombok.Getter;
 import lombok.Setter;

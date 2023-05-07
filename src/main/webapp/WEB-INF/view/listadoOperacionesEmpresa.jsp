@@ -4,7 +4,7 @@
 <%@ page import="es.uma.taw.bank.entity.EmpresaEntity" %>
 <%@ page import="es.uma.taw.bank.entity.PersonaEntity" %><%--
   Created by IntelliJ IDEA.
-  User: oscfd
+  User: Óscar Fernández Díaz
   Date: 02/05/2023
   Time: 10:30
   To change this template use File | Settings | File Templates.

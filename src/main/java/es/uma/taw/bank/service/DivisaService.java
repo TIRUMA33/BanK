@@ -1,5 +1,5 @@
 package es.uma.taw.bank.service;
-//Autores Alejandro Guerra 40% Óscar Fernández 50% Pablo Ruiz 10%
+//Autores Alejandro Guerra 40% Óscar Fernández 40% Pablo Ruiz 20%
 import es.uma.taw.bank.dao.DivisaRepository;
 import es.uma.taw.bank.dto.DivisaDTO;
 import es.uma.taw.bank.entity.DivisaEntity;

@@ -1,5 +1,5 @@
 package es.uma.taw.bank.ui;
-
+//@author: David Castaños Benedicto
 public class FiltroCliente {
 
     private Boolean nombre;

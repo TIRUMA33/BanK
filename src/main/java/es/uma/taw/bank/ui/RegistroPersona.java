@@ -1,5 +1,5 @@
 package es.uma.taw.bank.ui;
-
+//@author: Pablo Ruiz Galianez
 import es.uma.taw.bank.entity.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,7 @@
-  <%@ page import="es.uma.taw.bank.entity.UsuarioEntity" %><%--
+  <%@ page import="es.uma.taw.bank.entity.UsuarioEntity" %>
+  <%--
   Created by IntelliJ IDEA.
-  User: oscfd
+  User: Óscar Fernández Díaz
   Date: 24/04/2023
   Time: 10:51
   To change this template use File | Settings | File Templates.
