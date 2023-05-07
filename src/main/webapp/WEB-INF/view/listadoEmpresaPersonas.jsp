@@ -1,9 +1,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.bank.entity.PersonaEntity" %>
-<%@ page import="es.uma.taw.bank.entity.DireccionEntity" %><%--
+<%@ page import="es.uma.taw.bank.entity.DireccionEntity" %>
+<%--
   Created by IntelliJ IDEA.
-  User: oscfd
+  User: Óscar Fernández Díaz
   Date: 26/04/2023
   Time: 12:52
   To change this template use File | Settings | File Templates.

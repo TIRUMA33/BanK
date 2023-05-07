@@ -1,4 +1,5 @@
 package es.uma.taw.bank.ui;
+//@author: Pablo Ruiz Galianez
 
 public class FiltroOperacionesPersona {
 

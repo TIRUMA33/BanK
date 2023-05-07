@@ -1,8 +1,9 @@
 <%@ page import="es.uma.taw.bank.entity.UsuarioEntity" %>
 <%@ page import="es.uma.taw.bank.entity.CuentaBancoEntity" %>
-<%@ page import="es.uma.taw.bank.entity.PersonaEntity" %><%--
+<%@ page import="es.uma.taw.bank.entity.PersonaEntity" %>
+<%--
   Created by IntelliJ IDEA.
-  User: pablo
+  User: Pablo Ruiz Galianez
   Date: 02/05/2023
   Time: 21:57
   To change this template use File | Settings | File Templates.
@@ -39,6 +40,7 @@
     }
     %>
     <a href="/asistencia/?id=<%= usuario.getId() %>">Asistencia</a>
+    <a href="/cajero/listar?cliente=<%= usuario.getId() %>">Cajero</a>
 
 </form>
 </body>

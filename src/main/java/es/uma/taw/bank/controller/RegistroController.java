@@ -1,6 +1,10 @@
 package es.uma.taw.bank.controller;
 
-import es.uma.taw.bank.DataGenerator;
+/**
+ * @author Óscar Fernández Díaz 75%
+ * @author Pablo Ruiz Galianez 25%
+ */
+
 import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.entity.*;
 import es.uma.taw.bank.ui.RegistroEmpresa;
