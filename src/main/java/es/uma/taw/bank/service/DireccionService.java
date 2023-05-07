@@ -1,5 +1,6 @@
 package es.uma.taw.bank.service;
 
+import es.uma.taw.bank.dao.ClienteRepository;
 import es.uma.taw.bank.dao.DireccionRepository;
 import es.uma.taw.bank.dto.DireccionDTO;
 import es.uma.taw.bank.entity.DireccionEntity;
@@ -12,7 +13,8 @@ import java.util.Objects;
 public class DireccionService {
 
     private DireccionRepository direccionRepository;
-
+    @Autowired
+    private ClienteRepository clienteRepository;
     @Autowired
     public void setDireccionRepository(DireccionRepository direccionRepository) {
         this.direccionRepository = direccionRepository;
@@ -29,6 +31,9 @@ public class DireccionService {
         direccion.setRegion(dto.getRegion());
         direccion.setPlantaPuertaOficina(dto.getPlantaPuertaOficina());
         direccion.setValida(dto.getValida());
+        direccion.setPais(dto.getPais());
+        direccion.setClienteByClienteId(clienteRepository.findById(dto.getCliente()).orElse(null));
+        direccion.setPlantaPuertaOficina(dto.getPlantaPuertaOficina());
         this.direccionRepository.save(direccion);
     }
     public DireccionDTO buscarPorCliente(Integer id) {

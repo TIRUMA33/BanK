@@ -77,10 +77,14 @@ public class RegistroController {
         this.tipoPersonaRelacionadaService = tipoPersonaRelacionadaService;
     }
 
+
+/*
     @Autowired
     public void setTipoUsuarioService(TipoUsuarioService tipoUsuarioService) {
         this.tipoUsuarioService = tipoUsuarioService;
     }
+*/
+
 
 
     private void guardadoComun(ClienteDTO cliente, DireccionDTO direccion, boolean valida) {
@@ -92,7 +96,7 @@ public class RegistroController {
         direccion.setCliente(cliente.getId());
         direccionService.guardarDireccion(direccion);
     }
-*/
+
 
     @GetMapping("/")
     public String doRegistro() {
@@ -139,8 +143,7 @@ public class RegistroController {
 
         return urlTo;
     }
-
-/*    @PostMapping("/persona/")
+    @PostMapping("/persona/")
     public String doRegistrarPersona(@ModelAttribute("persona") RegistroPersona registroPersona) {
         String urlTo;
         ClienteDTO cliente = registroPersona.getCliente();
@@ -156,8 +159,8 @@ public class RegistroController {
 
             usuario.setId(cliente.getId());
             usuario.setNif(persona.getDni());
-            usuario.setTipoUsuarioTipo("Cliente");
-            usuarioService.guardarUsuario(usuario);
+            usuario.setTipoUsuario(1);
+            this.usuarioService.guardarUsuario(usuario);
 
             urlTo = "redirect:/persona/";
         } else {
