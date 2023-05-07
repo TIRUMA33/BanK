@@ -1,6 +1,5 @@
 package es.uma.taw.bank.ui;
-
-import java.sql.Timestamp;
+//Autor Pablo Robles Mansilla
 
 public class FiltroAsistente {
     private boolean pendientes;
