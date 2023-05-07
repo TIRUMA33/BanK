@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.bank.entity.*" %><%--
+<%@ page import="es.uma.taw.bank.entity.*" %>
+<%@ page import="java.time.format.DateTimeFormatter" %><%--
   Created by IntelliJ IDEA.
   User: itsso
   Date: 23/04/2023
@@ -33,6 +34,13 @@
             <li>Fecha de Inicio: <%=cliente.getFechaInicio()%></li>
             <li>Estado: <%=cliente.getEstadoClienteByEstadoClienteId().getTipo()%></li>
         </ul>
+<form:form action="/gestor/infopersona/filtrar" method="post" modelAttribute="filtropersona">
+    <input hidden="true" name="id" value="${clientes.id}">
+    Ordenar por: <br/>
+    Cantidad: <form:checkbox path="cantidad"/>
+    Buscar: <form:input path="cuentaFiltro"/>
+    <button>Filtrar</button>
+</form:form>
 
 <h3>Movimientos:</h3>
 <%for (CuentaBancoEntity c:listacuentas) {%>
@@ -47,10 +55,11 @@
             <th>Tipo de Movimiento</th>
         </tr>
         <%for (TransaccionEntity trans: listatransa){
-        if(trans.getCuentaBancoByCuentaOrigen().getId() == c.getId() || trans.getCuentaBancoByCuentaDestino().getId() == c.getId()) {%>
+        if(trans.getCuentaBancoByCuentaOrigen().getId() == c.getId() || trans.getCuentaBancoByCuentaDestino().getId() == c.getId()) {
+        %>
         <tr>
-            <td style="text-align: center"><%=trans.getFechaInstruccion()%></td>
-            <td style="text-align: center"><%=trans.getFechaEjecucion()%></td>
+            <td style="text-align: center"><%=trans.getFechaInstruccion().toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE)%></td>
+            <td style="text-align: center"><%=trans.getFechaEjecucion().toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE)%></td>
             <td style="text-align: center"><%=trans.getCantidad()%></td>
             <td style="text-align: center"><%=trans.getCuentaBancoByCuentaDestino().getIbanCuenta()%></td>
             <td style="text-align: center"><%if(c.getId() == trans.getCuentaBancoByCuentaOrigen().getId()){%>⇒<%}else{%>⇐<%}%></td>
