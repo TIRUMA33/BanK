@@ -1,5 +1,5 @@
 package es.uma.taw.bank.dao;
-//Autores Alejandro Guerra 50% Óscar Fernández 50%
+//Autores Alejandro Guerra 33% Óscar Fernández 33% David Castaños 33%
 import es.uma.taw.bank.entity.CuentaBancoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

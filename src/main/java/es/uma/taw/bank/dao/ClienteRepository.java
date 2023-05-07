@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-
+//Autores Oscar Fernandez 50% David Castaños 50%
 public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer> {
     @Query("select c from ClienteEntity c where c.estadoClienteByEstadoClienteId.tipo like 'Pendiente'")
     public List<ClienteEntity> listaPendientes();
