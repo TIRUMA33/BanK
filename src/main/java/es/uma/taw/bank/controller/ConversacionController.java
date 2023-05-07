@@ -6,6 +6,7 @@ import es.uma.taw.bank.dao.UsuarioRepository;
 import es.uma.taw.bank.entity.ConversacionEntity;
 import es.uma.taw.bank.entity.MensajeEntity;
 import es.uma.taw.bank.entity.UsuarioEntity;
+import es.uma.taw.bank.ui.FiltroAsistente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,6 +52,7 @@ public class ConversacionController {
         conver.setUsuarioByEmisor(mensaje.getUsuarioByEmisor());
         conver.setUsuarioByReceptor(this.usuarioRepository.findAsistente());
         conver.setTerminada((byte) 0);
+        conver.setFechaCreacion(new java.sql.Timestamp(System.currentTimeMillis()));
         this.conversacionRepository.save(conver);
         mensaje.setConversacionByConversacion(conver);
         this.mensajeRepository.save(mensaje);
@@ -103,9 +105,7 @@ public class ConversacionController {
 
     @GetMapping("/conversaciones")
     public String doListarConversaciones(Model model){
-        List<ConversacionEntity> lista = this.conversacionRepository.findAll();
-        model.addAttribute("conversaciones", lista);
-        return "conversaciones";
+        return doFiltrar(null, model);
     }
 
     @GetMapping("/cerrar")
@@ -114,6 +114,36 @@ public class ConversacionController {
         conver.setTerminada((byte) 1);
         this.conversacionRepository.save(conver);
         return "redirect:/persona/";
+    }
+
+    @PostMapping("/filtrar")
+    public String doFiltrar(@ModelAttribute("filtro")FiltroAsistente filtro, Model model){
+        List<ConversacionEntity> convers = this.conversacionRepository.findAll();
+        if(filtro==null){
+            filtro = new FiltroAsistente();
+        }else if((filtro.getEstado()==null) && (!filtro.isPendientes()) && (!filtro.isFecha())){
+            convers = this.conversacionRepository.findByNif(filtro.getDni());
+        }else if((filtro.getDni().isBlank())&&(!filtro.isPendientes()) && (!filtro.isFecha())){
+            convers = this.conversacionRepository.findByEstado(filtro.getEstado());
+        }else if((filtro.getDni().isBlank())&&(!filtro.isPendientes()) && (filtro.getEstado()==null)) {
+            convers = this.conversacionRepository.orderByFecha();
+        }else if((filtro.getDni().isBlank()) && (filtro.getEstado()==null) && (!filtro.isFecha())) {
+            convers = this.conversacionRepository.orderByEstado();
+        }else if((filtro.getDni().isBlank()) && (filtro.getEstado()==null)){
+            convers = this.conversacionRepository.orderByFechayEstado();
+        }else if((filtro.getEstado()==null) && (((!filtro.isFecha()) || (!filtro.isPendientes())) || (filtro.isFecha() && filtro.isPendientes()))){
+            convers = this.conversacionRepository.findByNifOrderByEstado(filtro.getDni());
+        }else if((filtro.getDni().isBlank()) && (((!filtro.isPendientes() || !filtro.isFecha())) || (filtro.isPendientes() && filtro.isFecha()))){
+            convers = this.conversacionRepository.findByEstadoOrderByFecha(filtro.getEstado());
+        }else if((!filtro.isFecha() || !filtro.isPendientes())&& (!filtro.isPendientes() || filtro.isFecha() || filtro.isPendientes())){
+            convers = this.conversacionRepository.findByNifAndEstado(filtro.getDni(), filtro.getEstado());
+        }else{
+            convers = this.conversacionRepository.findByNifAndEstadoOrderByFechayEstado(filtro.getDni(), filtro.getEstado());
+        }
+        model.addAttribute("conversaciones", convers);
+        model.addAttribute("filtro", filtro);
+
+        return "conversaciones";
     }
 
     /*@GetMapping("/mensajes")
