@@ -1,5 +1,9 @@
 package es.uma.taw.bank.controller;
 
+/**
+ * @author Óscar Fernández Díaz
+ */
+
 import es.uma.taw.bank.dao.EmpresaRepository;
 import es.uma.taw.bank.dao.UsuarioRepository;
 import es.uma.taw.bank.entity.UsuarioEntity;
