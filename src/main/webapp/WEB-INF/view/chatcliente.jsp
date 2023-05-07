@@ -10,7 +10,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Chat</title>
 </head>
 <body>
 <jsp:include page="cabecera.jsp"/>
@@ -20,20 +20,20 @@
    List<MensajeEntity> mensajes = (List<MensajeEntity>) request.getAttribute("mensajes");
 %>
 
-<table border="1" style="width: 100%; table-layout:fixed">
+<table style="width: 100%; table-layout:fixed">
     <%
         for (MensajeEntity msj : mensajes) {
             if(msj.getUsuarioByEmisor().getId()!=27){
     %>
     <tr>
         <td></td>
-        <td style="word-wrap: break-word"><b>Tú: </b><%=msj.getContenido()%></td>
+        <td style="word-wrap: break-word; border: black 1px solid"><b>Tú: </b><%=msj.getContenido()%></td>
     </tr>
     <%
         }else{
     %>
     <tr>
-        <td style="word-wrap: break-word"><b>Asistente: </b><%=msj.getContenido()%></td>
+        <td style="word-wrap: break-word; border: black 1px solid"><b>Asistente: </b><%=msj.getContenido()%></td>
         <td></td>
     </tr>
     <%
@@ -41,14 +41,17 @@
         }
     %>
 </table>
-<form:form action="/asistencia/enviar" method="post" modelAttribute="mensaje">
-    <form:hidden path="id"/>
-    Escriba su mensaje:<br/> <form:textarea path="contenido" size="500" maxlength="500" rows="10" cols="50"/>
-    <form:hidden path="conversacionByConversacion"/>
-    <form:hidden path="usuarioByEmisor"/>
-    <input type="submit" value="Enviar">
-</form:form>
-<a href="/asistencia/cerrar?id=${conversacion.id}">Cerrar</a>
+<div style="float: right">
+    <br/><br/>
+    <form:form action="/asistencia/enviar" method="post" modelAttribute="mensaje">
+        <form:hidden path="id"/>
+        Escriba su mensaje:<br/> <form:textarea path="contenido" size="500" maxlength="500" rows="10" cols="50"/> <br/>
+        <form:hidden path="conversacionByConversacion"/>
+        <form:hidden path="usuarioByEmisor"/>
+        <input type="submit" value="Enviar">
+    </form:form>
+    <a href="/asistencia/cerrar?id=${conversacion.id}">Cerrar</a>
+</div>
 
 </body>
 </html>
