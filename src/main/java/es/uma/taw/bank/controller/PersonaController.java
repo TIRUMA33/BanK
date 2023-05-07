@@ -85,7 +85,7 @@ public class PersonaController {
         personaActualizada.setApellido1(personaForm.getApellido1());
         personaActualizada.setApellido2(personaForm.getApellido2());
         personaActualizada.setFechaNacimiento(personaForm.getFechaNacimiento());
-        personaService.guardarPersona(personaActualizada);
+        personaService.guardarPersona(personaActualizada, personaActualizada.getId());
 
         direccionActualizada.setCalle(direccionForm.getCalle());
         direccionActualizada.setNumero(direccionForm.getNumero());
@@ -98,7 +98,7 @@ public class PersonaController {
         direccionActualizada.setCliente(direccionForm.getCliente());
         direccionActualizada.setRegion(direccionForm.getRegion());
         direccionActualizada.setId(direccionForm.getId());
-        direccionService.guardarDireccion(direccionActualizada);
+        direccionService.guardarDireccion(direccionActualizada, direccionActualizada.getCliente(),  direccionActualizada.getValida()!=0);
 
         usuarioActualizado.setNif(personaForm.getDni());
         if (!(usuarioForm.getContrasena().isBlank() || registroPersona.getRcontrasena().isBlank())) {
@@ -106,7 +106,7 @@ public class PersonaController {
                 usuarioActualizado.setContrasena(usuarioForm.getContrasena());
             }
         }
-        usuarioService.guardarUsuario(usuarioActualizado);
+        usuarioService.guardarUsuario(usuarioActualizado, usuarioActualizado.getId(), usuarioActualizado.getNif(), usuarioActualizado.getTipoUsuario());
         return "redirect:/persona/";
     }
 
@@ -149,9 +149,9 @@ public class PersonaController {
     public String doSolicitado(@ModelAttribute("id") Integer cuentaid) {
         EstadoCuentaDTO estado = new EstadoCuentaDTO();
         CuentaDTO cuenta = cuentaService.buscarCuenta(cuentaid);
-        if (cuenta.getEstado().equals("Activa")) {
+        if (cuenta.getEstado()==1) {
             estado.setId(4);
-        } else if(cuenta.getEstado().equals("Bloqueada")) {
+        } else if(cuenta.getEstado()==2) {
             estado.setId(5);
         }
         cuenta.setEstado(estado.getId());

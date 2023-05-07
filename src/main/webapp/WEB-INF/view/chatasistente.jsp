@@ -20,13 +20,13 @@
 %>
 <h1>Conversación con <%=mensajes.get(0).getUsuarioByEmisor().getNif()%></h1>
 
-<table border="1" style="width: 100%; table-layout:fixed">
+<table style="width: 100%; table-layout:fixed">
     <%
         for (MensajeEntity msj : mensajes) {
             if(msj.getUsuarioByEmisor().getId()!=27){
     %>
     <tr>
-        <td style="word-wrap: break-word"><b><%=msj.getUsuarioByEmisor().getNif()%>: </b><%=msj.getContenido()%></td>
+        <td style="word-wrap: break-word; border: black 1px solid"><b><%=msj.getUsuarioByEmisor().getNif()%>: </b><%=msj.getContenido()%></td>
         <td></td>
     </tr>
     <%
@@ -34,20 +34,23 @@
     %>
     <tr>
         <td></td>
-        <td style="word-wrap: break-word"><b>Tú: </b><%=msj.getContenido()%></td>
+        <td style="word-wrap: break-word; border: black 1px solid"><b>Tú: </b><%=msj.getContenido()%></td>
     </tr>
     <%
             }
         }
     %>
 </table>
-<form:form action="/asistencia/enviar" method="post" modelAttribute="mensaje">
-    <form:hidden path="id"/>
-    Escriba su mensaje:<br/> <form:textarea path="contenido" size="500" maxlength="500" rows="10" cols="50"/>
-    <form:hidden path="conversacionByConversacion"/>
-    <form:hidden path="usuarioByEmisor"/>
-    <input type="submit" value="Enviar">
-</form:form>
+<div style="float: right">
+    <br/><br/>
+    <form:form action="/asistencia/enviar" method="post" modelAttribute="mensaje">
+        <form:hidden path="id"/>
+        Escriba su mensaje:<br/> <form:textarea path="contenido" size="500" maxlength="500" rows="10" cols="50"/> <br/>
+        <form:hidden path="conversacionByConversacion"/>
+        <form:hidden path="usuarioByEmisor"/>
+        <input type="submit" value="Enviar">
+    </form:form>
+</div>
 
 </body>
 </html>

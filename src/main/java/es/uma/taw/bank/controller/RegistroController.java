@@ -137,12 +137,12 @@ public class RegistroController {
             guardadoComun(cliente, direccion, registroPersona.getValida());
 
             persona.setId(cliente.getId());
-            personaService.guardarPersona(persona);
+            personaService.guardarPersona(persona, persona.getId());
 
             usuario.setId(cliente.getId());
             usuario.setNif(persona.getDni());
             usuario.setTipoUsuario(1);
-            this.usuarioService.guardarUsuario(usuario);
+            this.usuarioService.guardarUsuario(usuario, usuario.getId(), usuario.getNif(), usuario.getTipoUsuario());
 
             urlTo = "redirect:/persona/";
         } else {
