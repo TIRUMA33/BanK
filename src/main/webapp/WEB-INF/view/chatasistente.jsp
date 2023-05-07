@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.uma.taw.bank.entity.MensajeEntity" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="es.uma.taw.bank.dto.MensajeDTO" %><%--
   Created by IntelliJ IDEA.
   User: probl
   Date: 05/05/2023
@@ -16,17 +17,17 @@
 <jsp:include page="cabecera.jsp"/>
 <a href="/asistencia/conversaciones">Volver</a>
 <%
-    List<MensajeEntity> mensajes = (List<MensajeEntity>) request.getAttribute("mensajes");
+    List<MensajeDTO> mensajes = (List<MensajeDTO>) request.getAttribute("mensajes");
 %>
-<h1>Conversación con <%=mensajes.get(0).getUsuarioByEmisor().getNif()%></h1>
+<h1>Conversación con <%=mensajes.get(0).getEmisorNif()%></h1>
 
 <table style="width: 100%; table-layout:fixed">
     <%
-        for (MensajeEntity msj : mensajes) {
-            if(msj.getUsuarioByEmisor().getId()!=27){
+        for (MensajeDTO msj : mensajes) {
+            if(msj.getEmisor()!=27){
     %>
     <tr>
-        <td style="word-wrap: break-word; border: black 1px solid"><b><%=msj.getUsuarioByEmisor().getNif()%>: </b><%=msj.getContenido()%></td>
+        <td style="word-wrap: break-word; border: black 1px solid"><b><%=msj.getEmisorNif()%>: </b><%=msj.getContenido()%></td>
         <td></td>
     </tr>
     <%
@@ -46,8 +47,12 @@
     <form:form action="/asistencia/enviar" method="post" modelAttribute="mensaje">
         <form:hidden path="id"/>
         Escriba su mensaje:<br/> <form:textarea path="contenido" size="500" maxlength="500" rows="10" cols="50"/> <br/>
-        <form:hidden path="conversacionByConversacion"/>
-        <form:hidden path="usuarioByEmisor"/>
+        <form:hidden path="conversacion"/>
+        <form:hidden path="conversacionFechaCreacion"/>
+        <form:hidden path="conversacionTerminada"/>
+        <form:hidden path="emisor"/>
+        <form:hidden path="emisorContrasena"/>
+        <form:hidden path="emisorNif"/>
         <input type="submit" value="Enviar">
     </form:form>
 </div>

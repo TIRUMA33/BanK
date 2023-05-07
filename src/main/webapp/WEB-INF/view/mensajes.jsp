@@ -1,5 +1,6 @@
 <%@ page import="es.uma.taw.bank.entity.MensajeEntity" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="es.uma.taw.bank.dto.MensajeDTO" %><%--
   Created by IntelliJ IDEA.
   User: probl
   Date: 07/05/2023
@@ -15,9 +16,9 @@
 <jsp:include page="cabecera.jsp"/>
 <a href="/asistencia/conversaciones">Volver</a>
 <%
-  List<MensajeEntity> mensajes = (List<MensajeEntity>) request.getAttribute("todomensajes");
+  List<MensajeDTO> mensajes = (List<MensajeDTO>) request.getAttribute("todomensajes");
 %>
-<h1>Mensajes intercambiados con el usuario <%=mensajes.get(0).getUsuarioByEmisor().getNif()%></h1>
+<h1>Mensajes intercambiados con el usuario <%=mensajes.get(0).getEmisorNif()%></h1>
 <table border="1">
     <tr>
         <th>Emisor</th>
@@ -25,8 +26,8 @@
         <th>Fecha de envío</th>
     </tr>
     <%
-        for (MensajeEntity mensaje : mensajes) {
-            if(mensaje.getUsuarioByEmisor().getTipoUsuarioByTipoUsuario().getId()==3){
+        for (MensajeDTO mensaje : mensajes) {
+            if(mensaje.getEmisor()==27){
     %>
     <tr>
         <td><b>Tú</b></td>
@@ -37,7 +38,7 @@
         }else{
     %>
     <tr>
-        <td><b><%=mensaje.getUsuarioByEmisor().getNif()%></b></td>
+        <td><b><%=mensaje.getEmisorNif()%></b></td>
         <td><%=mensaje.getContenido()%></td>
         <td><%=mensaje.getFecha()%></td>
     </tr>
