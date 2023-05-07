@@ -16,7 +16,7 @@
 <form:form action="/persona/transferencia/realizar" modelAttribute="transaccion"
            method="post">
     <form:hidden path="id"/>
-    <form:hidden path="cuentaBancoByCuentaOrigen"/>
+    <form:hidden path="cuentaOrigen"/>
     <table>
         <tr>
             <th>Cuenta origen</th>
@@ -29,7 +29,7 @@
         </tr>
         <tr>
             <th>Cuenta destino</th>
-            <td><form:select path="cuentaBancoByCuentaDestino" items="${cuentas}" itemValue="id"
+            <td><form:select path="cuentaDestino" items="${cuentas}" itemValue="id"
                              itemLabel="ibanCuenta"/></td>
         </tr>
         <tr>

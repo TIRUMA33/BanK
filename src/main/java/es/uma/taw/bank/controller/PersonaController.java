@@ -151,7 +151,7 @@ public class PersonaController {
         } else if(cuenta.getEstado().equals("Bloqueada")) {
             estado.setId(5);
         }
-        cuenta.setEstado(estado.getEstado());
+        cuenta.setEstado(estado.getId());
         cuentaService.guardarcuenta(cuenta);
         return "redirect:/persona/";
     }
@@ -159,9 +159,9 @@ public class PersonaController {
     @GetMapping("/cambioDivisa")
     public String doCambio(@RequestParam("id") Integer cuentaid, Model model) {
         CuentaDTO cuenta = cuentaService.buscarCuenta(cuentaid);
-        List<DivisaDTO> divisas = this.divisaService.buscarSinMi(cuenta.getDivisa());
+        List<DivisaDTO> divisas = this.divisaService.buscarSinMi(divisaService.buscarDivisa(cuenta.getDivisa()).getNombre());
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        List<String> cambios = divisas.stream().map(d->decimalFormat.format(cuenta.getSaldo() * divisaService.buscarDivisaPorNombre(cuenta.getDivisa()).getEquivalencia() / d.getEquivalencia()) + " " + d.getNombre()).collect(Collectors.toList());
+        List<String> cambios = divisas.stream().map(d->decimalFormat.format(cuenta.getSaldo() * divisaService.buscarDivisa(cuenta.getDivisa()).getEquivalencia() / d.getEquivalencia()) + " " + d.getNombre()).collect(Collectors.toList());
 
         model.addAttribute("cuenta", cuenta);
         model.addAttribute("divisas", divisas);
@@ -175,8 +175,8 @@ public class PersonaController {
         CuentaDTO cuenta = this.cuentaService.buscarCuenta(Integer.parseInt(cuentaid));
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
-        cuenta.setSaldo(Double.parseDouble(decimalFormat.format(cuenta.getSaldo() * divisaService.buscarDivisaPorNombre(cuenta.getDivisa()).getEquivalencia() / divisa.getEquivalencia()).replace(",", ".")));
-        cuenta.setDivisa(divisa.getNombre());
+        cuenta.setSaldo(Double.parseDouble(decimalFormat.format(cuenta.getSaldo() * divisaService.buscarDivisa(cuenta.getDivisa()).getEquivalencia() / divisa.getEquivalencia()).replace(",", ".")));
+        cuenta.setDivisa(divisa.getId());
         cuentaService.guardarcuenta(cuenta);
         return "redirect:/persona/";
     }

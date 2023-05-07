@@ -2,10 +2,7 @@ package es.uma.taw.bank.controller;
 
 import es.uma.taw.bank.DataGenerator;
 import es.uma.taw.bank.dao.*;
-import es.uma.taw.bank.dto.ClienteDTO;
-import es.uma.taw.bank.dto.PersonaDTO;
-import es.uma.taw.bank.dto.UsuarioDTO;
-import es.uma.taw.bank.dto.DireccionDTO;
+import es.uma.taw.bank.dto.*;
 import es.uma.taw.bank.service.*;
 import es.uma.taw.bank.ui.RegistroEmpresa;
 import es.uma.taw.bank.ui.RegistroEmpresaPersona;
@@ -132,6 +129,7 @@ public class RegistroController {
         this.tipoUsuarioService = tipoUsuarioService;
     }
 */
+/*
 
     private void guardadoComun(ClienteDTO cliente, DireccionDTO direccion, boolean valida) {
         cliente.setFechaInicio(new Timestamp(System.currentTimeMillis()));
@@ -142,6 +140,7 @@ public class RegistroController {
         direccion.setClienteByClienteId(cliente);
         direccionService.guardarDireccion(direccion);
     }
+*/
 
     @GetMapping("/")
     public String doRegistro() {
@@ -193,7 +192,7 @@ public class RegistroController {
     }
 */
 
-    @PostMapping("/persona/")
+/*    @PostMapping("/persona/")
     public String doRegistrarPersona(@ModelAttribute("persona") RegistroPersona registroPersona) {
         String urlTo;
         ClienteDTO cliente = registroPersona.getCliente();
@@ -209,7 +208,7 @@ public class RegistroController {
 
             usuario.setId(cliente.getId());
             usuario.setNif(persona.getDni());
-            usuario.setTipoUsuarioByTipoUsuario(this.tipoUsuarioService.buscarTipoUsuario(1));
+            usuario.setTipoUsuarioTipo("Cliente");
             usuarioService.guardarUsuario(usuario);
 
             urlTo = "redirect:/persona/";
@@ -218,7 +217,7 @@ public class RegistroController {
         }
 
         return urlTo;
-    }
+    }*/
 /*
 
     @GetMapping("/empresa/{id}/persona")
