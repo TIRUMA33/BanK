@@ -1,10 +1,6 @@
 package es.uma.taw.bank.ui;
 
-import es.uma.taw.bank.dto.ClienteDTO;
-import es.uma.taw.bank.dto.DireccionDTO;
-import es.uma.taw.bank.dto.PersonaDTO;
-import es.uma.taw.bank.DTO.*;
-import es.uma.taw.bank.dto.UsuarioDTO;
+import es.uma.taw.bank.entity.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,17 +9,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @Setter
 public class RegistroPersona {
 
-    private ClienteDTO cliente;
-    private DireccionDTO direccion;
-    private PersonaDTO persona;
-    private UsuarioDTO usuario;
+    private ClienteEntity cliente;
+    private DireccionEntity direccion;
+    private PersonaEntity persona;
+    private UsuarioEntity usuario;
     private Boolean valida;
     private String rcontrasena;
 
     public RegistroPersona(){
-        cliente = new ClienteDTO();
-        direccion = new DireccionDTO();
-        usuario = new UsuarioDTO();
+        cliente = new ClienteEntity();
+        direccion = new DireccionEntity();
+        usuario = new UsuarioEntity();
         valida = false;
         rcontrasena = "";
     }
