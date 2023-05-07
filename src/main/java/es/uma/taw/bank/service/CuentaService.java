@@ -33,9 +33,9 @@ public class CuentaService {
         cuenta.setFechaApertura(dto.getFechaApertura());
         cuenta.setFechaCierre(dto.getFechaCierre());
         cuenta.setSwift(dto.getSwift());
-        cuenta.setEstadoCuentaByEstadoCuentaId(estadoCuentaRepository.buscarPorTipo(dto.getEstado()));
+        cuenta.setEstadoCuentaByEstadoCuentaId(estadoCuentaRepository.buscarPorTipo(dto.getEstadoTipo()));
         cuenta.setClienteByTitularId(clienteRepository.findById(dto.getCliente()).orElse(null));
-        cuenta.setDivisaByDivisaId(divisaRepository.buscarPorNombre(dto.getDivisa()));
+        cuenta.setDivisaByDivisaId(divisaRepository.buscarPorNombre(dto.getDivisaNombre()));
         cuenta.setEntidadBancariaByEntidadBancariaId(entidadBancariaRepository.findById(dto.getEntidad()).orElse(null));
         this.cuentaRepository.save(cuenta);
     }

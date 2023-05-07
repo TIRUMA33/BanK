@@ -115,7 +115,7 @@ public class CajeroController {
     @GetMapping("/cambioDivisa")
     public String cambioDivisa(Model model, @RequestParam("cuenta") Integer idCuenta){
         CuentaDTO c = cuentaService.buscarCuenta(idCuenta);
-        DivisaDTO divisaInicial = divisaService.buscarDivisaPorNombre(c.getDivisa());
+        DivisaDTO divisaInicial = divisaService.buscarDivisaPorNombre(c.getDivisaNombre());
         List<DivisaDTO> divisas = divisaService.listarDivisas();
         divisas.removeIf(d -> (d.getNombre().equals(divisaInicial.getNombre())));
         List<Cambio> lista = new ArrayList<>();
@@ -132,11 +132,11 @@ public class CajeroController {
     @PostMapping("/cambiarA")
     public String cambiarA(Model model, @RequestParam("cuenta") Integer idCuenta, @RequestParam("moneda") String monedaDestino){
         CuentaDTO c = cuentaService.buscarCuenta(idCuenta);
-        DivisaDTO origen = divisaService.buscarDivisaPorNombre(c.getDivisa());
+        DivisaDTO origen = divisaService.buscarDivisaPorNombre(c.getDivisaNombre());
         DivisaDTO destino = divisaService.buscarDivisaPorNombre(monedaDestino);
         Double equivalencia = origen.getEquivalencia()/destino.getEquivalencia();
         model.addAttribute("cuenta",c);
-        model.addAttribute("origen",c.getDivisa());
+        model.addAttribute("origen",c.getDivisaNombre());
         model.addAttribute("destino",monedaDestino);
         model.addAttribute("equivalencia",equivalencia);
         return "cambiarA";

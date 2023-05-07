@@ -2,6 +2,7 @@ package es.uma.taw.bank.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import java.util.Objects;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -28,4 +29,12 @@ public class CuentaDTO implements Serializable {
     private String estadoTipo;
     private List<TransaccionDTO> transaccionesOrigen;
     private List<TransaccionDTO> transaccionesDestino;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CuentaDTO entity = (CuentaDTO) o;
+        return Objects.equals(this.id, entity.id);
+    }
 }

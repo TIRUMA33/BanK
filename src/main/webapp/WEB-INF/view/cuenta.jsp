@@ -42,7 +42,7 @@
         <th>FECHA DE CIERRE</th>
     </tr>
     <tr>
-        <td>${cuenta.divisa}</td>
+        <td>${cuenta.divisaNombre}</td>
         <td>${cuenta.saldo}</td>
         <td>${cuenta.swift}</td>
         <td>${cuenta.pais}</td>

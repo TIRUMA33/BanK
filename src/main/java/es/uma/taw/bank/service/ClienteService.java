@@ -32,6 +32,6 @@ public class ClienteService {
         cliente = new ClienteEntity();
         cliente.setId(dto.getId());
         cliente.setFechaInicio(dto.getFechaInicio());
-        cliente.setEstadoClienteByEstadoClienteId(estadoClienteRepository.findById(dto.getEstadoid()).orElse(null));
+        cliente.setEstadoClienteByEstadoClienteId(estadoClienteRepository.findById(dto.getEstadoCliente()).orElse(null));
     }
 }

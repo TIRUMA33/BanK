@@ -47,8 +47,8 @@
         <td><%= t.getFechaInstruccion().toString() %></td>
         <td><%= t.getFechaEjecucion().toString() %></td>
         <td><%= t.getCantidad() %></td>
-        <td><%= t.getIbanOrigen() %></td>
-        <td><%= t.getIbanDestino() %></td>
+        <td><%= t.getCuentaOrigenIbanCuenta() %></td>
+        <td><%= t.getCuentaDestinoIbanCuenta() %></td>
     </tr>
     <%
         }

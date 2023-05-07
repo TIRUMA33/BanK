@@ -96,8 +96,10 @@ public class CuentaBancoEntity implements DTO<CuentaDTO> {
         dto.setSwift(swift);
         dto.setCliente(this.getClienteByTitularId().getId());
         dto.setEntidad(this.getEntidadBancariaByEntidadBancariaId().getId());
-        dto.setDivisa(this.getDivisaByDivisaId().getNombre());
-        dto.setEstado(this.getEstadoCuentaByEstadoCuentaId().getTipo());
+        dto.setDivisa(this.getDivisaByDivisaId().getId());
+        dto.setEstado(this.getEstadoCuentaByEstadoCuentaId().getId());
+        dto.setDivisaNombre(this.getDivisaByDivisaId().getNombre());
+        dto.setDivisaEquivalencia(this.getDivisaByDivisaId().getEquivalencia());
 
         return dto;
     }

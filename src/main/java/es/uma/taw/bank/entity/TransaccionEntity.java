@@ -67,8 +67,8 @@ public class TransaccionEntity implements DTO<TransaccionDTO> {
         dto.setFechaInstruccion(this.fechaInstruccion);
         dto.setCuentaOrigen(this.getCuentaBancoByCuentaOrigen().getId());
         dto.setCuentaDestino(this.getCuentaBancoByCuentaDestino().getId());
-        dto.setIbanOrigen(this.getCuentaBancoByCuentaOrigen().getIbanCuenta());
-        dto.setIbanDestino(this.getCuentaBancoByCuentaDestino().getIbanCuenta());
+        dto.setCuentaOrigenIbanCuenta(this.cuentaBancoByCuentaOrigen.getIbanCuenta());
+        dto.setCuentaDestinoIbanCuenta(this.cuentaBancoByCuentaDestino.getIbanCuenta());
 
         return dto;
     }
