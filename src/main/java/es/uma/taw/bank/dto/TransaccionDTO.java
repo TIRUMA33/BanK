@@ -14,7 +14,8 @@ public class TransaccionDTO implements Serializable {
     private Timestamp fechaEjecucion;
     private Double cantidad;
     private Integer cuentaOrigen;
-    private String Divisa;
+    private String divisa;
+    private String divisaDestino;
     private String cuentaOrigenIbanCuenta;
     private Double cuentaOrigenSaldo;
     private String cuentaOrigenSwift;
@@ -28,4 +29,5 @@ public class TransaccionDTO implements Serializable {
     private String cuentaDestinoPais;
     private Timestamp cuentaDestinoFechaApertura;
     private Timestamp cuentaDestinoFechaCierre;
+
 }
