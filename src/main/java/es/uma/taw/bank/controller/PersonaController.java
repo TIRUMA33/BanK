@@ -95,6 +95,9 @@ public class PersonaController {
         direccionActualizada.setCodigoPostal(direccionForm.getCodigoPostal());
         direccionActualizada.setPais(direccionForm.getPais());
         direccionActualizada.setValida((byte) (edicionPersona.getValida() ? 1 : 0));
+        direccionActualizada.setCliente(direccionForm.getCliente());
+        direccionActualizada.setRegion(direccionForm.getRegion());
+        direccionActualizada.setId(direccionForm.getId());
         direccionService.guardarDireccion(direccionActualizada);
 
         usuarioActualizado.setNif(personaForm.getDni());

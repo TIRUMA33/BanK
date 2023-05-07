@@ -74,11 +74,10 @@ public class RegistroController {
         this.tipoPersonaRelacionadaService = tipoPersonaRelacionadaService;
     }
 
-
     private void guardadoComun(ClienteDTO cliente, DireccionDTO direccion, boolean valida) {
         clienteService.guardarCliente(cliente);
 
-        direccionService.guardarDireccion(direccion, cliente, valida);
+        direccionService.guardarDireccion(direccion, cliente.getId(), valida);
     }
 
     @GetMapping("/")
@@ -123,7 +122,7 @@ public class RegistroController {
         return urlTo;
     }
 
-/*    @PostMapping("/persona/")
+    @PostMapping("/persona/")
     public String doRegistrarPersona(@ModelAttribute("persona") RegistroPersona registroPersona) {
         String urlTo;
         ClienteDTO cliente = registroPersona.getCliente();
@@ -139,8 +138,8 @@ public class RegistroController {
 
             usuario.setId(cliente.getId());
             usuario.setNif(persona.getDni());
-            usuario.setTipoUsuarioTipo("Cliente");
-            usuarioService.guardarUsuario(usuario);
+            usuario.setTipoUsuario(1);
+            this.usuarioService.guardarUsuario(usuario);
 
             urlTo = "redirect:/persona/";
         } else {

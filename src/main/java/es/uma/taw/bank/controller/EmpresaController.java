@@ -149,7 +149,8 @@ public class EmpresaController {
         RegistroEmpresa registroEmpresa = recuperarInfoEmpresa(id);
 
         this.empresaService.guardarEmpresa(edicionEmpresa.getEmpresa(), id);
-        this.direccionService.guardarDireccion(edicionEmpresa.getDireccion(), edicionEmpresa.getValida());
+        this.direccionService.guardarDireccion(edicionEmpresa.getDireccion(),
+                edicionEmpresa.getDireccion().getId(), edicionEmpresa.getValida());
         this.usuarioService.guardarUsuario(edicionEmpresa.getUsuario(), edicionEmpresa.getEmpresa().getCif(),
                 registroEmpresa.getRcontrasena());
 
@@ -185,7 +186,8 @@ public class EmpresaController {
                                           @ModelAttribute("registroEmpresaPersona") RegistroEmpresaPersona edicionEmpresaPersona) {
         RegistroEmpresaPersona registroEmpresaPersona = recuperarInfoEmpresaPersona(personaId);
 
-        this.direccionService.guardarDireccion(edicionEmpresaPersona.getDireccion(), edicionEmpresaPersona.getValida());
+        this.direccionService.guardarDireccion(edicionEmpresaPersona.getDireccion(),
+                edicionEmpresaPersona.getDireccion().getId(), edicionEmpresaPersona.getValida());
         this.empresaPersonaService.guardarEmpresaPersona(registroEmpresaPersona.getEmpresaPersona(),
                 registroEmpresaPersona.getEmpresaPersona().getEmpresa(),
                 registroEmpresaPersona.getEmpresaPersona().getPersona());

@@ -25,29 +25,10 @@ public class DireccionService {
         this.direccionRepository = direccionRepository;
     }
 
-    public void guardarDireccion(DireccionDTO dtoDireccion, ClienteDTO dtoCliente, boolean valida){
+    public void guardarDireccion(DireccionDTO dto, Integer clienteId, boolean valida){
         DireccionEntity direccion = new DireccionEntity();
 
-        direccion.setCalle(dtoDireccion.getCalle());
-        direccion.setCiudad(dtoDireccion.getCiudad());
-        direccion.setCodigoPostal(dtoDireccion.getCodigoPostal());
-        direccion.setNumero(dtoDireccion.getNumero());
-        direccion.setRegion(dtoDireccion.getRegion());
-        direccion.setPlantaPuertaOficina(dtoDireccion.getPlantaPuertaOficina());
-        direccion.setValida((byte) (valida ? 1 : 0));
-        direccion.setClienteByClienteId(this.clienteRepository.findById(dtoCliente.getId()).orElse(null));
-
-        this.direccionRepository.save(direccion);
-    }
-    public DireccionDTO buscarPorCliente(Integer id) {
-        return direccionRepository.findByClienteByClienteId_Id(id)
-                .map(DireccionEntity::toDTO)
-                .orElse(null);
-    }
-
-    public void guardarDireccion(DireccionDTO dto, boolean valida) {
-        DireccionEntity direccion = new DireccionEntity();
-
+        direccion.setId(dto.getId());
         direccion.setCalle(dto.getCalle());
         direccion.setNumero(dto.getNumero());
         direccion.setPlantaPuertaOficina(dto.getPlantaPuertaOficina());
@@ -56,8 +37,14 @@ public class DireccionService {
         direccion.setCodigoPostal(dto.getCodigoPostal());
         direccion.setPais(dto.getPais());
         direccion.setValida((byte) (valida ? 1 : 0));
+        direccion.setClienteByClienteId(this.clienteRepository.findById(clienteId).orElse(null));
 
         this.direccionRepository.save(direccion);
+    }
+    public DireccionDTO buscarPorCliente(Integer id) {
+        return direccionRepository.findByClienteByClienteId_Id(id)
+                .map(DireccionEntity::toDTO)
+                .orElse(null);
     }
 
     public void borrarDireccionPorCliente(Integer id) {
