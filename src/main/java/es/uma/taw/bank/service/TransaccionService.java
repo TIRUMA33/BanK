@@ -6,7 +6,6 @@ import es.uma.taw.bank.dto.CuentaDTO;
 import es.uma.taw.bank.dto.TransaccionDTO;
 import es.uma.taw.bank.entity.TransaccionEntity;
 import es.uma.taw.bank.ui.FiltroOperaciones;
-import es.uma.taw.bank.ui.FiltroOperacionesPersona;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -80,7 +79,6 @@ public class TransaccionService {
         return this.listaEntidadesADTO(operaciones);
     }
 
-
     public List<CuentaDTO> rellenarCuentas(Integer idCuenta, List<TransaccionDTO> operaciones) {
         List<CuentaDTO> cuentas = new ArrayList<>();
         for(TransaccionDTO t: operaciones){
@@ -90,27 +88,5 @@ public class TransaccionService {
             if(!cuentas.contains(cuentaOrigen))if(cuentaOrigen.getId()!=idCuenta)cuentas.add(cuentaOrigen);
         }
         return cuentas;
-    }
-
-    public List<TransaccionDTO> filtrarPersona(Integer cuentaid, FiltroOperacionesPersona filtro) {
-        List<TransaccionEntity> operaciones;
-        if (filtro.getIban().equals("")&& !filtro.getFecha() && !filtro.getCantidad()) {
-            operaciones = this.transaccionRepository.buscarporCuenta(cuentaid);
-        } else if (filtro.getIban().equals("")&& !filtro.getFecha()) {
-            operaciones = transaccionRepository.buscaryordporCuentaYCantidad(cuentaid);
-        } else if (filtro.getIban().equals("") && !filtro.getCantidad()) {
-            operaciones = transaccionRepository.buscaryordporCuentaYFecha(cuentaid);
-        } else if (!filtro.getFecha() && !filtro.getCantidad()) {
-            operaciones = transaccionRepository.buscarpordoblecuenta(cuentaid, filtro.getIban());
-        } else if (!filtro.getFecha()) {
-            operaciones = transaccionRepository.buscarporDobleCuentayCantidad(cuentaid, filtro.getIban());
-        } else if (!filtro.getCantidad()) {
-            operaciones = transaccionRepository.buscarporDobleCuentayFecha(cuentaid, filtro.getIban());
-        } else if (filtro.getIban().equals("")) {
-            operaciones = transaccionRepository.buscaryordporCuentaFechaYCantidad(cuentaid);
-        } else {
-            operaciones = transaccionRepository.buscarporDobleCuentaFechaYCantidad(cuentaid, filtro.getIban());
-        }
-    return listaEntidadesADTO(operaciones);
     }
 }

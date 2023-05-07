@@ -20,9 +20,4 @@ public class EmpresaService {
     public EmpresaDTO buscarEmpresa(Integer id) {
         return Objects.requireNonNull(this.empresaRepository.findById(id).orElse(null)).toDTO();
     }
-
-    //Hago un buscar por id oscar tu ya lo arreglas pero es para poder iniciar sesion, espero te sirva:)
-    public EmpresaDTO buscarEmpresaPorCif(String cif) {
-        return Objects.requireNonNull(this.empresaRepository.findByCif(cif).orElse(null)).toDTO();
-    }
 }

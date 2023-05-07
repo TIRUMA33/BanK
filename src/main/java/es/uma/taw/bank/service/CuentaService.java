@@ -1,6 +1,7 @@
 package es.uma.taw.bank.service;
 
-import es.uma.taw.bank.dao.*;
+import es.uma.taw.bank.dao.CuentaRepository;
+import es.uma.taw.bank.dao.EstadoCuentaRepository;
 import es.uma.taw.bank.dto.CuentaDTO;
 import es.uma.taw.bank.entity.CuentaBancoEntity;
 import es.uma.taw.bank.entity.EstadoCuentaEntity;
@@ -16,29 +17,6 @@ public class CuentaService {
     protected CuentaRepository cuentaRepository;
     @Autowired
     protected EstadoCuentaRepository estadoCuentaRepository;
-    @Autowired
-    protected DivisaRepository divisaRepository;
-    @Autowired
-    protected ClienteRepository clienteRepository;
-    @Autowired
-    protected EntidadBancariaRepository entidadBancariaRepository;
-
-    public void guardarcuenta(CuentaDTO dto) {
-        CuentaBancoEntity cuenta;
-        cuenta = new CuentaBancoEntity();
-        cuenta.setId(dto.getId());
-        cuenta.setSaldo(dto.getSaldo());
-        cuenta.setIbanCuenta(dto.getIbanCuenta());
-        cuenta.setPais(dto.getPais());
-        cuenta.setFechaApertura(dto.getFechaApertura());
-        cuenta.setFechaCierre(dto.getFechaCierre());
-        cuenta.setSwift(dto.getSwift());
-        cuenta.setEstadoCuentaByEstadoCuentaId(estadoCuentaRepository.buscarPorTipo(dto.getEstado()));
-        cuenta.setClienteByTitularId(clienteRepository.findById(dto.getCliente()).orElse(null));
-        cuenta.setDivisaByDivisaId(divisaRepository.buscarPorNombre(dto.getDivisa()));
-        cuenta.setEntidadBancariaByEntidadBancariaId(entidadBancariaRepository.findById(dto.getEntidad()).orElse(null));
-        this.cuentaRepository.save(cuenta);
-    }
 
     public List<CuentaDTO> cuentasPorCliente(Integer idCliente){
         List<CuentaBancoEntity> cuentas = cuentaRepository.buscarPorCliente(idCliente);
@@ -74,6 +52,4 @@ public class CuentaService {
 
         return dtos;
     }
-
-
 }

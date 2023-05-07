@@ -13,7 +13,4 @@ public interface DivisaRepository extends JpaRepository<DivisaEntity, Integer> {
 
     @Query("select d from DivisaEntity d where d.id != :id")
     List<DivisaEntity> buscarSinMi(@Param("id") Integer id);
-
-    @Query("select d from DivisaEntity d where d.nombre != :nombre")
-    List<DivisaEntity> buscarSinMiPorNombre(@Param("nombre") String nombre);
 }

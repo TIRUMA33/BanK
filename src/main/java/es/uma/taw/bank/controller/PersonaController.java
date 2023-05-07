@@ -1,9 +1,14 @@
 package es.uma.taw.bank.controller;
 
+import es.uma.taw.bank.dao.*;
 import es.uma.taw.bank.dto.*;
+import es.uma.taw.bank.DTO.*;
 import es.uma.taw.bank.service.*;
+import es.uma.taw.bank.ui.FiltroOperacionesEmpresa;
 import es.uma.taw.bank.ui.FiltroOperacionesPersona;
+import es.uma.taw.bank.ui.RegistroEmpresa;
 import es.uma.taw.bank.ui.RegistroPersona;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -112,7 +117,7 @@ public class PersonaController {
 
         TransaccionDTO transaccion = new TransaccionDTO();
         transaccion.setCuentaOrigen(this.cuentaService.buscarCuenta(idpersona).getId());
-        List<CuentaDTO> cuentas = this.cuentaService.cuentasSinMi(transaccion.getCuentaOrigen());
+        List<CuentaDTO> cuentas = this.cuentaService.buscarSinMi(transaccion.getCuentaBancoByCuentaOrigen().getId());
 
         model.addAttribute("cuentas", cuentas);
         model.addAttribute("transaccion", transaccion);
@@ -125,18 +130,18 @@ public class PersonaController {
         transaccion.setFechaEjecucion(timestamp);
         transaccion.setFechaInstruccion(timestamp);
 
-        CuentaDTO origen =
-                this.cuentaService.buscarCuenta(transaccion.getCuentaOrigen());
-        CuentaDTO destino =
-                this.cuentaService.buscarCuenta(transaccion.getCuentaDestino());
+        CuentaBancoDTO origen =
+                this.cuentaService.findById(transaccion.getCuentaBancoByCuentaOrigen().getId()).orElse(null);
+        CuentaBancoDTO destino =
+                this.cuentaService.findById(transaccion.getCuentaBancoByCuentaDestino().getId()).orElse(null);
 
         if(origen != null && destino != null) {
             origen.setSaldo(origen.getSaldo() - transaccion.getCantidad());
             destino.setSaldo(destino.getSaldo() + transaccion.getCantidad());
 
-            transaccionService.guardarTransaccion(transaccion);
-            cuentaService.guardarcuenta(origen);
-            cuentaService.guardarcuenta(destino);
+            this.transaccionService.save(transaccion);
+            this.cuentaService.save(origen);
+            this.cuentaService.save(destino);
         }
 
         return "redirect:/persona/";
@@ -145,23 +150,23 @@ public class PersonaController {
     @GetMapping("/solicitar")
     public String doSolicitado(@ModelAttribute("id") Integer cuentaid) {
         EstadoCuentaDTO estado = new EstadoCuentaDTO();
-        CuentaDTO cuenta = cuentaService.buscarCuenta(cuentaid);
-        if (cuenta.getEstado().equals("Activa")) {
+        CuentaBancoDTO cuenta = cuentaService.findById(cuentaid).orElse(null);
+        if (cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 1) {
             estado.setId(4);
-        } else if(cuenta.getEstado().equals("Bloqueada")) {
+        } else if(cuenta.getEstadoCuentaByEstadoCuentaId().getId() == 2) {
             estado.setId(5);
         }
-        cuenta.setEstado(estado.getEstado());
-        cuentaService.guardarcuenta(cuenta);
+        cuenta.setEstadoCuentaByEstadoCuentaId(estado);
+        this.cuentaService.save(cuenta);
         return "redirect:/persona/";
     }
 
     @GetMapping("/cambioDivisa")
     public String doCambio(@RequestParam("id") Integer cuentaid, Model model) {
-        CuentaDTO cuenta = cuentaService.buscarCuenta(cuentaid);
-        List<DivisaDTO> divisas = this.divisaService.buscarSinMi(cuenta.getDivisa());
+        CuentaBancoDTO cuenta = cuentaService.findById(cuentaid).orElse(null);
+        List<DivisaDTO> divisas = this.divisaService.buscarSinMi(cuenta.getDivisaByDivisaId().getId());
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        List<String> cambios = divisas.stream().map(d->decimalFormat.format(cuenta.getSaldo() * divisaService.buscarDivisaPorNombre(cuenta.getDivisa()).getEquivalencia() / d.getEquivalencia()) + " " + d.getNombre()).collect(Collectors.toList());
+        List<String> cambios = divisas.stream().map(d->decimalFormat.format(cuenta.getSaldo() * cuenta.getDivisaByDivisaId().getEquivalencia() / d.getEquivalencia()) + " " + d.getNombre()).collect(Collectors.toList());
 
         model.addAttribute("cuenta", cuenta);
         model.addAttribute("divisas", divisas);
@@ -171,13 +176,13 @@ public class PersonaController {
 
     @PostMapping("/cambioDivisa/{cuentaId}/realizar")
     public String doCambioRealizado(@PathVariable("cuentaId") String cuentaid, @ModelAttribute("divisaSelect") Integer divisaid) {
-        DivisaDTO divisa = this.divisaService.findById(divisaid);
-        CuentaDTO cuenta = this.cuentaService.buscarCuenta(Integer.parseInt(cuentaid));
+        DivisaDTO divisa = this.divisaService.findById(divisaid).orElse(null);
+        CuentaDTO cuenta = this.cuentaService.findById(Integer.parseInt(cuentaid)).orElse(null);
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
-        cuenta.setSaldo(Double.parseDouble(decimalFormat.format(cuenta.getSaldo() * divisaService.buscarDivisaPorNombre(cuenta.getDivisa()).getEquivalencia() / divisa.getEquivalencia()).replace(",", ".")));
-        cuenta.setDivisa(divisa.getNombre());
-        cuentaService.guardarcuenta(cuenta);
+        cuenta.setSaldo(Double.parseDouble(decimalFormat.format(cuenta.getSaldo() * cuenta.getDivisaByDivisaId().getEquivalencia() / divisa.getEquivalencia()).replace(",", ".")));
+        cuenta.setDivisaByDivisaId(divisa);
+        this.cuentaService.save(cuenta);
         return "redirect:/persona/";
     }
 
@@ -198,10 +203,23 @@ public class PersonaController {
         List<TransaccionDTO> operaciones = null;
         String urlTo = "operacionesPersona";
 
-        if(filtro==null) {
-            filtro= new FiltroOperacionesPersona();
-        } else {
-            operaciones= transaccionService.filtrarPersona(cuentaid, filtro);
+        if (filtro == null || filtro.getIban()=="" && !filtro.getFecha() && !filtro.getCantidad()) {
+            operaciones = this.transaccionService.buscarporCuenta(cuentaid);
+            filtro = new FiltroOperacionesPersona();
+        }else if (filtro.getIban()=="" && !filtro.getFecha()) {
+            operaciones = transaccionService.buscaryordporCuentaYCantidad(cuentaid);
+        } else if (filtro.getIban()=="" && !filtro.getCantidad()) {
+            operaciones = transaccionService.buscaryordporCuentaYFecha(cuentaid);
+        } else if (!filtro.getFecha() && !filtro.getCantidad()){
+            operaciones = transaccionService.buscarpordoblecuenta(cuentaid, filtro.getIban());
+        } else if(!filtro.getFecha()) {
+            operaciones = transaccionService.buscarporDobleCuentayCantidad(cuentaid, filtro.getIban());
+        } else if (!filtro.getCantidad()) {
+            operaciones = transaccionService.buscarporDobleCuentayFecha(cuentaid, filtro.getIban());
+        } else if (filtro.getIban()==""){
+            operaciones = transaccionService.buscaryordporCuentaFechaYCantidad(cuentaid);
+        }else {
+            operaciones = transaccionService.buscarporDobleCuentaFechaYCantidad(cuentaid, filtro.getIban());
         }
         model.addAttribute("operaciones", operaciones);
         model.addAttribute("filtro", filtro);

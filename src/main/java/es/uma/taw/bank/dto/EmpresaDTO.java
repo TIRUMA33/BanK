@@ -14,5 +14,4 @@ public class EmpresaDTO implements Serializable {
     private String cif;
     private List<EmpresaPersonaDTO> empresaPersonasById;
     private List<EmpresaClienteDTO> empresaClientesById;
-
 }
