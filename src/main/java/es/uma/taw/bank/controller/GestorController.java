@@ -360,6 +360,6 @@ public class GestorController {
             cuenta.setEstadoCuentaByEstadoCuentaId(this.estadoCuentaRepository.findById(1).orElse(null));
         }
         this.cuentaRepository.save(cuenta);
-        return "redirect:/gestor/infopersona?id=" + id;
+        return "redirect:/gestor/infopersona?id=" + cuenta.getClienteByTitularId().getId();
     }
 }
